@@ -11,9 +11,10 @@ type Props = {
   subtitle?: string;
 };
 
-const AllPostModal: React.FC<Props> = ({ open, onClose, title, subtitle }) => {
+const AllPostModal: React.FC<Props> = ({ open, onClose, title, subtitle, setSelectedPost }) => {
   const el = document.getElementById("portal") as HTMLElement;
   const [posts, setPosts] = useState([])
+  const [select, setSelect] = useState()
 
   useEffect(() => {
     if (!open) return;
@@ -41,12 +42,17 @@ const AllPostModal: React.FC<Props> = ({ open, onClose, title, subtitle }) => {
     getPosts()
   }, [])
 
+  const confirmSelection = () => {
+    setSelectedPost(select)
+    onClose()
+  }
+
 
   if (!open) return null;
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[1000]"
+      className="fixed flex items-center justify-center inset-0 z-[1000] bg-black/50 backdrop-blur-[1px] w-full min-h-screen"
       aria-modal="true"
       role="dialog"
       onMouseDown={(e) => {
@@ -54,45 +60,37 @@ const AllPostModal: React.FC<Props> = ({ open, onClose, title, subtitle }) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      {/* Backdrop */}
-      <div className="absolute inset-0  bg-black/50 backdrop-blur-[1px]" />
-      {/* Dialog */}
-      <div className="absolute inset-0 flex  items-start justify-center ">
-        <div className="mx-4 mt-16 w-full overflow-hidden max-w-3xl rounded-2xl bg-white shadow-2xl">
-          {/* Header */}
-          <div className="flex items-start justify-between border-b px-6 py-4">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900">{title ?? "Select Post or Reel"}</h3>
-              <p className="text-sm text-gray-500">{subtitle ?? "Choose from your posts and reels"}</p>
+
+      <div className="max-w-xl bg-white rounded-2xl shodow-lg">
+
+        <div className="flex items-start justify-between border-b border-gray-200 px-3 py-4">
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900">{title ?? "Select Post or Reel"}</h3>
+            <p className="text-sm text-gray-500">{subtitle ?? "Choose from your posts and reels"}</p>
+          </div>
+          <button
+            aria-label="Close"
+            onClick={onClose}
+            className="rounded-full cursor-pointer p-2 text-gray-500 hover:bg-gray-100"
+          >
+            <IoClose className="text-2xl" />
+          </button>
+        </div>
+        <div className="flex flex-wrap px-4 gap-4 my-5 w-full h-54 overflow-hidden overflow-y-scroll">
+          {posts?.map((post: any) => (
+            <div key={post.id} onClick={() => setSelect(post)} className={`${post.id == select?.id && "border-2 border-indigo-500"} relative cursor-pointer h-54 w-40 overflow-hidden rounded-xl  p-0`}>
+              <img
+                src={post?.thumbnail_url} className="w-full h-full" />
             </div>
-            <button
-              aria-label="Close"
-              onClick={onClose}
-              className="rounded-full p-2 text-gray-500 hover:bg-gray-100"
-            >
-              <IoClose className="text-2xl" />
-            </button>
-          </div>
-
-          {/* posts */}
-          <div className="">
-            {posts?.length == 0 && <p className="p-6 text-center text-gray-500">No posts found</p>}
-            {posts?.map((post: any) => (
-              <div key={post.id} className="relative cursor-pointer h-54 w-40 overflow-hidden rounded-xl border-2 border-indigo-500 p-0 m-4 inline-block">
-                <img src={post?.thumbnail_url} />
-              </div>
-            ))}
-          </div>
-
-          {/* Footer */}
-          <div className="border-t px-6 py-4">
-            <button className="w-full rounded-xl bg-[#6E32FF] py-4 text-lg font-semibold text-white hover:opacity-95">
-              Confirm Selection
-            </button>
-          </div>
+          ))}
+        </div>
+        <div className="border-t border-gray-200 px-3 py-3">
+          <button onClick={confirmSelection} className="w-full rounded-xl cursor-pointer bg-[#6527f7] py-4 text-lg font-semibold text-white hover:opacity-95">
+            Confirm Selection
+          </button>
         </div>
       </div>
-    </div>,
+    </div >,
     el
   );
 };

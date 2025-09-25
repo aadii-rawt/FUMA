@@ -94,7 +94,7 @@ const Editor: React.FC<EditorProps> = ({
       >
         Show More
       </button>
-      <AllPostModal open={allPostModalOpen} onClose={() => setAllPostModalOpen(false)} />
+      <AllPostModal open={allPostModalOpen} onClose={() => setAllPostModalOpen(false)} selectedPost={selectedPost} setSelectedPost={setSelectedPost} />
 
     </div>
   );
