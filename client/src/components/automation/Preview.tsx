@@ -12,7 +12,7 @@ type Props = {
 const PhoneCard: React.FC<Props> = ({ className = "", children }) => {
   const { selectedPost } = useUser()
   return (
-    <div className="flex items-center justify-center h-full">
+    <div className="flex items-center justify-center mt-5">
       <div
         className={[
           // card

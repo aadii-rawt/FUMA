@@ -70,7 +70,7 @@ function MenuItem({ icon: Icon, label, active, rightBadge, glow }) {
 
 export default function Sidebar() {
   return (
-    <aside className="relative w-[280px] bg-[#ede4f0] border-r border-gray-200/70 h-screen">
+    <aside className="sticky top-0 left-0 w-[280px] bg-[#ede4f0] border-r border-gray-200/70 h-screen">
       {/* subtle right-side highlight strip */}
       <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-white/40 to-transparent" />
 

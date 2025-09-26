@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home'
 import Layout from './layout/Layout'
 import Automation from './pages/Automation'
+import NewAutomation from './pages/NewAutomation'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -10,7 +11,8 @@ const App = () => {
       path: "",
       element: <Layout />,
       children: [
-        { path: "/", element: <Automation /> }
+        { path: "/", element: <Automation /> },
+        { path: "/automation/new", element: <NewAutomation  /> }
       ]
     }
   ])

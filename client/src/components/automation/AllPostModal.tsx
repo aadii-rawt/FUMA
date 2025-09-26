@@ -28,17 +28,17 @@ const AllPostModal: React.FC<Props> = ({ open, onClose, title, subtitle, setSele
     };
   }, [open, onClose]);
 
-  const getPosts = async () => {
-    try {
-      const res = await Axios.get("/ig/media", { params: { limit: 5, } });
-      console.log(res);
-      setPosts(res.data.items)
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   useEffect(() => {
+    const getPosts = async () => {
+      try {
+        const res = await Axios.get("/ig/media", { params: { limit: 50, } });
+        console.log(res);
+        setPosts(res.data.items)
+      } catch (error) {
+        console.log(error);
+      }
+    }
     getPosts()
   }, [])
 
