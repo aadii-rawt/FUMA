@@ -1,6 +1,7 @@
+import type React from "react"
 import { Link, NavLink } from "react-router-dom"
 
-const  Header = () => {
+const  Header : React.FC= () => {
 return (
     <div className="bg-white max-w-xl mx-auto flex border border-gray-200 shadow items-center rounded-xl justify-between fixed inset-0 h-fit  top-5 px-5 py-2">
         <div className="font-bold text-2xl border-r pr-5 border-gray-400">FUMA</div>
