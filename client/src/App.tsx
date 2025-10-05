@@ -4,17 +4,40 @@ import Home from './pages/Home'
 import Layout from './layout/Layout'
 import Automation from './pages/Automation'
 import NewAutomation from './pages/NewAutomation'
+import LandingPageLayout from './layout/LandingPageLayout'
+import Login from './pages/auth/Login'
+import Signup from './pages/auth/Signup'
+import AuthLayout from './layout/AuthLayout'
+import VerifyOTP from './pages/auth/VerifyOTP'
 
 const App = () => {
   const router = createBrowserRouter([
     {
+      path : "",
+      element : <LandingPageLayout />,
+      children : [
+        { path : "/", element : <Home />}
+      ]
+    },
+    {
       path: "",
       element: <Layout />,
       children: [
-        { path: "/", element: <Automation /> },
+        { path: "/app", element: <Automation /> },
         { path: "/automation/new", element: <NewAutomation  /> }
       ]
+    },
+
+    {
+      path : "",
+      element : <AuthLayout />,
+      children : [
+        { path : "/auth/login", element : <Login />},
+        { path : "/auth/signup", element : <Signup />},
+        { path : "/auth/verify", element : <VerifyOTP />}
+      ]
     }
+    
   ])
   return (
     <RouterProvider router={router} />
