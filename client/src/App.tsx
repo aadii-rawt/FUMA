@@ -9,6 +9,7 @@ import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
 import AuthLayout from './layout/AuthLayout'
 import VerifyOTP from './pages/auth/VerifyOTP'
+import Pricing from './pages/Pricing'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -16,7 +17,8 @@ const App = () => {
       path : "",
       element : <LandingPageLayout />,
       children : [
-        { path : "/", element : <Home />}
+        { path : "/", element : <Home />},
+        { path : "/pricing", element : <Pricing />},
       ]
     },
     {

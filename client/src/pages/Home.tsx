@@ -1,10 +1,11 @@
 import React from "react";
 import { SiTrustpilot, SiMeta } from "react-icons/si";
 import { FaStar } from "react-icons/fa";
+import { PiSparkle } from "react-icons/pi";
 
 const Home: React.FC = () => {
   return (
-    <div className="w-full bg-pink-100">
+    <div className="w-full">
       {/* ----- hero --------------- */}
       <section className='min-h-screen bg-[url("/bg.png")] h-full w-full bg-center bg-cover rounded-b-3xl' />
 
@@ -195,6 +196,53 @@ const Home: React.FC = () => {
         </div>
       </section>
       {/* ---------- /Two-card benefits ---------- */}
+
+      
+      {/* ----- CTA: Step into the future ----- */}
+<section className="w-full">
+  <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+    <h2 className="text-center text-2xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-slate-900">
+      Step into the future of
+      <br />
+      <span className="block">DM Automations</span>
+    </h2>
+
+    <p className="mx-auto mt-6 max-w-4xl text-center text-xl sm:text-xl text-slate-500">
+      Join thousands of creators &amp; brands using Zorcha to grow engagement,
+      build connections, &amp; monetize their following.
+    </p>
+
+    <div className="mt-10 sm:mt-12 flex items-center justify-center gap-4 sm:gap-6">
+      {/* Primary button */}
+      <a
+        href="#"
+        className="group inline-flex items-center gap-3 rounded-[22px] sm:rounded-[28px] 
+                   bg-violet-700 text-white  font-semibold
+                   px-6 py-3 sm:px-10 sm:py-5
+                   shadow-[0_12px_30px_rgba(109,40,217,0.35)]
+                   ring-1 ring-violet-800/40 hover:brightness-110 transition"
+      >
+        <span className="inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-white/15">
+          <PiSparkle className="h-4 w-4 sm:h-5 sm:w-5" />
+        </span>
+        Start For Free
+      </a>
+
+      {/* Secondary button */}
+      <a
+        href="#"
+        className="inline-flex items-center justify-center rounded-[22px] sm:rounded-[28px]
+                   bg-white text-slate-900  font-semibold
+                   px-6 py-3 sm:px-10 sm:py-5
+                   ring-1 ring-slate-200 shadow-[0_10px_25px_rgba(0,0,0,0.06)]
+                   hover:ring-slate-300 transition"
+      >
+        See Pricing
+      </a>
+    </div>
+  </div>
+</section>
+
     </div>
   );
 };
