@@ -137,8 +137,22 @@ const PriceCard = ({
 export default function Pricing() {
   return (
     <section className="w-full">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-        {/* subtle grid + gradient background, behind cards */}
+      
+    <div className="min-h-screen">
+      <section className="relative py-12 bg-white sm:py-16 lg:py-20">
+        <div className="absolute inset-0">
+          <img className="object-cover w-full h-full" src="/pricing-bg.png" alt="" />
+        </div>
+
+        <div className="relative mt-20 px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+          <div className="max-w-xl mx-auto text-center">
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
+             Simple & affordable pricing for you
+            </h1>
+          </div>
+        </div>
+
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="relative">
           <div className="pointer-events-none absolute inset-0 -z-10 rounded-[40px] bg-[linear-gradient(to_bottom,rgba(236,72,153,0.10),transparent_40%),radial-gradient(1200px_400px_at_50%_120%,rgba(99,102,241,0.12),transparent)]" />
           <div className="pointer-events-none absolute inset-0 -z-10 rounded-[40px] opacity-[0.18] bg-[linear-gradient(#0000_95%,#0001),linear-gradient(90deg,#0000_95%,#0001)] bg-[length:60px_60px]" />
@@ -168,6 +182,9 @@ export default function Pricing() {
           </div>
         </div>
       </div>
+      </section>
+    </div>
+
     </section>
   );
 }

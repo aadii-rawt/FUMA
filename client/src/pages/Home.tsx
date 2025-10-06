@@ -7,7 +7,225 @@ const Home: React.FC = () => {
   return (
     <div className="w-full">
       {/* ----- hero --------------- */}
-      <section className='min-h-screen bg-[url("/bg.png")] h-full w-full bg-center bg-cover rounded-b-3xl' />
+      
+      {/* <section className='min-h-screen bg-[url("/bg.png")] h-full w-full bg-center bg-cover rounded-b-3xl' /> */}
+      <div className=" min-h-screen">
+        <section className="relative py-12 bg-white sm:py-16 lg:py-20">
+          <div className="absolute inset-0">
+            <img className="object-cover w-full h-full" src="/pricing-bg.png" alt="" />
+          </div>
+
+          <div className="relative mt-20 px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+            <div className="max-w-xl mx-auto text-center">
+              <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-6xl">
+                Effortless DMs <br /> big results
+              </h1>
+              <p className="max-w-md mx-auto mt-6 text-base font-normal leading-7 text-gray-500">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vehicula massa in enim luctus. Rutrum arcu.
+              </p>
+
+              <form action="#" method="POST"
+                className="max-w-md mx-auto mt-8 space-y-4 sm:space-x-4 sm:flex sm:space-y-0 sm:items-end">
+                <div className="flex-1">
+                  <label  className="sr-only">
+                    Email address
+                  </label>
+                  <div>
+                    <input type="email" name="" id=""
+                      className="block w-full px-4 py-3 sm:py-3.5 text-base font-medium text-gray-900 placeholder-gray-500 border border-gray-300 rounded-lg  sm:text-sm focus:ring-gray-900 focus:border-gray-900"
+                      placeholder="Email address" />
+                  </div>
+                </div>
+
+                <div className="relative group">
+                  <div
+                    className="absolute transitiona-all duration-1000 opacity-70 inset-0 bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200">
+                  </div>
+
+                  <button type="button"
+                    className="inline-flex relative items-center justify-center w-full sm:w-auto px-8 py-3 sm:text-sm text-base sm:py-3.5 font-semibold text-white transition-all duration-200 bg-indigo-600 border border-transparent rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
+                    Join Now
+                  </button>
+                </div>
+              </form>
+
+              <ul className="flex items-center justify-center mt-6 space-x-6 sm:space-x-8">
+                <li className="flex items-center">
+                  <svg className="w-5 h-5 mr-2 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-xs font-medium text-gray-900 sm:text-sm">
+                    Weekly new articles
+                  </span>
+                </li>
+
+                <li className="flex items-center">
+                  <svg className="w-5 h-5 mr-2 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-xs font-medium text-gray-900 sm:text-sm">
+                    Join other 1600+ Devs
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="flex w-full gap-6 pb-8 mt-12 overflow-x-auto sm:mt-16 lg:mt-20 snap-x">
+            <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+              <div
+                className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
+                <div className="px-4 py-5 sm:p-5">
+                  <div className="flex items-start lg:items-center">
+                    <a href="#" title="" className="shrink-0">
+                      <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-1.png"
+                        alt="" />
+                    </a>
+
+                    <div className="flex-1 ml-4 lg:ml-6">
+                      <p className="text-xs font-medium text-gray-900 lg:text-sm">
+                        <a href="#" title="" className="">
+                          Growth
+                        </a>
+                      </p>
+                      <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
+                        <a href="#" title="" className="">
+                          How a visual artist redefines success in graphic design
+                        </a>
+                      </p>
+                      <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
+                        April 09, 2022
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+              <div
+                className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
+                <div className="px-4 py-5 sm:p-5">
+                  <div className="flex items-start lg:items-center">
+                    <a href="#" title="" className="shrink-0">
+                      <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-2.png"
+                        alt="" />
+                    </a>
+
+                    <div className="flex-1 ml-4 lg:ml-6">
+                      <p className="text-xs font-medium text-gray-900 lg:text-sm">
+                        <a href="#" title="" className="">
+                          Growth
+                        </a>
+                      </p>
+                      <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
+                        <a href="#" title="" className="">
+                          How a visual artist redefines success in graphic design
+                        </a>
+                      </p>
+                      <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
+                        April 09, 2022
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+              <div
+                className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
+                <div className="px-4 py-5 sm:p-5">
+                  <div className="flex items-start lg:items-center">
+                    <a href="#" title="" className="shrink-0">
+                      <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-3.png"
+                        alt="" />
+                    </a>
+
+                    <div className="flex-1 ml-4 lg:ml-6">
+                      <p className="text-xs font-medium text-gray-900 lg:text-sm">
+                        <a href="#" title="" className="">
+                          Growth
+                        </a>
+                      </p>
+                      <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
+                        <a href="#" title="" className="">
+                          How a visual artist redefines success in graphic design
+                        </a>
+                      </p>
+                      <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
+                        April 09, 2022
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+              <div
+                className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
+                <div className="px-4 py-5 sm:p-5">
+                  <div className="flex items-start lg:items-center">
+                    <a href="#" title="" className="shrink-0">
+                      <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-4.png"
+                        alt="" />
+                    </a>
+
+                    <div className="flex-1 ml-4 lg:ml-6">
+                      <p className="text-xs font-medium text-gray-900 lg:text-sm">
+                        <a href="#" title="" className="">
+                          Growth
+                        </a>
+                      </p>
+                      <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
+                        <a href="#" title="" className="">
+                          How a visual artist redefines success in graphic design
+                        </a>
+                      </p>
+                      <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
+                        April 09, 2022
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+              <div
+                className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
+                <div className="px-4 py-5 sm:p-5">
+                  <div className="flex items-start lg:items-center">
+                    <a href="#" title="" className="shrink-0">
+                      <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-5.png"
+                        alt="" />
+                    </a>
+
+                    <div className="flex-1 ml-4 lg:ml-6">
+                      <p className="text-xs font-medium text-gray-900 lg:text-sm">
+                        <a href="#" title="" className="">
+                          Growth
+                        </a>
+                      </p>
+                      <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
+                        <a href="#" title="" className="">
+                          How a visual artist redefines success in graphic design
+                        </a>
+                      </p>
+                      <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
+                        April 09, 2022
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
 
       {/* ----- gains section (below hero) --------------- */}
       <section className="w-full bg-white">
@@ -197,51 +415,63 @@ const Home: React.FC = () => {
       </section>
       {/* ---------- /Two-card benefits ---------- */}
 
-      
-      {/* ----- CTA: Step into the future ----- */}
-<section className="w-full">
-  <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-    <h2 className="text-center text-2xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-slate-900">
-      Step into the future of
-      <br />
-      <span className="block">DM Automations</span>
-    </h2>
+      <div className="overflow-x-hidden ">
+        <section className="pt-12 bg-gray-50 sm:pt-16">
+              <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                  <div className="max-w-2xl mx-auto text-center">
+                      <p className="mt-5 text-4xl font-bold leading-tight text-gray-900 sm:leading-tight sm:text-5xl lg:text-6xl lg:leading-tight font-pj">
+                         How FUMA Automates Your Viral 
+                          <span className="relative inline-flex sm:inline">
+                              <span className="bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] blur-lg filter opacity-30 w-full h-full absolute inset-0"></span>
+                              <span className="relative"> Journey </span>
+                          </span>
+                      </p>
 
-    <p className="mx-auto mt-6 max-w-4xl text-center text-xl sm:text-xl text-slate-500">
-      Join thousands of creators &amp; brands using Zorcha to grow engagement,
-      build connections, &amp; monetize their following.
-    </p>
+                      <div className="px-8 sm:items-center sm:justify-center sm:px-0 sm:space-x-5 sm:flex mt-9">
+                          <a
+                              href="#"
+                              title=""
+                              className="inline-flex items-center justify-center w-full px-8 py-3 text-lg font-bold text-white transition-all duration-200 bg-gray-900 border-2 border-transparent sm:w-auto rounded-xl font-pj hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                              role="button"
+                          >
+                              Get more customers
+                          </a>
 
-    <div className="mt-10 sm:mt-12 flex items-center justify-center gap-4 sm:gap-6">
-      {/* Primary button */}
-      <a
-        href="#"
-        className="group inline-flex items-center gap-3 rounded-[22px] sm:rounded-[28px] 
-                   bg-violet-700 text-white  font-semibold
-                   px-6 py-3 sm:px-10 sm:py-5
-                   shadow-[0_12px_30px_rgba(109,40,217,0.35)]
-                   ring-1 ring-violet-800/40 hover:brightness-110 transition"
-      >
-        <span className="inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-white/15">
-          <PiSparkle className="h-4 w-4 sm:h-5 sm:w-5" />
-        </span>
-        Start For Free
-      </a>
+                          <a
+                              href="#"
+                              title=""
+                              className="inline-flex items-center justify-center w-full px-6 py-3 mt-4 text-lg font-bold text-gray-900 transition-all duration-200 border-2 border-gray-400 sm:w-auto sm:mt-0 rounded-xl font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 hover:bg-gray-900 focus:bg-gray-900 hover:text-white focus:text-white hover:border-gray-900 focus:border-gray-900"
+                              role="button"
+                          >
+                              <svg className="w-5 h-5 mr-2" viewBox="0 0 18 18" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path
+                                      d="M8.18003 13.4261C6.8586 14.3918 5 13.448 5 11.8113V5.43865C5 3.80198 6.8586 2.85821 8.18003 3.82387L12.5403 7.01022C13.6336 7.80916 13.6336 9.44084 12.5403 10.2398L8.18003 13.4261Z"
+                                      stroke-width="2"
+                                      stroke-miterlimit="10"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                  />
+                              </svg>
+                              Watch free demo
+                          </a>
+                      </div>
 
-      {/* Secondary button */}
-      <a
-        href="#"
-        className="inline-flex items-center justify-center rounded-[22px] sm:rounded-[28px]
-                   bg-white text-slate-900  font-semibold
-                   px-6 py-3 sm:px-10 sm:py-5
-                   ring-1 ring-slate-200 shadow-[0_10px_25px_rgba(0,0,0,0.06)]
-                   hover:ring-slate-300 transition"
-      >
-        See Pricing
-      </a>
-    </div>
-  </div>
-</section>
+                      <p className="mt-8 text-base text-gray-500 font-inter">60 Days free trial · No credit card required</p>
+                  </div>
+              </div>
+
+              <div className="pb-12 bg-white">
+                  <div className="relative">
+                      <div className="absolute inset-0 h-2/3 bg-gray-50"></div>
+                      <div className="relative mx-auto">
+                          <div className="lg:max-w-6xl lg:mx-auto">
+                              <img className="transform scale-110" src="https://cdn.rareblocks.xyz/collection/clarity/images/hero/2/illustration.png" alt="" />
+                          </div>
+                      </div>
+                  </div>
+              </div>
+        </section>
+      </div>
 
     </div>
   );
