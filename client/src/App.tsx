@@ -10,6 +10,9 @@ import Signup from './pages/auth/Signup'
 import AuthLayout from './layout/AuthLayout'
 import VerifyOTP from './pages/auth/VerifyOTP'
 import Pricing from './pages/Pricing'
+import SettingLayout from './layout/SettingLayout'
+import General from './pages/settings/General'
+import Billing from './pages/settings/Billing'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -27,6 +30,15 @@ const App = () => {
       children: [
         { path: "/app", element: <Automation /> },
         { path: "/automation/new", element: <NewAutomation  /> }
+      ]
+    },
+    
+    {
+      path : "/setting",
+      element : <SettingLayout />,
+      children : [
+        {path : "/setting/general", element : <General />},
+        {path : "/setting/billing", element : <Billing />},
       ]
     },
 

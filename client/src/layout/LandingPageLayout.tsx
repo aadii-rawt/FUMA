@@ -1,4 +1,4 @@
-import {Outlet} from 'react-router-dom'
+import {Link, Outlet} from 'react-router-dom'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { PiSparkle } from 'react-icons/pi'
@@ -24,8 +24,8 @@ const LandingPageLayout : React.FC = () => {
     </p>
 
     <div className="mt-10 sm:mt-12 flex items-center justify-center gap-4 sm:gap-6">
-      <a
-        href="#"
+      <Link
+        to='/auth/signup'
         className="group inline-flex items-center gap-3 rounded-[22px] sm:rounded-[28px] 
                    bg-violet-700 text-white  font-semibold
                    px-6 py-3 sm:px-4 sm:py-2
@@ -36,9 +36,9 @@ const LandingPageLayout : React.FC = () => {
           <PiSparkle className="h-4 w-4 sm:h-5 sm:w-5" />
         </span>
         Start For Free
-      </a>
-      <a
-        href="#"
+      </Link>
+      <Link
+        to='/pricing'
         className="inline-flex items-center justify-center rounded-[22px] sm:rounded-[28px]
                    bg-white text-slate-900  font-semibold
                    px-6 py-3 sm:px-7 sm:py-3
@@ -46,7 +46,7 @@ const LandingPageLayout : React.FC = () => {
                    hover:ring-slate-300 transition"
       >
         See Pricing
-      </a>
+      </Link>
     </div>
   </div>
 </section>

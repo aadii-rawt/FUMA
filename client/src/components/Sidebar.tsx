@@ -25,7 +25,7 @@ function MenuItem({ icon: Icon, label, active, rightBadge, glow }) {
   return (
     <div
       className={[
-        "relative group rounded-2xl cursor-pointer",
+        "relative group rounded-xl cursor-pointer",
         active ? "bg-white/90 shadow-[0_2px_14px_rgba(17,12,46,0.04)]" : "",
       ].join(" ")}
     >
@@ -41,15 +41,14 @@ function MenuItem({ icon: Icon, label, active, rightBadge, glow }) {
 
       <button
         className={[
-          "relative z-[1] cursor-pointer w-full flex items-center gap-3 px-4 py-3",
-          active ? "text-purple-700" : "text-gray-500 hover:text-gray-700",
+          "relative z-[1] cursor-pointer w-full flex items-center gap-3 px-4 py-2",
+          active ? "text-purple-700" : "text-gray-400 hover:text-gray-700",
         ].join(" ")}
       >
         <span
           className={[
             "grid place-items-center rounded-lg",
-            "w-8 h-8",
-            active ? "bg-purple-50 text-purple-600" : "bg-gray-100 text-gray-500",
+            "w-8 h-8"
           ].join(" ")}
         >
           <Icon className="text-[18px]" />
@@ -57,7 +56,7 @@ function MenuItem({ icon: Icon, label, active, rightBadge, glow }) {
         <span
           className={[
             "text-[15px] font-medium",
-            active ? "text-purple-700" : "text-gray-600",
+            active ? "text-purple-700" : "text-gray-400 hover:text-gray-700",
           ].join(" ")}
         >
           {label}
@@ -70,12 +69,11 @@ function MenuItem({ icon: Icon, label, active, rightBadge, glow }) {
 
 export default function Sidebar() {
   return (
-    <aside className="sticky top-0 left-0 w-[280px] bg-[#ede4f0] border-r border-gray-200/70 h-screen">
-      {/* subtle right-side highlight strip */}
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-white/40 to-transparent" />
+    <aside className="sticky top-0 left-0 w-[280px] h-screen px-3">
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-10 " />
 
       {/* Top header */}
-      <div className="h-16 px-4 flex items-center justify-between">
+      <div className="h-16 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 grid place-items-center rounded-lg bg-gray-900 text-white font-semibold">
             D
@@ -88,13 +86,13 @@ export default function Sidebar() {
       </div>
 
       {/* Divider */}
-      <div className="px-4">
+      <div className="">
         <MenuItem icon={HiHome} label="Home" active={false} />
       </div>
 
-      <div className="my-4 mx-4 h-px bg-gray-200/80" />
+      <div className="my-2 mx-4 h-[1px] bg-gray-300" />
 
-      <nav className="px-4 space-y-2">
+      <nav className=" space-y-2">
         <MenuItem
           icon={RiRobot2Line}
           label="AI Studio"
@@ -118,9 +116,9 @@ export default function Sidebar() {
         />
       </nav>
 
-      <div className="my-4 mx-4 h-px bg-gray-200/80" />
+      <div className="my-2 mx-4 h-[1px] bg-gray-300" />
 
-      <nav className="px-4 space-y-2">
+      <nav className="space-y-2">
         <MenuItem icon={HiGift} label="Refer & Earn" />
         <MenuItem icon={HiCog6Tooth} label="Settings" />
       </nav>

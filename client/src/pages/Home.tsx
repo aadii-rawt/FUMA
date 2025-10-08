@@ -487,7 +487,7 @@ function ViralSteps() {
   const [pct, setPct] = useState(0);         // 0 → 100 progress of current card
 
   useEffect(() => {
-    const stepDurationMs = 8000; // time for one card to fill
+    const stepDurationMs = 5000; // time for one card to fill
     const fps = 60;
     const tick = 1000 / fps;
     let p = 0;
