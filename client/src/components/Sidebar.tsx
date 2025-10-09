@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   HiChevronDown,
   HiHome,
@@ -10,6 +10,7 @@ import {
   HiCheckCircle,
 } from "react-icons/hi2";
 import { RiRobot2Line } from "react-icons/ri";
+import useUser from "../context/userContext";
 
 function Badge({ children, tone = "purple" }) {
   const base =
@@ -29,12 +30,9 @@ function MenuItem({ icon: Icon, label, active, rightBadge, glow }) {
         active ? "bg-white/90 shadow-[0_2px_14px_rgba(17,12,46,0.04)]" : "",
       ].join(" ")}
     >
-      {/* soft right fade like the screenshot */}
       {active && (
         <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-r from-white/70 to-transparent" />
       )}
-
-      {/* purple glow blob for AI Studio */}
       {glow && (
         <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full blur-xl bg-purple-400/40" />
       )}
@@ -45,12 +43,7 @@ function MenuItem({ icon: Icon, label, active, rightBadge, glow }) {
           active ? "text-purple-700" : "text-gray-400 hover:text-gray-700",
         ].join(" ")}
       >
-        <span
-          className={[
-            "grid place-items-center rounded-lg",
-            "w-8 h-8"
-          ].join(" ")}
-        >
+        <span className="grid place-items-center rounded-lg w-8 h-8">
           <Icon className="text-[18px]" />
         </span>
         <span
@@ -67,22 +60,149 @@ function MenuItem({ icon: Icon, label, active, rightBadge, glow }) {
   );
 }
 
+/* ---------------- Workspace menu (popover) ---------------- */
+function WorkspaceMenu({
+  anchorRect,
+  onClose,
+}: {
+  anchorRect: DOMRect | null;
+  onClose: () => void;
+}) {
+  // Position the popover under the anchor; fallback to a nice default.
+  const style: React.CSSProperties = anchorRect
+    ? {
+        position: "fixed",
+        top: anchorRect.bottom + 8,
+        left: anchorRect.left,
+      }
+    : { position: "fixed", top: 64, left: 24 };
+
+  return (
+    <div
+      role="menu"
+      aria-label="Workspace menu"
+      className="z-[100] rounded-2xl bg-white border border-gray-200 shadow-[0_24px_60px_rgba(2,6,23,0.12)] w-[260px] overflow-hidden"
+      style={style}
+    >
+      <div className="p-2">
+        <button
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 hover:bg-gray-50"
+          onClick={onClose}
+        >
+          <div className="w-7 h-7 grid place-items-center rounded-lg bg-gray-900 text-white text-[12px] font-bold">
+            D
+          </div>
+          <div className="text-[14px] font-semibold text-gray-900">Dotdealz</div>
+        </button>
+
+        <div className="my-2 h-[1px] bg-gray-200" />
+
+        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
+          <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
+            +
+          </span>
+          Add New Workspace
+        </button>
+
+        <div className="my-2 h-[1px] bg-gray-200" />
+
+        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
+          <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
+            👤
+          </span>
+          Account Settings
+        </button>
+
+        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
+          <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
+            ⚙️
+          </span>
+          Workspace Settings
+        </button>
+
+        <div className="my-2 h-[1px] bg-gray-200" />
+
+        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
+          <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
+            ⤴
+          </span>
+          Sign out
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Sidebar ---------------- */
 export default function Sidebar() {
+  const { setIsPriceModalOpen } = useUser();
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const headerBtnRef = useRef<HTMLButtonElement>(null);
+  const menuContainerRef = useRef<HTMLDivElement>(null);
+  const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
+
+  // Open/close
+  const toggleMenu = () => {
+    const rect = headerBtnRef.current?.getBoundingClientRect() || null;
+    setAnchorRect(rect);
+    setMenuOpen((s) => !s);
+  };
+
+  // Close on outside click & Esc
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const onDocMouseDown = (e: MouseEvent) => {
+      const target = e.target as Node;
+      const header = headerBtnRef.current;
+      const menu = menuContainerRef.current;
+      if (menu?.contains(target) || header?.contains(target)) return;
+      setMenuOpen(false);
+    };
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+
+    document.addEventListener("mousedown", onDocMouseDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDocMouseDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
+
   return (
     <aside className="sticky top-0 left-0 w-[280px] h-screen px-3">
       <div className="pointer-events-none absolute inset-y-0 right-0 w-10 " />
 
       {/* Top header */}
-      <div className="h-16 flex items-center justify-between">
+      <div className="h-16 flex items-center justify-between relative">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 grid place-items-center rounded-lg bg-gray-900 text-white font-semibold">
             D
           </div>
-          <button className="flex items-center gap-1 text-[15px] font-semibold text-gray-800">
-            DotDiscount <HiChevronDown className="text-gray-500" />
+          <button
+            ref={headerBtnRef}
+            onClick={toggleMenu}
+            className="flex items-center gap-1 text-[15px] font-semibold text-gray-800"
+            aria-haspopup="menu"
+            aria-expanded={menuOpen}
+          >
+            Dotdealz <HiChevronDown className="text-gray-500" />
           </button>
         </div>
         <div className="w-8 h-8 rounded-lg border border-gray-200 bg-white" />
+
+        {/* Popover container (fixed-positioned child rendered here for outside-click logic) */}
+        <div ref={menuContainerRef} className="absolute left-0 top-20 pointer-events-none">
+          {menuOpen && (
+            <div className="pointer-events-auto">
+              <WorkspaceMenu anchorRect={anchorRect} onClose={() => setMenuOpen(false)} />
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Divider */}
@@ -125,20 +245,10 @@ export default function Sidebar() {
 
       {/* Bottom perks */}
       <div className="absolute left-0 right-0 bottom-0 p-4">
-        {/* <ul className="space-y-2 mb-4">
-          {[
-            "Unlimited Automations",
-            "Unlimited Contacts",
-            "Unlimited DMS",
-          ].map((t) => (
-            <li key={t} className="flex items-center gap-2 text-gray-600">
-              <HiCheckCircle className="text-emerald-500" />
-              <span className="text-[14px]">{t}</span>
-            </li>
-          ))}
-        </ul> */}
-
-        <button className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-violet-600 text-white py-3 rounded-xl font-semibold shadow-[0_8px_18px_rgba(124,58,237,.35)] hover:opacity-95">
+        <button
+          onClick={() => setIsPriceModalOpen(true)}
+          className="w-full  cursor-pointer inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-violet-600 text-white py-3 rounded-xl font-semibold shadow-[0_8px_18px_rgba(124,58,237,.35)] hover:opacity-95"
+        >
           <HiFire className="text-[18px]" />
           Upgrade Plan
         </button>

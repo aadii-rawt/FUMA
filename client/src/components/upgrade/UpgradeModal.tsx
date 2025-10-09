@@ -1,22 +1,60 @@
 import { useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import PricingModal from "./PricingModal";
+import PricingModal  from "./PricingModal";
 import Payment from "./Payment";
+import useUser from "../../context/userContext";
 
-export default function UpgradeModal (){
+export default function UpgradeModal() {
+  const [selectedPlan, setSelectedPlan] = useState<any | null>(null);
+const {setIsPriceModalOpen} = useUser()
+  // Final “Pay” handler: LOG EVERYTHING HERE
+  const handlePay = (details: any) => {
+    const payload = {
+      plan: selectedPlan,          // chosen plan & price
+      payment: details,            // user input + payment method
+      meta: {
+        initiatedAt: new Date().toISOString(),
+        source: "UpgradeModal",
+      },
+    };
 
-   const [plantType,setPlanType] = useState<string>("fdsfd")
-    return (
-         <div className="fixed top-0 left-0 w-full bg-black/30 h-full flex items-center justify-center">
-                    <div className="bg-white w-[80%] px-4 sm:px-6 lg:px-8  rounded-xl border-2 border-gray-200 py-10">
-                      <div className="flex items-center justify-between">
-                        <h1 className="text-lg font-medium">Upgrade Plan</h1>
-                        <button className="text-2xl cursor-pointer"><IoIosCloseCircleOutline /></button>
-                      </div>
-                       <div className=" mt-5">
-                        {!plantType ? <PricingModal /> : <Payment />}
-                    </div>
-                </div>
+    // 👇 Your single place to log or send to API
+    console.log("🔥 UPGRADE CHECKOUT PAYLOAD", payload);
+
+    // (Optional) show a toast / close modal after pay
+    alert("Payment initiated! Check console for full payload.");
+    handleClose();
+  };
+
+
+  return (
+    <div className="fixed top-0 left-0 w-full h-full bg-black/30 flex items-center justify-center z-50">
+      <div className="bg-white w-[90%] max-w-5xl px-4 sm:px-6 lg:px-8 rounded-xl border-2 border-gray-200 py-8 relative">
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-medium"><button onClick={() => setSelectedPlan(null)} className={`${selectedPlan && "text-gray-400 cursor-pointer"}`}>Upgrade Plan  </button>{selectedPlan && <span> / Summary</span>}</h1>
+          <button
+            onClick={() => setIsPriceModalOpen(false)}
+            className="text-2xl cursor-pointer hover:opacity-80"
+            aria-label="Close"
+          >
+            <IoIosCloseCircleOutline />
+          </button>
         </div>
-    )
+
+        <div className="mt-6">
+          {!selectedPlan ? (
+            <PricingModal
+              onSelectPlan={(plan) => setSelectedPlan(plan)}
+            />
+          ) : (
+            <Payment
+              selectedPlan={selectedPlan}
+              onBack={() => setSelectedPlan(null)}
+              onPay={handlePay}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }

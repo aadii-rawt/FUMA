@@ -5,9 +5,10 @@ import React, { createContext, useContext, useState } from "react";
 const UserContext = createContext(null);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [selectedPost, setSelectedPost] = useState(null)
+    const [selectedPost, setSelectedPost] = useState(null);
+    const [isPriceModalOpen,setIsPriceModalOpen] = useState(false)
     return (
-        <UserContext.Provider value={{ selectedPost, setSelectedPost }}>
+        <UserContext.Provider value={{ selectedPost, setSelectedPost,isPriceModalOpen,setIsPriceModalOpen }}>
             {children}
         </UserContext.Provider>
     );
