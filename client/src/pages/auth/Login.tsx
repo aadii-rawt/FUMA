@@ -1,16 +1,34 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
 
 const Login = () => {
+    const [email,setEmail] = useState<string>("")
+    const [error,setError] = useState<string>("")
+    const [loading,setLoading] = useState<boolean>(false)
+
+    const handleLogin = ( ) => { 
+        setError("")
+        if(!email){
+            setError("Please enter email.")
+        }
+        try {
+            setLoading(true)
+            
+        } catch (error) {
+            setLoading(false)
+        }
+    }
     return (
         <div className="w-1/2 p-6">
             <h1 className="text-3xl font-semibold">Sign In</h1>
             <p className="text-sm mt-1 text-gray-400">Don't have an account? <Link to='/auth/signup' className="text-violet-700 underline ml-2">Signup</Link></p>
             <div className="mt-10">
-                <button className="border w-full text-center py-1 cursor-pointer border-gray-200 rounded-xl">Sign in with Google</button>
+                <button className="border w-full text-center py-1.5 cursor-pointer border-gray-200 rounded-xl">Sign in with Google</button>
                 <br />
                 <div className="mt-5 border-t border-gray-100 flex flex-col w-full">
-                    <input type="text" placeholder="Enter you email" className="border w-full mt-5 py-1 px-2 cursor-pointer border-gray-200 rounded-xl"/>
-                    <button className="border w-full text-center py-1 cursor-pointer border-gray-200 mt-5 rounded-xl bg-violet-700 text-white">Sign In</button>
+                    <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Enter you email" className="border w-full mt-5 py-1.5 px-2 cursor-pointer border-gray-200 rounded-xl"/>
+                    <button onClick={handleLogin} className="border w-full text-center py-1.5 cursor-pointer border-gray-200 mt-5 rounded-xl bg-violet-700 text-white">Sign In</button>
+                    {error && <p className="text-sm text-red-500 py-2">{error}</p>}
                     <p className="mt-8 text-xs text-gray-400">By proceeding you acknowledge that you have read, understood and agree to our Terms and Conditions.</p>
                 </div>
             </div>

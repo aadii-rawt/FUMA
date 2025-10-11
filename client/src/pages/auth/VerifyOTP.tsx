@@ -1,24 +1,146 @@
-import { Link } from "react-router-dom"
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
-const VerifyOTP = () => {
-    return (
-          <div className="w-1/2 p-6">
-            <h1 className="text-3xl font-semibold">Check your inbox</h1>
-            <p className="text-sm mt-1 text-gray-400">We sent you an verification code. Please be sure to check your spam folder too.</p>
-            <div className="mt-10">
-                <div className="border w-full text-center py-1 cursor-pointer border-gray-200 rounded-xl flex items-center justify-between px-2">
-                    <div>
-                        <p className="text-sm text-gray-400">rawataddi@gmail.com</p>
-                    </div>
-                    <Link to='/auth/signup' className="text-xs text-violet-700 underline">change Email</Link>
-                </div>
-                <p className="text-xs text-gray-400"><button className="text-violet-700 underline cursor-pointer">Resend Email</button> in 30s</p>
-                <div className="mt-4 w-full">
-                    <button className="border w-full text-center py-1 cursor-pointer border-gray-200 mt-5 rounded-xl bg-violet-700 text-white">Veify Code</button>
-                </div>
-            </div>
+const VerifyOTP: React.FC = () => {
+  const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
+  const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
+
+  // Focus first box on mount
+  useEffect(() => {
+    inputsRef.current[0]?.focus();
+  }, []);
+
+  const setRef = (el: HTMLInputElement | null, idx: number) => {
+    inputsRef.current[idx] = el;
+  };
+
+  const focusIndex = (idx: number) => {
+    if (idx >= 0 && idx < inputsRef.current.length) {
+      inputsRef.current[idx]?.focus();
+      inputsRef.current[idx]?.select();
+    }
+  };
+
+  const handleChange = (idx: number, value: string) => {
+    // Keep only the last digit entered (ignore non-digits)
+    const digit = value.replace(/\D/g, "").slice(-1);
+    const next = [...otp];
+    next[idx] = digit || "";
+    setOtp(next);
+
+    if (digit && idx < 5) focusIndex(idx + 1);
+  };
+
+  const handleKeyDown = (idx: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    const key = e.key;
+
+    if (key === "Backspace") {
+      if (otp[idx]) {
+        // Clear current box
+        const next = [...otp];
+        next[idx] = "";
+        setOtp(next);
+      } else if (idx > 0) {
+        // Move back if empty
+        focusIndex(idx - 1);
+        const next = [...otp];
+        next[idx - 1] = "";
+        setOtp(next);
+      }
+    } else if (key === "ArrowLeft") {
+      e.preventDefault();
+      focusIndex(idx - 1);
+    } else if (key === "ArrowRight") {
+      e.preventDefault();
+      focusIndex(idx + 1);
+    }
+  };
+
+  const handlePaste = (idx: number, e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "");
+    if (!pasted) return;
+
+    const chars = pasted.slice(0, 6 - idx).split("");
+    const next = [...otp];
+
+    for (let i = 0; i < chars.length; i++) {
+      next[idx + i] = chars[i];
+    }
+    setOtp(next);
+
+    const lastIndex = Math.min(idx + chars.length, 6) - 1;
+    focusIndex(lastIndex < 5 ? lastIndex + 1 : 5);
+  };
+
+  const code = otp.join("");
+  const isComplete = code.length === 6;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isComplete) return;
+    // TODO: call your verify API here with `code`
+    // e.g., await verifyOtp({ email, code })
+    console.log("Submitting OTP:", code);
+  };
+
+  return (
+    <div className="w-1/2 p-6">
+      <h1 className="text-3xl font-semibold">Check your inbox</h1>
+      <p className="text-sm mt-1 text-gray-400">
+        We sent you a verification code. Please be sure to check your spam folder too.
+      </p>
+
+      <form onSubmit={handleSubmit} className="mt-10">
+        <div className="border w-full text-center py-1 cursor-pointer border-gray-200 rounded-xl flex items-center justify-between px-2">
+          <div>
+            <p className="text-sm text-gray-400">rawataddi@gmail.com</p>
+          </div>
+          <Link to="/auth/signup" className="text-xs text-violet-700 underline">
+            Change Email
+          </Link>
         </div>
-    )
-}
 
-export default VerifyOTP
+        {/* OTP boxes */}
+        <div className="mt-6 flex items-center justify-between gap-2">
+          {otp.map((val, idx) => (
+            <input
+              key={idx}
+              ref={(el) => setRef(el, idx)}
+              value={val}
+              onChange={(e) => handleChange(idx, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(idx, e)}
+              onPaste={(e) => handlePaste(idx, e)}
+              inputMode="numeric"
+              pattern="\d*"
+              maxLength={1}
+              className="w-12 h-12 text-center text-xl font-medium border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+              aria-label={`OTP Digit ${idx + 1}`}
+            />
+          ))}
+        </div>
+
+        <p className="text-xs text-gray-400 mt-3">
+          <button type="button" className="text-violet-700 underline cursor-pointer">
+            Resend Email
+          </button>{" "}
+          in 30s
+        </p>
+
+        <div className="mt-4 w-full">
+          <button
+            type="submit"
+            disabled={!isComplete}
+            className={`border w-full text-center py-2 cursor-pointer border-gray-200 mt-5 rounded-xl ${
+              isComplete ? "bg-violet-700 text-white" : "bg-gray-200 text-gray-500 cursor-not-allowed"
+            }`}
+          >
+            Verify Code
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default VerifyOTP;
