@@ -14,3 +14,13 @@ model users {
   createdAt   DateTime @default(now())
 }
 
+model Otp {
+  id         String   @id @default(cuid())
+  email      String   @db.VarChar(255)
+  otp    String
+  expiresAt  DateTime
+  attempts   Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([email])
+}
