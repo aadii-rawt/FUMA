@@ -1,11 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Axios from "../../utils/axios";
 
 const VerifyOTP: React.FC = () => {
+
+  const {email,type} = useLocation().state || {}
+  
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
+  const [error,setError] = useState<string>("")
+  const [loading,setLoading] = useState<boolean>(false)
+  const navigate = useNavigate()
 
-  // Focus first box on mount
   useEffect(() => {
     inputsRef.current[0]?.focus();
   }, []);
@@ -22,7 +28,6 @@ const VerifyOTP: React.FC = () => {
   };
 
   const handleChange = (idx: number, value: string) => {
-    // Keep only the last digit entered (ignore non-digits)
     const digit = value.replace(/\D/g, "").slice(-1);
     const next = [...otp];
     next[idx] = digit || "";
@@ -76,12 +81,24 @@ const VerifyOTP: React.FC = () => {
   const code = otp.join("");
   const isComplete = code.length === 6;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isComplete) return;
-    // TODO: call your verify API here with `code`
-    // e.g., await verifyOtp({ email, code })
-    console.log("Submitting OTP:", code);
+     setError("")
+      if(!code) return setError("Please enter OTP")
+        
+      try {
+            setLoading(true)
+            const endpoint = type == "login" ? "/auth/login/verify" : "/auth/signup/verify"
+            await Axios.post(endpoint, {email,otp : code})
+            navigate("/app")
+        
+      } catch (error) {
+            console.log(error);  
+            //@ts-ignore
+            setError(error?.response?.data?.error || "someting went wrong")
+      }finally {
+            setLoading(false)
+      }
   };
 
   return (
@@ -94,9 +111,9 @@ const VerifyOTP: React.FC = () => {
       <form onSubmit={handleSubmit} className="mt-10">
         <div className="border w-full text-center py-1 cursor-pointer border-gray-200 rounded-xl flex items-center justify-between px-2">
           <div>
-            <p className="text-sm text-gray-400">rawataddi@gmail.com</p>
+            <p className="text-sm text-gray-400">{email}</p>
           </div>
-          <Link to="/auth/signup" className="text-xs text-violet-700 underline">
+          <Link to={type == "login" ? "/auth/login" : "/auth/signup"} className="text-xs text-violet-700 underline">
             Change Email
           </Link>
         </div>
@@ -135,7 +152,7 @@ const VerifyOTP: React.FC = () => {
               isComplete ? "bg-violet-700 text-white" : "bg-gray-200 text-gray-500 cursor-not-allowed"
             }`}
           >
-            Verify Code
+           {loading ? "loading..." :  "Verify Code" }
           </button>
         </div>
       </form>

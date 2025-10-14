@@ -13,6 +13,7 @@ import Pricing from './pages/Pricing'
 import SettingLayout from './layout/SettingLayout'
 import General from './pages/settings/General'
 import Billing from './pages/settings/Billing'
+import ComingSoon from './components/ComingSoon'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -53,6 +54,10 @@ const App = () => {
     }
     
   ])
+  
+  if(import.meta.env.VITE_APP_ENVIRONMENT == "production"){
+    return (<ComingSoon />)
+  }
   return (
     <RouterProvider router={router} />
   )
