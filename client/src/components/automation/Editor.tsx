@@ -7,11 +7,6 @@ import KeywordSetup from "./KeywordSetup";
 import DMComposer from "./DMComposer";
 
 
-interface InterPayLoad {
-  limit: number;
-  type: string;
-}
-
 const Editor: React.FC = () => {
   const [posts, setPosts] = useState([])
   const { selectedPost, setSelectedPost } = useUser()

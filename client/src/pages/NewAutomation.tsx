@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Editor from '../components/automation/Editor'
 import Preview from '../components/automation/Preview'
 import { LuPencilLine } from 'react-icons/lu'

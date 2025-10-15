@@ -19,7 +19,6 @@ const Login = () => {
         
         } catch (error) {
             console.log(error);
-            
             //@ts-ignore
             setError(error?.response?.data?.error || "someting went wrong")
         }finally {

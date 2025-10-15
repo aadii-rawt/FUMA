@@ -102,6 +102,8 @@ export const verifySignupOTP = async (req : Request,res : Response) => {
     }
 
     const PEPPER = Buffer.from(process.env.PEPPER || "")
+    console.log(otp);
+    
     const ok = await argon2.verify(record.otp, otp, {secret : PEPPER})
     if(!ok){
         return res.status(401).json({error : "Invalid OTP"})

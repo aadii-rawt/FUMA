@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LuSearch, LuListFilter, LuPlus, LuMessageSquare } from "react-icons/lu";
+import { LuSearch, LuListFilter, LuPlus } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
 const Automation: React.FC = () => {

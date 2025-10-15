@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { FiPlus, FiTrash2, FiEdit2, FiX, FiImage, FiPlusCircle } from "react-icons/fi";
+import { FiTrash2, FiEdit2, FiX, FiImage, FiPlusCircle } from "react-icons/fi";
 
 type LinkItem = { id: string; title: string; url: string };
 

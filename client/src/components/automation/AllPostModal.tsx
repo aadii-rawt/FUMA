@@ -9,6 +9,7 @@ type Props = {
   children: React.ReactNode;
   title?: string;
   subtitle?: string;
+  setSelectedPost? : any
 };
 
 const AllPostModal: React.FC<Props> = ({ open, onClose, title, subtitle, setSelectedPost }) => {
@@ -77,8 +78,8 @@ const AllPostModal: React.FC<Props> = ({ open, onClose, title, subtitle, setSele
           </button>
         </div>
         <div className="flex flex-wrap px-4 gap-4 my-5 w-full h-54 overflow-hidden overflow-y-scroll">
-          {posts?.map((post: any) => (
-            <div key={post.id} onClick={() => setSelect(post)} className={`${post.id == select?.id && "border-2 border-indigo-500"} relative cursor-pointer h-54 w-40 overflow-hidden rounded-xl  p-0`}>
+          {posts?.map((post: any, i) => (
+            <div key={i} onClick={() => setSelect(post)} className={`${post.id == select?.id && "border-2 border-indigo-500"} relative cursor-pointer h-54 w-40 overflow-hidden rounded-xl  p-0`}>
               <img
                 src={post?.thumbnail_url} className="w-full h-full" />
             </div>

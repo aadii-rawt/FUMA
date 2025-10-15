@@ -16,33 +16,26 @@ type PlanCardProps = {
   className?: string;
 };
 
-export default function PlanCard({
-  name,
-  subtitle = "Current Plan",
-  price,
-  cadence = "/mo",
-  stats = [],
-  className = "",
-}: PlanCardProps) {
+export default function Billing() {
   return (
     <div
-      className={`rounded-2xl border bg-white shadow-sm px-5 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6 ${className}`}
+      className={`rounded-2xl border bg-white shadow-sm px-5 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6`}
       style={{ boxShadow: "0 6px 24px rgba(16, 24, 40, 0.06)" }}
     >
       <div className="flex items-start gap-4">
         <div className="flex-1">
-          <h3 className="text-xl sm:text-2xl font-semibold text-gray-900">{name}</h3>
-          <p className="mt-1 text-gray-500">{subtitle}</p>
+          <h3 className="text-xl sm:text-2xl font-semibold text-gray-900">free</h3>
+          <p className="mt-1 text-gray-500">"dfsdjlk</p>
         </div>
         <div className="text-right">
           <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">
-            {price}
-            <span className="text-base font-semibold text-gray-500">{cadence}</span>
+            {"free"}
+            <span className="text-base font-semibold text-gray-500">"dfsjlk</span>
           </div>
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-5">
+      {/* <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-5">
         {stats.map((s, i) => (
           <div key={i} className="flex items-start gap-3">
             <div className="mt-0.5">
@@ -59,7 +52,7 @@ export default function PlanCard({
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

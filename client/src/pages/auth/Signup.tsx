@@ -15,7 +15,7 @@ const Signup = () => {
         try {
             setLoading(true)
             await Axios.post("/auth/signup", {email})
-            navigate("/auth/verify",{state : {email,type: "login"}})
+            navigate("/auth/verify",{state : {email,type: "signup"}})
         
         } catch (error) {
             console.log(error);

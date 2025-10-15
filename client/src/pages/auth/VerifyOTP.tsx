@@ -85,9 +85,12 @@ const VerifyOTP: React.FC = () => {
     e.preventDefault();
      setError("")
       if(!code) return setError("Please enter OTP")
+        console.log(code);
         
       try {
             setLoading(true)
+            console.log(type);
+            
             const endpoint = type == "login" ? "/auth/login/verify" : "/auth/signup/verify"
             await Axios.post(endpoint, {email,otp : code})
             navigate("/app")
