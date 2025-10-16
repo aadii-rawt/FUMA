@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import  { webhook } from "./routes/webhook";
 import authRouter from "./routes/auth"; 
 import axios from "axios";
+import instaRouter from "./routes/instagram";
 
 dotenv.config();
 
@@ -147,6 +148,7 @@ app.get("/privacy_policy", (_req, res) => {
 
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/instagram", instaRouter);
 
 
 async function sendPrivateReplyToComment(commentId: string, text: string) {

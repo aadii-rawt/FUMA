@@ -83,7 +83,7 @@ export default function ComingSoon() {
 
       {/* content card */}
       <div className="relative mx-auto max-w-3xl text-center pt-24 pb-24 px-6">
-        <TopBadge />
+        {/* <TopBadge /> */}
 
         <div className="mb-6">
           <ThumbEmoji />

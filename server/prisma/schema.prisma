@@ -13,6 +13,8 @@ model users {
   avatar    String?
   username    String?
   createdAt   DateTime @default(now())
+  access_token String?
+  ig_id   Int?
 }
 
 model Otp {

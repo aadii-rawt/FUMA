@@ -93,7 +93,13 @@ const VerifyOTP: React.FC = () => {
             
             const endpoint = type == "login" ? "/auth/login/verify" : "/auth/signup/verify"
             await Axios.post(endpoint, {email,otp : code})
-            navigate("/app")
+          
+            if (type == "login") {
+              return  navigate("/app")  
+            }else{
+              return navigate("/auth/connect/instagram")
+
+            }
         
       } catch (error) {
             console.log(error);  

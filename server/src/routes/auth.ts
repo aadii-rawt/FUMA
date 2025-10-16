@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, signup, verifyLoginOTP, verifySignupOTP } from "../controllers/authController";
+import { connectInsta, login, signup, verifyLoginOTP, verifySignupOTP } from "../controllers/authController";
 
 const authRouter = Router()
 
@@ -8,5 +8,7 @@ authRouter.post("/login/verify",verifyLoginOTP)
 
 authRouter.post("/signup",signup)
 authRouter.post("/signup/verify",verifySignupOTP)
+
+authRouter.post("/connect/instagram", connectInsta)
 
 export default authRouter

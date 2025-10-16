@@ -14,6 +14,7 @@ import SettingLayout from './layout/SettingLayout'
 import General from './pages/settings/General'
 import Billing from './pages/settings/Billing'
 import ComingSoon from './components/ComingSoon'
+import ConnectInsta from './pages/auth/ConnectInsta'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -49,7 +50,8 @@ const App = () => {
       children : [
         { path : "/auth/login", element : <Login />},
         { path : "/auth/signup", element : <Signup />},
-        { path : "/auth/verify", element : <VerifyOTP />}
+        { path : "/auth/verify", element : <VerifyOTP />},
+        { path : "/auth/connect/instagram", element : <ConnectInsta />}
       ]
     }
     
