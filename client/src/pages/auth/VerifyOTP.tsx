@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Axios from "../../utils/axios";
+import useUser from "../../context/userContext";
 
 const VerifyOTP: React.FC = () => {
 
@@ -11,6 +12,7 @@ const VerifyOTP: React.FC = () => {
   const [error,setError] = useState<string>("")
   const [loading,setLoading] = useState<boolean>(false)
   const navigate = useNavigate()
+  const {setUser} = useUser()
 
   useEffect(() => {
     inputsRef.current[0]?.focus();
@@ -85,14 +87,11 @@ const VerifyOTP: React.FC = () => {
     e.preventDefault();
      setError("")
       if(!code) return setError("Please enter OTP")
-        console.log(code);
-        
       try {
             setLoading(true)
-            console.log(type);
-            
             const endpoint = type == "login" ? "/auth/login/verify" : "/auth/signup/verify"
-            await Axios.post(endpoint, {email,otp : code})
+            const res = await Axios.post(endpoint, {email,otp : code})
+            setUser(res.data?.data)
           
             if (type == "login") {
               return  navigate("/app")  

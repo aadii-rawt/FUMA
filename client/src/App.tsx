@@ -15,6 +15,7 @@ import General from './pages/settings/General'
 import Billing from './pages/settings/Billing'
 import ComingSoon from './components/ComingSoon'
 import ConnectInsta from './pages/auth/ConnectInsta'
+import { Authenticate } from './utils/Authenticate'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -28,7 +29,7 @@ const App = () => {
     },
     {
       path: "",
-      element: <Layout />,
+      element:<Authenticate> <Layout /></Authenticate>,
       children: [
         { path: "/app", element: <Automation /> },
         { path: "/automation/new", element: <NewAutomation  /> }
@@ -37,7 +38,7 @@ const App = () => {
     
     {
       path : "/setting",
-      element : <SettingLayout />,
+      element : <Authenticate><SettingLayout /></Authenticate>,
       children : [
         {path : "/setting/general", element : <General />},
         {path : "/setting/billing", element : <Billing />},

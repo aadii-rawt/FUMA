@@ -4,8 +4,9 @@ import { SiTrustpilot, SiMeta } from "react-icons/si";
 import { FaStar } from "react-icons/fa";
 import { LuClapperboard, LuBot, LuMegaphone, LuMessageCircle } from "react-icons/lu";
 
-
 const Home: React.FC = () => {
+
+  
   return (
     <div className="w-full">
       {/* ----- hero --------------- */}

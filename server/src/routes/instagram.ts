@@ -2,7 +2,6 @@ import {Request, Response, Router} from "express"
 const instaRouter = Router()
 import crypto from "crypto";
 import axios from "axios";
-import { log } from "console";
 import { prisma } from "../lib/prisma";
 
 
@@ -67,10 +66,7 @@ instaRouter.get("/callback", async (req: Request, res: Response) => {
     });
 
     const longLivedToken = llResp.data.access_token;
-    console.log("long lived token : ",longLivedToken);
-    
-
-    // Store in DB (example with Prisma)
+    console.log("long lived token : ",longLivedToken);  
     await prisma.users.update({
       where: { id: "cmgqsrrhh0001ydpo3317qyw8"}, 
       //@ts-ignore
@@ -80,12 +76,11 @@ instaRouter.get("/callback", async (req: Request, res: Response) => {
     });
 
     // Redirect to your app without leaking code in the URL
-    const ui = new URL("http://localhost:5173/app");
-    ui.searchParams.set("connected", "true");
+    const ui = new URL(`${process.env.CORS_ORIGIN}`);
     return res.redirect(ui.toString());
   } catch (e: any) {
     console.error("OAuth callback error:", e?.response?.data || e.message);
-    return res.redirect("http://localhost:5173/app?connected=false");
+    return res.redirect(`${process.env.CORS_ORIGIN}/auth/connect/instagram`);
   }
 });
 

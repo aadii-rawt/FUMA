@@ -6,19 +6,29 @@ import  { webhook } from "./routes/webhook";
 import authRouter from "./routes/auth"; 
 import axios from "axios";
 import instaRouter from "./routes/instagram";
-
+import cookieParser from "cookie-parser";
 dotenv.config();
 
 const app = express();
 
+app.use(cookieParser());
 app.use("/webhook",express.raw({ type: "*/*" }));
 app.use(express.json());
 
 // CORS
+const allowedOrigins = [
+  process.env.CORS_ORIGIN,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
-    // credentials: true,
+    origin(origin, callback) {
+      // allow same-origin/server-to-server and tools without Origin
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
   })
 );
 

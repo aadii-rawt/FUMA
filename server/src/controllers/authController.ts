@@ -60,15 +60,14 @@ export const verifyLoginOTP = async (req : Request, res: Response) => {
     res.cookie("token", token, {
         httpOnly: false,                  
         // secure: isProd,                  
-        sameSite: "none",                
-        maxAge: 1000 * 60 * 60,              
-        path: "/",  
+        secure: process.env.NODE_ENV !== "development",               
+        maxAge: 1000 * 60 * 60,    
+        sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+ 
     })
-
     res.json({
-       token : token
+       data : user
     })
-
 }
 // send otp to email
 export const signup  = async (req : Request,res : Response) => {
@@ -122,12 +121,12 @@ export const verifySignupOTP = async (req : Request,res : Response) => {
         res.cookie("token", user.id , {
             httpOnly: false,                  
         // secure: isProd,                  
-            sameSite: "none",                
-            maxAge: 1000 * 60 * 60,              
-            path: "/",
+            secure: process.env.NODE_ENV !== "development",               
+            maxAge: 1000 * 60 * 60,    
+            sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
         })
         res.json({
-            token 
+            data : user 
         })
     } catch (error) {
         console.log(error);
@@ -191,6 +190,23 @@ export const connectInsta = async (req : Request,res : Response) => {
   },
 });
     
+}
+
+export const getDetails = async (req:Request, res : Response) => {
+ try {
+    // @ts-ignore
+   const id = req.id
+    if (!id) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const data = await prisma.users.findFirst({
+        where : {id}
+    })
+    res.json({data})
+  } catch (err) {
+    console.error("Get details error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
 }
 
 // // src/routes/auth.ts

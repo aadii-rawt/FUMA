@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { LuSearch, LuListFilter, LuPlus } from "react-icons/lu";
 import { Link } from "react-router-dom";
+import useUser from "../context/userContext";
 
 const Automation: React.FC = () => {
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<"Last Published" | "A–Z" | "Newest">("Last Published");
 
+  const {user} = useUser()
+  console.log(user);
   return (
     <div className="w-full rounded-xl h-full bg-[#f7f7f8] border border-gray-200 bg-white/80">
       <div className="mx-auto max-w-6xl">
