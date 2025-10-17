@@ -64,9 +64,11 @@ function MenuItem({ icon: Icon, label, active, rightBadge, glow }) {
 function WorkspaceMenu({
   anchorRect,
   onClose,
+  user,
 }: {
   anchorRect: DOMRect | null;
   onClose: () => void;
+  user : any
 }) {
   // Position the popover under the anchor; fallback to a nice default.
   const style: React.CSSProperties = anchorRect
@@ -89,10 +91,10 @@ function WorkspaceMenu({
           className="flex w-full items-center gap-3 rounded-xl px-3 py-2 hover:bg-gray-50"
           onClick={onClose}
         >
-          <div className="w-7 h-7 grid place-items-center rounded-lg bg-gray-900 text-white text-[12px] font-bold">
-            D
+          <div className="w-7 h-7 grid place-items-center overflow-hidden rounded bg-gray-900 text-white text-[12px] font-bold">
+           <img src={user?.avatar} alt="" />
           </div>
-          <div className="text-[14px] font-semibold text-gray-900">Dotdealz</div>
+          <div className="text-[14px] font-semibold text-gray-900">{user?.username}</div>
         </button>
 
         <div className="my-2 h-[1px] bg-gray-200" />
@@ -141,6 +143,7 @@ export default function Sidebar() {
   const headerBtnRef = useRef<HTMLButtonElement>(null);
   const menuContainerRef = useRef<HTMLDivElement>(null);
   const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
+  const {user} = useUser()
 
   // Open/close
   const toggleMenu = () => {
@@ -180,8 +183,8 @@ export default function Sidebar() {
       {/* Top header */}
       <div className="h-16 flex items-center justify-between relative">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 grid place-items-center rounded-lg bg-gray-900 text-white font-semibold">
-            D
+          <div className="w-8 h-8 grid place-items-center overflow-hidden rounded-lg bg-gray-900 text-white font-semibold">
+           <img src={user?.avatar} alt="" />
           </div>
           <button
             ref={headerBtnRef}
@@ -190,7 +193,7 @@ export default function Sidebar() {
             aria-haspopup="menu"
             aria-expanded={menuOpen}
           >
-            Dotdealz <HiChevronDown className="text-gray-500" />
+           {user?.username} <HiChevronDown className="text-gray-500" />
           </button>
         </div>
         <div className="w-8 h-8 rounded-lg border border-gray-200 bg-white" />
@@ -199,7 +202,7 @@ export default function Sidebar() {
         <div ref={menuContainerRef} className="absolute left-0 top-20 pointer-events-none">
           {menuOpen && (
             <div className="pointer-events-auto">
-              <WorkspaceMenu anchorRect={anchorRect} onClose={() => setMenuOpen(false)} />
+              <WorkspaceMenu anchorRect={anchorRect} onClose={() => setMenuOpen(false)} user={user}/>
             </div>
           )}
         </div>

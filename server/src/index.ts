@@ -7,6 +7,7 @@ import authRouter from "./routes/auth";
 import axios from "axios";
 import instaRouter from "./routes/instagram";
 import cookieParser from "cookie-parser";
+import igroute from "./routes/ig";
 dotenv.config();
 
 const app = express();
@@ -159,6 +160,7 @@ app.get("/privacy_policy", (_req, res) => {
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/instagram", instaRouter);
+app.use("/api/v1/ig", igroute);
 
 
 async function sendPrivateReplyToComment(commentId: string, text: string) {

@@ -11,12 +11,13 @@ const Editor: React.FC = () => {
   const [posts, setPosts] = useState([])
   const { selectedPost, setSelectedPost } = useUser()
   const [allPostModalOpen, setAllPostModalOpen] = useState(false)
+  const {user} = useUser()
 
   const getPosts = async () => {
     try {
-      const res = await Axios.get("/ig/media", { params: { limit: 3, } });
-      console.log(res);
-      setPosts(res.data.items)
+      const res = await Axios.get("/ig/media",{ params: { limit: 3, access_token : user.access_token} });
+      console.log(res.data.data);
+      setPosts(res.data.data)
     } catch (error) {
       console.log(error);
     }
@@ -46,8 +47,8 @@ const Editor: React.FC = () => {
         {/* Tiles */}
         <div className="mt-5 flex gap-5">
           {/* Selected media tile */}
-          {posts?.map((post: any) => (
-            <div onClick={() => setSelectedPost(post)} className={`${post.id == selectedPost?.id && "border-2 border-indigo-500"} relative cursor-pointer h-50 w-40 overflow-hidden rounded-xl  p-0`}>
+          {posts?.map((post: any,i) => (
+            <div key={i} onClick={() => setSelectedPost(post)} className={`${post.id == selectedPost?.id && "border-2 border-indigo-500"} relative cursor-pointer h-50 w-40 overflow-hidden rounded-xl  p-0`}>
               <img
                 src={post?.thumbnail_url}
                 alt="Selected post"

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { IoClose } from "react-icons/io5";
 import Axios from "../../utils/axios";
+import useUser from "../../context/userContext";
 
 type Props = {
   open: boolean;
@@ -16,6 +17,7 @@ const AllPostModal: React.FC<Props> = ({ open, onClose, title, subtitle, setSele
   const el = document.getElementById("portal") as HTMLElement;
   const [posts, setPosts] = useState([])
   const [select, setSelect] = useState()
+  const {user} = useUser()
 
   useEffect(() => {
     if (!open) return;
@@ -29,13 +31,13 @@ const AllPostModal: React.FC<Props> = ({ open, onClose, title, subtitle, setSele
     };
   }, [open, onClose]);
 
-
   useEffect(() => {
     const getPosts = async () => {
+      if (!user) return
       try {
-        const res = await Axios.get("/ig/media", { params: { limit: 50, } });
+        const res = await Axios.get("/ig/media", { params: { limit: 50,access_token : user?.access_token } });
         console.log(res);
-        setPosts(res.data.items)
+        setPosts(res.data.data)
       } catch (error) {
         console.log(error);
       }

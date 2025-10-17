@@ -3,15 +3,14 @@ const instaRouter = Router()
 import crypto from "crypto";
 import axios from "axios";
 import { prisma } from "../lib/prisma";
+import { auth } from "../middleware/auth";
+// instaRouter.use(auth);
 
-
-const FB_OAUTH_DIALOG = "https://www.instagram.com/oauth/authorize";
-
+const IG_OAUTH_DIALOG = "https://www.instagram.com/oauth/authorize";
 const CLIENT_ID = process.env.META_APP_ID!;
 const CLIENT_SECRET = process.env.META_APP_SECRET!;
 const REDIRECT_URI = process.env.OAUTH_REDIRECT_URI!;
 
-// the scopes you asked for (comma- or space-separated)
 const SCOPES = [
   "instagram_business_basic",
   "instagram_business_content_publish",
@@ -19,27 +18,27 @@ const SCOPES = [
   "instagram_business_manage_comments",
 ].join(",");
 
-instaRouter.get("/connect", (req: Request, res: Response) => {
-    const state = crypto.randomBytes(16).toString("hex");
-  // store in cookie/session to verify later
-  res.cookie("oauth_state", state, { httpOnly: true, sameSite: "lax", secure: true });
 
-  const url = new URL(FB_OAUTH_DIALOG);
+instaRouter.get("/connect", (req: Request, res: Response) => {
+  const url = new URL(IG_OAUTH_DIALOG);
   url.search = new URLSearchParams({
     client_id: CLIENT_ID,
     redirect_uri: REDIRECT_URI,
     response_type: "code",
     scope: SCOPES,
-    // state,
   }).toString();
 
   return res.redirect(302, url.toString());
 })
 
 instaRouter.get("/callback", async (req: Request, res: Response) => {
+  // @ts-ignore
+  const id = req.id
+  console.log("user id :", id);
   try {
-    const { code, state } = req.query as { code?: string; state?: string };
+    const { code } = req.query as { code?: string; state?: string };
     if (!code) return res.status(400).send("Missing code");
+    // generate token
 
     const tokenResp = await axios.post(
     "https://api.instagram.com/oauth/access_token",
@@ -55,7 +54,7 @@ instaRouter.get("/callback", async (req: Request, res: Response) => {
     }
     );
 
-    const { access_token, user_id } = tokenResp.data;  
+    const { access_token} = tokenResp.data;  
     //long-lived token
     const llResp = await axios.get("https://graph.instagram.com/access_token", {
       params: {
@@ -65,18 +64,31 @@ instaRouter.get("/callback", async (req: Request, res: Response) => {
       },
     });
 
+    // account details
     const longLivedToken = llResp.data.access_token;
+    const fields = "id,user_id,username,name,profile_picture_url"
+    const user = await axios.get("https://graph.instagram.com/v21.0/me", {
+      params : {
+        fields : fields,
+        access_token : longLivedToken
+      }
+    })
+    console.log("user data :", user.data);
+    
     console.log("long lived token : ",longLivedToken);  
     await prisma.users.update({
-      where: { id: "cmgqsrrhh0001ydpo3317qyw8"}, 
+      where: { id : "cmgqsrrhh0001ydpo3317qyw8"}, 
       //@ts-ignore
         data: {
-        access_token: longLivedToken
+        access_token: longLivedToken,
+        // @ts-ignore
+        username : user.data.username,
+        // @ts-ignore
+        avatar : user.data.profile_picture_url
     },
     });
 
-    // Redirect to your app without leaking code in the URL
-    const ui = new URL(`${process.env.CORS_ORIGIN}`);
+    const ui = new URL(`${process.env.CORS_ORIGIN}/app`);
     return res.redirect(ui.toString());
   } catch (e: any) {
     console.error("OAuth callback error:", e?.response?.data || e.message);
