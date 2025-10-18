@@ -13,11 +13,10 @@ const KeywordSetup: React.FC<KeywordSetupProps> = ({ className = "" }) => {
   const addKeyword = useCallback(() => {
     const k = input.trim();
     if (!k) return;
-    // typing any keyword should turn OFF "Any keyword"
     if (anyKeyword) setAnyKeyword(false);
 
     setKeywords((prev) => {
-      const next = Array.from(new Set([...prev, k])); // dedupe
+      const next = Array.from(new Set([...prev, k])); 
       return next;
     });
     setInput("");
@@ -31,7 +30,6 @@ const KeywordSetup: React.FC<KeywordSetupProps> = ({ className = "" }) => {
   const handleToggle = useCallback(() => {
     setAnyKeyword((prev) => {
       const next = !prev;
-      // If turned ON after writing keywords → clear all keywords
       if (next) {
         setKeywords([]);
         setInput("");
@@ -91,11 +89,8 @@ const KeywordSetup: React.FC<KeywordSetupProps> = ({ className = "" }) => {
           />
         </button>
       </div>
-
-      {/* Subtext */}
+      
       <p className="mt-3 text-[15px] text-slate-500">Any keyword</p>
-
-      {/* Divider */}
       <div className="my-4 h-px w-full bg-gray-200" />
 
       {/* Input */}

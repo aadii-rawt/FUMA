@@ -16,7 +16,7 @@ type Props = {
 const AllPostModal: React.FC<Props> = ({ open, onClose, title, subtitle, setSelectedPost }) => {
   const el = document.getElementById("portal") as HTMLElement;
   const [posts, setPosts] = useState([])
-  const [select, setSelect] = useState()
+  const [select, setSelect] = useState(null)
   const {user} = useUser()
 
   useEffect(() => {

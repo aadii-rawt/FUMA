@@ -1,13 +1,12 @@
 import express from "express";
 import cors from "cors";
-import path from "path";
 import dotenv from "dotenv";
 import  { webhook } from "./routes/webhook";
 import authRouter from "./routes/auth"; 
-import axios from "axios";
 import instaRouter from "./routes/instagram";
 import cookieParser from "cookie-parser";
 import igroute from "./routes/ig";
+import { auth } from "./middleware/auth";
 dotenv.config();
 
 const app = express();
@@ -16,7 +15,6 @@ app.use(cookieParser());
 app.use("/webhook",express.raw({ type: "*/*" }));
 app.use(express.json());
 
-// CORS
 const allowedOrigins = [
   process.env.CORS_ORIGIN,
 ].filter(Boolean);
@@ -24,7 +22,6 @@ const allowedOrigins = [
 app.use(
   cors({
     origin(origin, callback) {
-      // allow same-origin/server-to-server and tools without Origin
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) return callback(null, true);
       return callback(new Error("Not allowed by CORS"));
@@ -151,66 +148,14 @@ app.get("/privacy_policy", (_req, res) => {
     <p class="small">This template is informational and not legal advice. Consult counsel for compliance (e.g., GDPR/DPDP/CCPA).</p>
   </div>
 </body>
-</html>`;
-
+  </html>`;
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.status(200).send(html);
 });
 
-
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/instagram", instaRouter);
 app.use("/api/v1/ig", igroute);
-
-
-async function sendPrivateReplyToComment(commentId: string, text: string) {
-  const url = `https://graph.instagram.com/v21.0/me/messages`;
-  
-  const headers = {
-    "Authorization": `Bearer ${process.env.ACCESS_TOKEN}`,
-    "Content-Type" : "application/json",
-  };
-  const body = {
-    recipient: { comment_id: commentId }, // private reply to comment (7-day window)
-    message:  {
-    "attachment": {
-      "type": "template",
-      "payload": {
-        "template_type": "generic",
-        "elements": [
-          {
-            "title": "Sign up for our weekly newsletter",
-            "subtitle": "Our weekly newsletter is filled with deals and extra content!",
-            "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL0dX2mYasalv-6Tc7v8Rc8wk7qZUQMPIihA&s",
-            "buttons": [
-              {
-                "type": "web_url",
-                "url": "https://your-site.example.com/newsletter",
-                "title": "Sign up here"
-              }
-            ]
-          },
-          {
-            "title": "Visit our store",
-            "subtitle": "New arrivals and exclusive drops.",
-            "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYmq6pdaSk0nSf-dkI32OzWkVWKDSQHKxdRA&s",
-            "buttons": [
-              {
-                "type": "web_url",
-                "url": "https://your-site.example.com/store",
-                "title": "Shop now"
-              }
-            ]
-          }
-        ]
-      }
-    }
-  },
-  };
-
-  const { data } = await axios.post(url, body, { headers });
-  return data;
-}
 
 app.all("/webhook", webhook);
 

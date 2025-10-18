@@ -10,224 +10,222 @@ const Home: React.FC = () => {
   return (
     <div className="w-full">
       {/* ----- hero --------------- */}
-      
-      {/* <section className='min-h-screen bg-[url("/bg.png")] h-full w-full bg-center bg-cover rounded-b-3xl' /> */}
-      <div className=" min-h-screen">
-        <section className="relative py-12 bg-white sm:py-16 lg:py-20">
-          <div className="absolute inset-0">
-            <img className="object-cover w-full h-full" src="/pricing-bg.png" alt="" />
-          </div>
+      <div className="">
+            <section className="relative py-12 bg-white sm:py-16 lg:py-20">
+              <div className="absolute inset-0">
+                <img className="object-cover w-full h-full" src="/pricing-bg.png" alt="" />
+              </div>
 
-          <div className="relative mt-20 px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-            <div className="max-w-xl mx-auto text-center">
-              <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-6xl">
-                Effortless DMs <br /> big results
-              </h1>
-              <p className="max-w-md mx-auto mt-6 text-base font-normal leading-7 text-gray-500">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vehicula massa in enim luctus. Rutrum arcu.
-              </p>
+              <div className="relative mt-20 px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+                <div className="max-w-xl mx-auto text-center">
+                  <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-6xl">
+                    Effortless DMs <br /> big results
+                  </h1>
+                  <p className="max-w-md mx-auto mt-6 text-base font-normal leading-7 text-gray-500">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vehicula massa in enim luctus. Rutrum arcu.
+                  </p>
 
-              <form action="#" method="POST"
-                className="max-w-md mx-auto mt-8 space-y-4 sm:space-x-4 sm:flex sm:space-y-0 sm:items-end">
-                <div className="flex-1">
-                  <label  className="sr-only">
-                    Email address
-                  </label>
-                  <div>
-                    <input type="email" name="" id=""
-                      className="block w-full px-4 py-3 sm:py-3.5 text-base font-medium text-gray-900 placeholder-gray-500 border border-gray-300 rounded-lg  sm:text-sm focus:ring-gray-900 focus:border-gray-900"
-                      placeholder="Email address" />
-                  </div>
+                  <form action="#" method="POST"
+                    className="max-w-md mx-auto mt-8 space-y-4 sm:space-x-4 sm:flex sm:space-y-0 sm:items-end">
+                    <div className="flex-1">
+                      <label  className="sr-only">
+                        Email address
+                      </label>
+                      <div>
+                        <input type="email" name="" id=""
+                          className="block w-full px-4 py-3 sm:py-3.5 text-base font-medium text-gray-900 placeholder-gray-500 border border-gray-300 rounded-lg  sm:text-sm focus:ring-gray-900 focus:border-gray-900"
+                          placeholder="Email address" />
+                      </div>
+                    </div>
+
+                    <div className="relative group">
+                      <div
+                        className="absolute transitiona-all duration-1000 opacity-70 inset-0 bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200">
+                      </div>
+
+                      <button type="button"
+                        className="inline-flex relative items-center justify-center w-full sm:w-auto px-8 py-3 sm:text-sm text-base sm:py-3.5 font-semibold text-white transition-all duration-200 bg-primary border border-transparent rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
+                        Join Now
+                      </button>
+                    </div>
+                  </form>
+
+                  <ul className="flex items-center justify-center mt-6 space-x-6 sm:space-x-8">
+                    <li className="flex items-center">
+                      <svg className="w-5 h-5 mr-2 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-xs font-medium text-gray-900 sm:text-sm">
+                        Weekly new articles
+                      </span>
+                    </li>
+
+                    <li className="flex items-center">
+                      <svg className="w-5 h-5 mr-2 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-xs font-medium text-gray-900 sm:text-sm">
+                        Join other 1600+ Devs
+                      </span>
+                    </li>
+                  </ul>
                 </div>
+              </div>
 
-                <div className="relative group">
+              <div className="flex w-full gap-6 pb-8 mt-12 overflow-x-auto sm:mt-16 lg:mt-20 snap-x">
+                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
                   <div
-                    className="absolute transitiona-all duration-1000 opacity-70 inset-0 bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200">
+                    className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
+                    <div className="px-4 py-5 sm:p-5">
+                      <div className="flex items-start lg:items-center">
+                        <a href="#" title="" className="shrink-0">
+                          <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-1.png"
+                            alt="" />
+                        </a>
+
+                        <div className="flex-1 ml-4 lg:ml-6">
+                          <p className="text-xs font-medium text-gray-900 lg:text-sm">
+                            <a href="#" title="" className="">
+                              Growth
+                            </a>
+                          </p>
+                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
+                            <a href="#" title="" className="">
+                              How a visual artist redefines success in graphic design
+                            </a>
+                          </p>
+                          <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
+                            April 09, 2022
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-
-                  <button type="button"
-                    className="inline-flex relative items-center justify-center w-full sm:w-auto px-8 py-3 sm:text-sm text-base sm:py-3.5 font-semibold text-white transition-all duration-200 bg-indigo-600 border border-transparent rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
-                    Join Now
-                  </button>
                 </div>
-              </form>
 
-              <ul className="flex items-center justify-center mt-6 space-x-6 sm:space-x-8">
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span className="text-xs font-medium text-gray-900 sm:text-sm">
-                    Weekly new articles
-                  </span>
-                </li>
-
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span className="text-xs font-medium text-gray-900 sm:text-sm">
-                    Join other 1600+ Devs
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="flex w-full gap-6 pb-8 mt-12 overflow-x-auto sm:mt-16 lg:mt-20 snap-x">
-            <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-              <div
-                className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
-                <div className="px-4 py-5 sm:p-5">
-                  <div className="flex items-start lg:items-center">
-                    <a href="#" title="" className="shrink-0">
-                      <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-1.png"
-                        alt="" />
-                    </a>
-
-                    <div className="flex-1 ml-4 lg:ml-6">
-                      <p className="text-xs font-medium text-gray-900 lg:text-sm">
-                        <a href="#" title="" className="">
-                          Growth
+                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                  <div
+                    className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
+                    <div className="px-4 py-5 sm:p-5">
+                      <div className="flex items-start lg:items-center">
+                        <a href="#" title="" className="shrink-0">
+                          <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-2.png"
+                            alt="" />
                         </a>
-                      </p>
-                      <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
-                        <a href="#" title="" className="">
-                          How a visual artist redefines success in graphic design
+
+                        <div className="flex-1 ml-4 lg:ml-6">
+                          <p className="text-xs font-medium text-gray-900 lg:text-sm">
+                            <a href="#" title="" className="">
+                              Growth
+                            </a>
+                          </p>
+                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
+                            <a href="#" title="" className="">
+                              How a visual artist redefines success in graphic design
+                            </a>
+                          </p>
+                          <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
+                            April 09, 2022
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                  <div
+                    className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
+                    <div className="px-4 py-5 sm:p-5">
+                      <div className="flex items-start lg:items-center">
+                        <a href="#" title="" className="shrink-0">
+                          <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-3.png"
+                            alt="" />
                         </a>
-                      </p>
-                      <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
-                        April 09, 2022
-                      </p>
+
+                        <div className="flex-1 ml-4 lg:ml-6">
+                          <p className="text-xs font-medium text-gray-900 lg:text-sm">
+                            <a href="#" title="" className="">
+                              Growth
+                            </a>
+                          </p>
+                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
+                            <a href="#" title="" className="">
+                              How a visual artist redefines success in graphic design
+                            </a>
+                          </p>
+                          <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
+                            April 09, 2022
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                  <div
+                    className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
+                    <div className="px-4 py-5 sm:p-5">
+                      <div className="flex items-start lg:items-center">
+                        <a href="#" title="" className="shrink-0">
+                          <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-4.png"
+                            alt="" />
+                        </a>
+
+                        <div className="flex-1 ml-4 lg:ml-6">
+                          <p className="text-xs font-medium text-gray-900 lg:text-sm">
+                            <a href="#" title="" className="">
+                              Growth
+                            </a>
+                          </p>
+                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
+                            <a href="#" title="" className="">
+                              How a visual artist redefines success in graphic design
+                            </a>
+                          </p>
+                          <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
+                            April 09, 2022
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                  <div
+                    className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
+                    <div className="px-4 py-5 sm:p-5">
+                      <div className="flex items-start lg:items-center">
+                        <a href="#" title="" className="shrink-0">
+                          <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-5.png"
+                            alt="" />
+                        </a>
+
+                        <div className="flex-1 ml-4 lg:ml-6">
+                          <p className="text-xs font-medium text-gray-900 lg:text-sm">
+                            <a href="#" title="" className="">
+                              Growth
+                            </a>
+                          </p>
+                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
+                            <a href="#" title="" className="">
+                              How a visual artist redefines success in graphic design
+                            </a>
+                          </p>
+                          <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
+                            April 09, 2022
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-              <div
-                className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
-                <div className="px-4 py-5 sm:p-5">
-                  <div className="flex items-start lg:items-center">
-                    <a href="#" title="" className="shrink-0">
-                      <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-2.png"
-                        alt="" />
-                    </a>
-
-                    <div className="flex-1 ml-4 lg:ml-6">
-                      <p className="text-xs font-medium text-gray-900 lg:text-sm">
-                        <a href="#" title="" className="">
-                          Growth
-                        </a>
-                      </p>
-                      <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
-                        <a href="#" title="" className="">
-                          How a visual artist redefines success in graphic design
-                        </a>
-                      </p>
-                      <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
-                        April 09, 2022
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-              <div
-                className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
-                <div className="px-4 py-5 sm:p-5">
-                  <div className="flex items-start lg:items-center">
-                    <a href="#" title="" className="shrink-0">
-                      <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-3.png"
-                        alt="" />
-                    </a>
-
-                    <div className="flex-1 ml-4 lg:ml-6">
-                      <p className="text-xs font-medium text-gray-900 lg:text-sm">
-                        <a href="#" title="" className="">
-                          Growth
-                        </a>
-                      </p>
-                      <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
-                        <a href="#" title="" className="">
-                          How a visual artist redefines success in graphic design
-                        </a>
-                      </p>
-                      <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
-                        April 09, 2022
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-              <div
-                className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
-                <div className="px-4 py-5 sm:p-5">
-                  <div className="flex items-start lg:items-center">
-                    <a href="#" title="" className="shrink-0">
-                      <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-4.png"
-                        alt="" />
-                    </a>
-
-                    <div className="flex-1 ml-4 lg:ml-6">
-                      <p className="text-xs font-medium text-gray-900 lg:text-sm">
-                        <a href="#" title="" className="">
-                          Growth
-                        </a>
-                      </p>
-                      <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
-                        <a href="#" title="" className="">
-                          How a visual artist redefines success in graphic design
-                        </a>
-                      </p>
-                      <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
-                        April 09, 2022
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-              <div
-                className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
-                <div className="px-4 py-5 sm:p-5">
-                  <div className="flex items-start lg:items-center">
-                    <a href="#" title="" className="shrink-0">
-                      <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-5.png"
-                        alt="" />
-                    </a>
-
-                    <div className="flex-1 ml-4 lg:ml-6">
-                      <p className="text-xs font-medium text-gray-900 lg:text-sm">
-                        <a href="#" title="" className="">
-                          Growth
-                        </a>
-                      </p>
-                      <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
-                        <a href="#" title="" className="">
-                          How a visual artist redefines success in graphic design
-                        </a>
-                      </p>
-                      <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
-                        April 09, 2022
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+            </section>
       </div>
 
       {/* ----- gains section (below hero) --------------- */}
@@ -290,48 +288,40 @@ const Home: React.FC = () => {
         </div>
       </section>
 
+      <section className="w-full max-w-6xl mx-auto relative overflow-hidden  p-[1.5px] bg-gradient-to-b from-orange-300 to-orange-50 rounded-[32px]">   
+        <div className="w-full flex items-end gap-20 bg-white/90 pb-20 backgroup-blur-sm rounded-[32px]">
+        
+          <div className="w-[40%] p-10">
+                <h1 className="text-5xl font-bold">Increase <br /> Engagement <br />by 10X</h1>
+                <p className="text-gray-500 mt-10">Fuel curiosity and boost engagement with automated DMs. Drive your reels to viral with every comment turned into a conversation.</p>
+        </div>
+        <p>after FUMA</p>
+          </div>
+        <img src="increase.svg" alt="" className="w-full absolute bottom-0 left-0" />
+      </section>
+
 
       {/* ---------- Two-card benefits (inline, same page, no new component) ---------- */}
       <section className="w-full">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl  py-16 sm:py-20">
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Card 1 */}
-            <div className="rounded-[32px] p-[1.5px] bg-gradient-to-r from-orange-300 to-orange-500">
-              <div className="rounded-[30px] bg-white/95 backdrop-blur-sm">
-                <div className="relative p-8 sm:p-12">
+            <div className="rounded-[32px] p-[1.5px] bg-white shadow p-1 bg-gradient-to-b from-orange-300 to-orange-50">
+              <div className="rounded-[30px] bg-white/95 backdrop-blur-sm h-full">
+                <div className="relative p-4 sm:p-6">
                   <div className="max-w-xl">
-                    <h3 className="text-4xl sm:text-5xl font-extrabold leading-[1.1] text-slate-900">
+                    <h3 className="text-4xl sm:text-5xl font-bold leading-[1.1] text-slate-900">
                       Maximise <br /> Link Clicks
                     </h3>
-                    <p className="mt-6 text-lg text-slate-600">
+                    <p className="mt-6 text-slate-600">
                       Stop relying on bio links. Instantly send clickable links via DM,
                       amplifying clicks and conversion rates.
                     </p>
                   </div>
 
-                  {/* micro UI cluster */}
-                  <div className="mt-12">
-                    <div className="flex flex-col gap-4">
-                      <div className="inline-flex items-center gap-3 rounded-2xl bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-gray-200 px-4 py-2 w-fit">
-                        <div className="h-6 w-6 rounded-md bg-violet-600" />
-                        <span className="text-sm text-slate-700">
-                          When comment includes{" "}
-                          <span className="font-semibold">Send Tool</span>
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <div className="h-5 w-0.5 bg-slate-300 rounded-full" />
-                        <div className="inline-flex items-center gap-2 rounded-2xl border border-violet-300/60 bg-white px-4 py-2 shadow-[0_10px_30px_rgba(124,58,237,0.12)]">
-                          <div className="h-5 w-5 rounded-md bg-violet-600" />
-                          <span className="text-sm font-semibold text-violet-700">
-                            Send DM with Link
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="mt-10">
+                    <img src="/maxi.webp" alt="" />
                   </div>
-
                   {/* soft dotted background on the right */}
                   <div className="pointer-events-none absolute inset-y-0 right-0 left-[48%] opacity-40">
                     <div className="h-full w-full bg-[radial-gradient(circle,_rgba(148,163,184,0.25)_1px,transparent_1px)] [background-size:18px_18px]" />
@@ -341,14 +331,14 @@ const Home: React.FC = () => {
             </div>
 
             {/* Card 2 */}
-            <div className="rounded-[32px] p-[1.5px] bg-gradient-to-r from-orange-300 to-orange-500">
-              <div className="rounded-[30px] bg-white/95 backdrop-blur-sm">
-                <div className="relative p-8 sm:p-12">
+          <div className="rounded-[32px] h-full p-[1.5px] bg-white shadow p-1 bg-gradient-to-b from-orange-300 to-orange-50">
+              <div className="rounded-[30px] bg-white/95 backdrop-blur-sm h-full">
+                <div className="relative p-4 sm:p-6">
                   <div className="max-w-xl">
-                    <h3 className="text-4xl sm:text-5xl font-extrabold leading-[1.1] text-slate-900">
+                    <h3 className="text-4xl sm:text-5xl font-bold leading-[1.1] text-slate-900">
                       Unlock More <br /> Brand Deals
                     </h3>
-                    <p className="mt-6 text-lg text-slate-600">
+                    <p className="mt-6 text-slate-600">
                       Brands prioritise engagement when partnering with creators. With
                       higher reel interactions and link clicks, close more deals at top
                       rates.
@@ -356,53 +346,8 @@ const Home: React.FC = () => {
                   </div>
 
                   {/* stat bubbles */}
-                  <div className="mt-12">
-                    <div className="flex flex-wrap items-center gap-4">
-                      <div className="inline-flex items-center gap-3 rounded-2xl bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-gray-200 px-4 py-2">
-                        <div className="h-6 w-6 rounded-lg bg-black/5 grid place-items-center">
-                          <div className="h-3 w-3 rounded-full bg-black/50" />
-                        </div>
-                        <div className="text-sm">
-                          <div className="font-semibold text-slate-900 leading-none">
-                            1.4K
-                          </div>
-                          <div className="text-[11px] text-slate-500 -mt-0.5">
-                            Comments
-                          </div>
-                        </div>
-                        <div className="text-xs font-semibold text-emerald-500">
-                          +23%
-                        </div>
-                      </div>
-
-                      <div className="h-5 w-0.5 bg-slate-300 rounded-full" />
-
-                      <div className="inline-flex items-center gap-3 rounded-2xl border border-fuchsia-300/60 bg-white px-4 py-2 shadow-[0_10px_30px_rgba(236,72,153,0.12)]">
-                        <div className="h-5 w-5 rounded-md bg-fuchsia-600" />
-                        <div className="text-sm">
-                          <div className="font-semibold text-slate-900 leading-none">
-                            7.1K
-                          </div>
-                          <div className="text-[11px] text-slate-500 -mt-0.5">
-                            Link Clicks
-                          </div>
-                        </div>
-                        <span className="text-xs font-semibold text-emerald-500">
-                          +79%
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* ghost phone panel */}
-                    <div className="mt-6 rounded-3xl bg-gradient-to-br from-slate-50 to-white ring-1 ring-slate-200/70 shadow-[inset_0_0_60px_rgba(0,0,0,0.04)] p-6">
-                      <div className="text-4xl sm:text-5xl font-extrabold text-slate-900">
-                        1,001,429
-                      </div>
-                      <div className="text-sm text-slate-500">Accounts reached</div>
-                      <div className="text-xs text-emerald-500 mt-1">
-                        +53.7% vs Last Week
-                      </div>
-                    </div>
+                  <div className="mt-10">
+                    <img src="/numbers_updated_image.webp" alt="" />
                   </div>
 
                   {/* soft purple wash on the right */}

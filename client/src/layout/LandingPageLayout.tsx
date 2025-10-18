@@ -5,7 +5,7 @@ import { PiSparkle } from 'react-icons/pi'
 
 const LandingPageLayout : React.FC = () => {
     return (
-        <div className='relative'>
+        <div className='relative max-w-[1400px] mx-auto'>
             <Header />
             <Outlet />
 

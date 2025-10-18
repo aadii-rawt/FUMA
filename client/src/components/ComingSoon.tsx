@@ -2,12 +2,6 @@ import React from "react";
 import { HiOutlineMail } from "react-icons/hi";
 import { HiChevronRight } from "react-icons/hi2";
 
-/**
- * ComingSoon.tsx
- * Exact UI replica of the provided "Cooking Our Website" coming-soon section
- * Stack: React + TypeScript + Tailwind CSS
- */
-
 const Blob = ({ className = "" }: { className?: string }) => (
   <div
     className={
@@ -104,8 +98,6 @@ export default function ComingSoon() {
         <div className="mt-10">
           <NotifyButton />
         </div>
-
-        {/* ground shadow under button */}
         <div className="pointer-events-none mx-auto mt-8 h-10 w-64 rounded-full bg-slate-900/10 blur-2xl" />
       </div>
     </div>

@@ -1,4 +1,3 @@
-// src/components/EngagementSection.tsx
 import React, { useEffect, useRef, useState } from "react";
 
 const EngagementSection: React.FC = () => {
@@ -9,7 +8,6 @@ const EngagementSection: React.FC = () => {
   const [len, setLen] = useState(0);
 
   useEffect(() => {
-    // Measure path length for stroke-dash animation
     if (pathRef.current) {
       const L = pathRef.current.getTotalLength();
       setLen(L);
@@ -24,7 +22,6 @@ const EngagementSection: React.FC = () => {
           if (e.isIntersecting) {
             setInView(true);
           } else {
-            // Reset so it replays when we come back
             setInView(false);
           }
         });
@@ -163,8 +160,6 @@ const EngagementSection: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* Rounded outer corners (screenshot vibe) */}
         <div className="mt-4 h-0" />
       </div>
     </section>

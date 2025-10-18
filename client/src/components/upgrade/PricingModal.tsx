@@ -1,4 +1,3 @@
-import { IoIosCloseCircleOutline } from "react-icons/io";
 
 export type Feature = { label: string; ok: boolean };
 export type Plan = {

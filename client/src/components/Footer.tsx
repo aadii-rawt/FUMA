@@ -19,23 +19,6 @@ const Footer: React.FC = () => {
             <p className="mt-2 text-slate-500">
               Made with <span className="text-gray-400">❤️</span> in India.
             </p>
-
-            <div className="mt-5 flex items-center gap-4">
-              <a
-                href="#"
-                aria-label="Facebook"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white shadow hover:opacity-90 transition"
-              >
-                <FaFacebook className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                aria-label="Instagram"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-[10px] bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white shadow hover:opacity-90 transition"
-              >
-                <FaInstagram className="h-5 w-5" />
-              </a>
-            </div>
           </div>
 
           {/* Company */}

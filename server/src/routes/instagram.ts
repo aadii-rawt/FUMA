@@ -1,10 +1,8 @@
 import {Request, Response, Router} from "express"
 const instaRouter = Router()
-import crypto from "crypto";
 import axios from "axios";
 import { prisma } from "../lib/prisma";
 import { auth } from "../middleware/auth";
-// instaRouter.use(auth);
 
 const IG_OAUTH_DIALOG = "https://www.instagram.com/oauth/authorize";
 const CLIENT_ID = process.env.META_APP_ID!;
@@ -25,21 +23,20 @@ instaRouter.get("/connect", (req: Request, res: Response) => {
     client_id: CLIENT_ID,
     redirect_uri: REDIRECT_URI,
     response_type: "code",
-    scope: SCOPES,
+    scope: SCOPES
   }).toString();
 
+  console.log("reached.");
+  
   return res.redirect(302, url.toString());
 })
 
 instaRouter.get("/callback", async (req: Request, res: Response) => {
-  // @ts-ignore
-  const id = req.id
-  console.log("user id :", id);
   try {
-    const { code } = req.query as { code?: string; state?: string };
+    const { code } = req.query as { code?: string; id?: string };
     if (!code) return res.status(400).send("Missing code");
-    // generate token
 
+    // generate token    
     const tokenResp = await axios.post(
     "https://api.instagram.com/oauth/access_token",
     new URLSearchParams({

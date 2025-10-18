@@ -1,4 +1,3 @@
-// Editor.tsx
 import React, { useEffect, useState } from "react";
 import Axios from "../../utils/axios";
 import useUser from "../../context/userContext";
@@ -46,7 +45,6 @@ const Editor: React.FC = () => {
 
         {/* Tiles */}
         <div className="mt-5 flex gap-5">
-          {/* Selected media tile */}
           {posts?.map((post: any,i) => (
             <div key={i} onClick={() => setSelectedPost(post)} className={`${post.id == selectedPost?.id && "border-2 border-indigo-500"} relative cursor-pointer h-50 w-40 overflow-hidden rounded-xl  p-0`}>
               <img

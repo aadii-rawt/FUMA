@@ -7,3 +7,7 @@
 .no-scrollbar::-webkit-scrollbar { 
   display: none;
 }
+
+.bg-primary {
+  background-color:  #7008e7;
+}

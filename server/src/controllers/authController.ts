@@ -178,19 +178,6 @@ const sendOTP : any = async (req, res, email,purpose="login") => {
 
 }
 
-export const connectInsta = async (req : Request,res : Response) => {
-
-const data = await axios.get("https://www.instagram.com/oauth/authorize", {
-  params: {
-    client_id: "836625295511261",
-    redirect_uri: "https://fuma.dotdazzle.in/app",
-    response_type: "code",
-    scope:
-      "instagram_business_basic,instagram_business_content_publish,instagram_business_manage_messages,instagram_business_manage_comments",
-  },
-}); 
-}
-
 export const getDetails = async (req:Request, res : Response) => {
  try {
     // @ts-ignore

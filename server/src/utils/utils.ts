@@ -1,6 +1,5 @@
-import crypto, { verify } from "crypto"
+import crypto from "crypto"
 import  argon2  from "argon2"
-import { Otp } from "@prisma/client"
 
 export const OTPgenerator : (digit : number) => string  = (digit ) => {
      const otp = crypto.randomInt(0, 10 ** digit).toString().padStart(digit, "0")

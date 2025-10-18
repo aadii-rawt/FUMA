@@ -11,7 +11,7 @@ return (
             </div>
             <div className="flex items-center gap-5">
                 <Link to='/auth/login' className="hover:text-violet-700" >Sign in </Link >
-                <Link to='/auth/signup'  className="bg-violet-700 text-white px-2 py-1 rounded-lg ">Start For Free</Link >
+                <Link to='/auth/signup'  className="bg-primary text-white px-2 py-1 rounded-lg ">Start For Free</Link >
             </div>
     </div>
 )
