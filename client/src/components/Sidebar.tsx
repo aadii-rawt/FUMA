@@ -101,15 +101,6 @@ function WorkspaceMenu({
 
         <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
           <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
-            +
-          </span>
-          Add New Workspace
-        </button>
-
-        <div className="my-2 h-[1px] bg-gray-200" />
-
-        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
-          <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
             👤
           </span>
           Account Settings

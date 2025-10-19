@@ -1,33 +1,41 @@
 
-export type Feature = { label: string; ok: boolean };
+import { PiLinkSimpleLight } from "react-icons/pi";
+import { TbDatabasePlus } from "react-icons/tb";
+import { SlUserFollow } from "react-icons/sl";
+import { LuMessageCircleHeart } from "react-icons/lu";
+
+export type Feature = { label: string; ok: boolean, icons : any };
+
 export type Plan = {
   id: "free" | "pro" | "ultimate";
   title: string;
   price: number;          // monthly price in INR for simplicity
   currency: "INR";
   period: "mo";
-  badge?: string;
   features: Feature[];
   highlight?: boolean;
 };
 
 const featuresFree: Feature[] = [
-  { label: "3 Automations", ok: true },
-  { label: "1000 DMs", ok: true },
-  { label: "1000 Contacts", ok: true },
-  { label: "Follow before DM", ok: false },
-  { label: "Data Collection", ok: false },
+    { label: "3 Automations", icons : <PiLinkSimpleLight/>, ok: true },
+    { label: "1000 DMs", icons : <LuMessageCircleHeart />, ok: true },
+    { label: "Follow before DM", icons : <SlUserFollow />, ok: false },
+    { label: "Data Collection", icons : <TbDatabasePlus />, ok: false },
 ];
 
 const featuresPro: Feature[] = [
-  { label: "Unlimited Automations", ok: true },
-  { label: "Unlimited DMs", ok: true },
-  { label: "Unlimited Contacts", ok: true },
-  { label: "Follow before DM", ok: true },
-  { label: "Data Collection", ok: true },
+  { label: "Unlimited Automations", icons : <PiLinkSimpleLight/>, ok: true },
+  { label: "Unlimited DMs", icons : <LuMessageCircleHeart />, ok: true },
+  { label: "Follow before DM", icons : <SlUserFollow />, ok: true },
+  { label: "Data Collection", icons : <TbDatabasePlus />, ok: false },
 ];
 
-const featuresUltimate: Feature[] = [...featuresPro];
+const featuresUltimate: Feature[] = [
+  { label: "Unlimited Automations", icons : <PiLinkSimpleLight/>, ok: true },
+    { label: "Unlimited DMs", icons : <LuMessageCircleHeart />, ok: true },
+    { label: "Follow before DM", icons : <SlUserFollow />, ok: true },
+    { label: "Data Collection", icons : <TbDatabasePlus />, ok: true },
+];
 
 const PLANS: Plan[] = [
   {
@@ -41,20 +49,18 @@ const PLANS: Plan[] = [
   {
     id: "pro",
     title: "Pro",
-    price: 799,
+    price: 199,
     currency: "INR",
     period: "mo",
-    badge: "Save ₹4800",
     features: featuresPro,
     highlight: true,
   },
   {
     id: "ultimate",
     title: "Ultimate",
-    price: 1999,
+    price: 299,
     currency: "INR",
     period: "mo",
-    badge: "Save ₹12000",
     features: featuresUltimate,
   },
 ];
@@ -66,7 +72,7 @@ function PriceCard({
   plan: Plan;
   onSelect: (plan: Plan) => void;
 }) {
-  const { title, price, badge, features, highlight } = plan;
+  const { title, price, features, highlight } = plan;
 
   return (
     <div
@@ -92,11 +98,6 @@ function PriceCard({
               : "bg-gradient-to-b from-slate-50 to-transparent",
           ].join(" ")}
         />
-        {badge && (
-          <div className="absolute right-4 top-4 rounded-full bg-slate-900/80 text-white text-xs font-semibold px-3 py-1 shadow">
-            {badge}
-          </div>
-        )}
 
         <div className="p-6">
           {/* Price & title */}
@@ -108,7 +109,6 @@ function PriceCard({
               <div className="text-slate-500 font-medium">/ mo</div>
             </div>
             <div className="mt-1 text-lg font-semibold">{title}</div>
-            <div className="mt-2 text-sm text-slate-500">Billed monthly</div>
           </div>
 
           {/* CTA */}
@@ -137,6 +137,9 @@ function PriceCard({
             <ul className="space-y-4">
               {features.map((f) => (
                 <li key={f.label} className="flex items-center gap-3">
+                    <span className={`h-5 w-5 ${f.ok ? "text-violet-600" : "text-gray-400"}`}>
+                  {f.icons}
+                </span>
                   <span
                     className={[
                       "text-[15px]",

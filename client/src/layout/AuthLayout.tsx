@@ -1,10 +1,10 @@
-import { Outlet } from "react-router-dom"
+import { Link, Outlet } from "react-router-dom"
 
 const AuthLayout = () => {
     return (
-        <div className="min-h-screen max-h-screen bg-pink-100 flex flex-col justify-center gap-20 items-center py-10">
+        <div className="min-h-screen max-h-screen bg-violet-50 flex flex-col justify-center gap-20 items-center py-10">
             <div>
-                <h1 className="font-bold text-3xl">FUMA</h1>
+                <Link to='/' className="font-bold text-3xl">FUMA</Link>
             </div>
             <div className="max-w-3xl w-full border bg-white rounded-2xl border-gray-100 shadow flex justify-between h-[465px] gap-10">
             <Outlet />

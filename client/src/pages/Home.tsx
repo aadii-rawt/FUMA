@@ -3,6 +3,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { SiTrustpilot, SiMeta } from "react-icons/si";
 import { FaStar } from "react-icons/fa";
 import { LuClapperboard, LuBot, LuMegaphone, LuMessageCircle } from "react-icons/lu";
+import FAQ from "../components/FAQ";
+import { Link } from "react-router-dom";
 
 const Home: React.FC = () => {
 
@@ -22,7 +24,7 @@ const Home: React.FC = () => {
                     Effortless DMs <br /> big results
                   </h1>
                   <p className="max-w-md mx-auto mt-6 text-base font-normal leading-7 text-gray-500">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vehicula massa in enim luctus. Rutrum arcu.
+                   Empower your creator business with AutoDM integrations — from Amazon to Nykaa, automate your affiliate income without lifting a finger.
                   </p>
 
                   <form action="#" method="POST"
@@ -43,10 +45,10 @@ const Home: React.FC = () => {
                         className="absolute transitiona-all duration-1000 opacity-70 inset-0 bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200">
                       </div>
 
-                      <button type="button"
+                      <Link to="/auth/signup"
                         className="inline-flex relative items-center justify-center w-full sm:w-auto px-8 py-3 sm:text-sm text-base sm:py-3.5 font-semibold text-white transition-all duration-200 bg-primary border border-transparent rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
                         Join Now
-                      </button>
+                      </Link>
                     </div>
                   </form>
 
@@ -57,7 +59,7 @@ const Home: React.FC = () => {
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                       <span className="text-xs font-medium text-gray-900 sm:text-sm">
-                        Weekly new articles
+                       Automation
                       </span>
                     </li>
 
@@ -67,164 +69,125 @@ const Home: React.FC = () => {
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                       <span className="text-xs font-medium text-gray-900 sm:text-sm">
-                        Join other 1600+ Devs
+                        Growth
                       </span>
                     </li>
                   </ul>
                 </div>
               </div>
 
-              <div className="flex w-full gap-6 pb-8 mt-12 overflow-x-auto sm:mt-16 lg:mt-20 snap-x">
-                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-                  <div
-                    className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
-                    <div className="px-4 py-5 sm:p-5">
-                      <div className="flex items-start lg:items-center">
-                        <a href="#" title="" className="shrink-0">
-                          <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-1.png"
-                            alt="" />
-                        </a>
-
-                        <div className="flex-1 ml-4 lg:ml-6">
-                          <p className="text-xs font-medium text-gray-900 lg:text-sm">
-                            <a href="#" title="" className="">
-                              Growth
-                            </a>
-                          </p>
-                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
-                            <a href="#" title="" className="">
-                              How a visual artist redefines success in graphic design
-                            </a>
-                          </p>
-                          <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
-                            April 09, 2022
-                          </p>
+              <div className="marquee mt-12 sm:mt-16 lg:mt-20 pb-8">
+                <div className="marquee__inner">
+                  {/* === Group A === */}
+                  <div className="marquee__group py-2">
+                    {/* CARD 1 */}
+                    <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                      <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
+                        <div className="px-4 py-5 sm:p-5">
+                          <div className="flex items-start lg:items-center">
+                            <img
+                              className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cover"
+                              src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66da9ced61739d7327618e55_95.png"
+                              alt="Meesho"
+                            />
+                            <div className="flex-1 ml-4 lg:ml-6">
+                              <p className="text-xs font-medium text-gray-900 lg:text-sm">Meesho</p>
+                              <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
+                                Brands you can connect with instantly
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-                  <div
-                    className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
-                    <div className="px-4 py-5 sm:p-5">
-                      <div className="flex items-start lg:items-center">
-                        <a href="#" title="" className="shrink-0">
-                          <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-2.png"
-                            alt="" />
-                        </a>
-
-                        <div className="flex-1 ml-4 lg:ml-6">
-                          <p className="text-xs font-medium text-gray-900 lg:text-sm">
-                            <a href="#" title="" className="">
-                              Growth
-                            </a>
-                          </p>
-                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
-                            <a href="#" title="" className="">
-                              How a visual artist redefines success in graphic design
-                            </a>
-                          </p>
-                          <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
-                            April 09, 2022
-                          </p>
+                    {/* CARD 2 */}
+                    <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                      <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
+                        <div className="px-4 py-5 sm:p-5">
+                          <div className="flex items-start lg:items-center">
+                            <img
+                              className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cover"
+                              src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66c074d12514da9000bf6437_66c0701a1ef0c15101c97d4e_77.png"
+                              alt="Nykaa"
+                            />
+                            <div className="flex-1 ml-4 lg:ml-6">
+                              <p className="text-xs font-medium text-gray-900 lg:text-sm">Nykaa</p>
+                              <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
+                                Automate DMs for your favorite stores
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-                  <div
-                    className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
-                    <div className="px-4 py-5 sm:p-5">
-                      <div className="flex items-start lg:items-center">
-                        <a href="#" title="" className="shrink-0">
-                          <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-3.png"
-                            alt="" />
-                        </a>
-
-                        <div className="flex-1 ml-4 lg:ml-6">
-                          <p className="text-xs font-medium text-gray-900 lg:text-sm">
-                            <a href="#" title="" className="">
-                              Growth
-                            </a>
-                          </p>
-                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
-                            <a href="#" title="" className="">
-                              How a visual artist redefines success in graphic design
-                            </a>
-                          </p>
-                          <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
-                            April 09, 2022
-                          </p>
+                    {/* CARD 3 */}
+                    <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                      <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
+                        <div className="px-4 py-5 sm:p-5">
+                          <div className="flex items-start lg:items-center">
+                            <img
+                              className="lg:h-24 w-14 h-18 lg:w-24 rounded-xl object-cover"
+                              src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66c07611cdd922093c5c24f4_98.webp"
+                              alt="Flipkart"
+                            />
+                            <div className="flex-1 ml-4 lg:ml-6">
+                              <p className="text-xs font-medium text-gray-900 lg:text-sm">Flipkart</p>
+                              <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
+                                Turn comments into conversions with AutoDM
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-                  <div
-                    className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
-                    <div className="px-4 py-5 sm:p-5">
-                      <div className="flex items-start lg:items-center">
-                        <a href="#" title="" className="shrink-0">
-                          <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-4.png"
-                            alt="" />
-                        </a>
-
-                        <div className="flex-1 ml-4 lg:ml-6">
-                          <p className="text-xs font-medium text-gray-900 lg:text-sm">
-                            <a href="#" title="" className="">
-                              Growth
-                            </a>
-                          </p>
-                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
-                            <a href="#" title="" className="">
-                              How a visual artist redefines success in graphic design
-                            </a>
-                          </p>
-                          <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
-                            April 09, 2022
-                          </p>
+                    {/* CARD 4 */}
+                    <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                      <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
+                        <div className="px-4 py-5 sm:p-5">
+                          <div className="flex items-start lg:items-center">
+                            <img
+                              className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cover"
+                              src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66dc1ddef8cc06b6c602b90a_101.webp"
+                              alt="Myntra"
+                            />
+                            <div className="flex-1 ml-4 lg:ml-6">
+                              <p className="text-xs font-medium text-gray-900 lg:text-sm">Myntra</p>
+                              <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
+                                Seamless AutoDM integration with top brands
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-                  <div
-                    className="overflow-hidden w-[300px] lg:w-[420px] transition-all duration-200 transform bg-white border border-gray-200 rounded-2xl hover:shadow-lg hover:-translate-y-1">
-                    <div className="px-4 py-5 sm:p-5">
-                      <div className="flex items-start lg:items-center">
-                        <a href="#" title="" className="shrink-0">
-                          <img className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cvoer" src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/5/thumbnail-5.png"
-                            alt="" />
-                        </a>
-
-                        <div className="flex-1 ml-4 lg:ml-6">
-                          <p className="text-xs font-medium text-gray-900 lg:text-sm">
-                            <a href="#" title="" className="">
-                              Growth
-                            </a>
-                          </p>
-                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg group-hover:text-gray-600">
-                            <a href="#" title="" className="">
-                              How a visual artist redefines success in graphic design
-                            </a>
-                          </p>
-                          <p className="mt-2 text-xs font-medium text-gray-500 lg:text-sm">
-                            April 09, 2022
-                          </p>
+                    {/* CARD 5 */}
+                    <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                      <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
+                        <div className="px-4 py-5 sm:p-5">
+                          <div className="flex items-start lg:items-center">
+                            <img
+                              className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cover"
+                              src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66c076b23bd404abda6c76b7_64.webp"
+                              alt="Ajio"
+                            />
+                            <div className="flex-1 ml-4 lg:ml-6">
+                              <p className="text-xs font-medium text-gray-900 lg:text-sm">Ajio</p>
+                              <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
+                                Your all-in-one AutoDM solution for creators
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
             </section>
       </div>
 
@@ -382,7 +345,7 @@ const Home: React.FC = () => {
                       <div className="absolute inset-0 h-2/3 "></div>
                       <div className="relative mx-auto">
                           <div className="lg:max-w-6xl lg:mx-auto">
-                              <img className="transform scale-110" src="https://cdn.rareblocks.xyz/collection/clarity/images/hero/2/illustration.png" alt="" />
+                              {/* <img className="transform scale-110" src="https://cdn.rareblocks.xyz/collection/clarity/images/hero/2/illustration.png" alt="" /> */}
                           </div>
                       </div>
                   </div>
@@ -392,7 +355,10 @@ const Home: React.FC = () => {
         <ViralSteps />
       </div>
 
-      {/* how to  */}
+      <section className="mt-20">
+
+     <FAQ />
+      </section>
 
     </div>
   );

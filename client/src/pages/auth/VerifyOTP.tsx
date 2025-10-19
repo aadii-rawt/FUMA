@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Axios from "../../utils/axios";
 import useUser from "../../context/userContext";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const VerifyOTP: React.FC = () => {
 
   const {email,type} = useLocation().state || {}
+  if (!email) return <Navigate to='/auth/login' />
   
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
@@ -160,7 +162,7 @@ const VerifyOTP: React.FC = () => {
               isComplete ? "bg-violet-700 text-white" : "bg-gray-200 text-gray-500 cursor-not-allowed"
             }`}
           >
-           {loading ? "loading..." :  "Verify Code" }
+           {loading ? <LoadingSpinner size={22} /> :  "Verify Code" }
           </button>
         </div>
       </form>

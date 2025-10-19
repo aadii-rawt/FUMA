@@ -7,11 +7,11 @@ import useUser from "../../context/userContext";
 export default function UpgradeModal() {
   const [selectedPlan, setSelectedPlan] = useState<any | null>(null);
 const {setIsPriceModalOpen} = useUser()
-  // Final “Pay” handler: LOG EVERYTHING HERE
+
   const handlePay = (details: any) => {
     const payload = {
-      plan: selectedPlan,          // chosen plan & price
-      payment: details,            // user input + payment method
+      plan: selectedPlan,          
+      payment: details,            
       meta: {
         initiatedAt: new Date().toISOString(),
         source: "UpgradeModal",
@@ -21,7 +21,6 @@ const {setIsPriceModalOpen} = useUser()
     // 👇 Your single place to log or send to API
     console.log("🔥 UPGRADE CHECKOUT PAYLOAD", payload);
 
-    // (Optional) show a toast / close modal after pay
     alert("Payment initiated! Check console for full payload.");
     handleClose();
   };

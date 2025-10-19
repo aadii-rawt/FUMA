@@ -1,9 +1,7 @@
 import React from "react";
-import { FaArrowRight, FaInstagram } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
 import { TbBrandMeta } from "react-icons/tb";
 import { BiTransferAlt } from "react-icons/bi";
-import Axios from "../../utils/axios";
-
 
 const ConnectInsta: React.FC = () => {
 

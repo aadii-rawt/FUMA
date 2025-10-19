@@ -11,3 +11,47 @@
 .bg-primary {
   background-color:  #7008e7;
 }
+
+/* === Infinite marquee for the brand cards === */
+.marquee {
+  position: relative;
+  overflow: hidden;          /* hides the sliding track */
+  width: 100%;
+}
+
+.marquee__inner {
+  display: flex;
+  width: max-content;        /* shrink to content width */
+  gap: 1.5rem;               /* same as Tailwind gap-6 */
+  animation: marquee 20s linear infinite;
+}
+
+.marquee:hover .marquee__inner {
+  animation-play-state: paused;   /* pause on hover */
+}
+
+/* Two identical groups inside (A + B). We translate by -50% for a seamless loop */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Each group holds one full set of cards */
+.marquee__group {
+  display: flex;
+  gap: 1.5rem;               /* keep same gap between cards */
+}
+
+/* Respect user preference */
+@media (prefers-reduced-motion: reduce) {
+  .marquee__inner { animation: none; }
+}
+
+/* Small polish (optional) */
+.card {
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}

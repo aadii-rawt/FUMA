@@ -1,6 +1,7 @@
 // src/components/Footer.tsx
 import React from "react";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   const year = new Date().getFullYear();
@@ -12,7 +13,7 @@ const Footer: React.FC = () => {
         <div className="flex justify-between">
           {/* Brand */}
           <div className="md:col-span-2">
-            <h1 className="text-2xl font-bold">FUMA</h1>
+            <Link to='/' className="text-2xl font-bold">FUMA</Link>
             <h4 className="text-xl font-semibold text-gray-400">
               Dotdazzle product
             </h4>
@@ -25,10 +26,9 @@ const Footer: React.FC = () => {
           <div>
             <h5 className="text-slate-700 font-semibold">Company</h5>
             <ul className="mt-3 space-y-3">
-              <li><a href="#" className="text-slate-700 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">About</a></li>
-              <li><a href="#" className="text-slate-700 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">Pricing</a></li>
-              <li><a href="#" className="text-slate-700 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">Legal</a></li>
-              <li><a href="#" className="text-slate-700 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">Contact Us</a></li>
+              <li><Link to='/about' className="text-slate-700 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">About</Link></li>
+              <li><Link to='/pricing' className="text-slate-700 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">Pricing</Link></li>
+              <li><Link to='' className="text-slate-700 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">Contact Us</Link></li>
             </ul>
           </div>
 
@@ -44,15 +44,9 @@ const Footer: React.FC = () => {
           </p>
 
           <nav className="flex flex-wrap items-center gap-x-8 gap-y-2">
-            <a href="#" className="text-slate-800 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">
+            <Link to="privacy-policy" className="text-slate-800 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">
               Privacy Policy
-            </a>
-            <a href="#" className="text-slate-800 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">
-              Terms of Service
-            </a>
-            <a href="#" className="text-slate-800 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">
-              Cookie Statement
-            </a>
+            </Link>
           </nav>
         </div>
       </div>

@@ -20,6 +20,7 @@ type PlanSummary = {
 };
 
 type Props = {
+  selectedPlan : any;
   plan?: PlanSummary;
   onPayAllDetails?: (payload: any) => void; // optional callback; still console.log
   onBack : (payload : any) => void
@@ -31,7 +32,7 @@ declare global {
   }
 }
 
-export default function Payment({ plan, onPayAllDetails, onBack }: Props) {
+export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }: Props) {
   const summary: PlanSummary =
     plan ?? {
       name: "Pro",
@@ -293,19 +294,15 @@ export default function Payment({ plan, onPayAllDetails, onBack }: Props) {
                   <div className="text-xl font-semibold">
                     Upgrade to{" "}
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-fuchsia-600">
-                      {summary.name}
+                      {selectedPlan.title}
                     </span>
                   </div>
                   <div className="mt-2 text-sm">
-                    {summary.priceStruck && (
-                      <span className="mr-3 line-through text-gray-500">
-                        {summary.priceStruck}
-                      </span>
-                    )}
+                    
                     <span className="font-semibold text-gray-900">
-                      {summary.priceFinal}
+                      ₹{selectedPlan.price}
                     </span>
-                    <span className="text-gray-500"> {summary.periodSuffix}</span>
+                    <span className="text-gray-500">/mo</span>
                   </div>
                 </div>
                 <button onClick={onBack} className="text-sm cursor-pointer font-semibold text-gray-700 underline underline-offset-2">
@@ -320,20 +317,14 @@ export default function Payment({ plan, onPayAllDetails, onBack }: Props) {
                 left={
                   <div>
                     <div className="font-medium text-gray-800">
-                      {summary.name} ({summary.cycle})
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      Billed today, then billed {summary.cycle.toLowerCase()}
+                      {selectedPlan.title} /(mo)
                     </div>
                   </div>
                 }
                 right={
                   <div className="text-right">
                     <div className="font-semibold text-gray-800">
-                      {summary.priceFinal}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {summary.priceFinal} {summary.periodSuffix} after
+                      ₹{selectedPlan.price}
                     </div>
                   </div>
                 }
@@ -357,8 +348,7 @@ export default function Payment({ plan, onPayAllDetails, onBack }: Props) {
 
               <Divider />
 
-              {/* keep static totals to match your UI */}
-              <Row left={<span>Subtotal</span>} right={<span>{summary.priceFinal}</span>} />
+              <Row left={<span>Subtotal</span>} right={<span> ₹{selectedPlan.price}</span>} />
               <Row left={<span>IGST (18%)</span>} right={<span>₹1,726</span>} />
 
               <Divider />
@@ -367,12 +357,6 @@ export default function Payment({ plan, onPayAllDetails, onBack }: Props) {
                 left={<span className="font-semibold">Total Due Today</span>}
                 right={<span className="font-semibold">₹11,314</span>}
               />
-              {summary.nextBillingDate && (
-                <div className="text-sm text-gray-500">
-                  Billed next on <b>{summary.nextBillingDate}</b>
-                </div>
-              )}
-
               <button
                 onClick={pay}
                 disabled={!canPay || loading}
