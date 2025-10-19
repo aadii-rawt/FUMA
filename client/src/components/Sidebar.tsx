@@ -11,6 +11,7 @@ import {
 } from "react-icons/hi2";
 import { RiRobot2Line } from "react-icons/ri";
 import useUser from "../context/userContext";
+import { Link } from "react-router-dom";
 
 function Badge({ children, tone = "purple" }) {
   const base =
@@ -77,14 +78,14 @@ function WorkspaceMenu({
         top: anchorRect.bottom + 8,
         left: anchorRect.left,
       }
-    : { position: "fixed", top: 64, left: 24 };
+    : { position: "fixed", top: 0, left: 0 };
 
   return (
     <div
       role="menu"
       aria-label="Workspace menu"
-      className="z-[100] rounded-2xl bg-white border border-gray-200 shadow-[0_24px_60px_rgba(2,6,23,0.12)] w-[260px] overflow-hidden"
-      style={style}
+      className="z-[100] fixed top-16 rounded-2xl bg-white border border-gray-200 shadow-[0_24px_60px_rgba(2,6,23,0.12)] w-[260px] overflow-hidden"
+      // style={style}
     >
       <div className="p-2">
         <button
@@ -99,23 +100,16 @@ function WorkspaceMenu({
 
         <div className="my-2 h-[1px] bg-gray-200" />
 
-        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
+        <Link to='/setting/general' className="flex cursor-pointer w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
           <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
             👤
           </span>
           Account Settings
-        </button>
-
-        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
-          <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
-            ⚙️
-          </span>
-          Workspace Settings
-        </button>
+        </Link>
 
         <div className="my-2 h-[1px] bg-gray-200" />
 
-        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
+        <button className="flex cursor-pointer w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
           <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
             ⤴
           </span>
@@ -190,7 +184,7 @@ export default function Sidebar() {
         <div className="w-8 h-8 rounded-lg border border-gray-200 bg-white" />
 
         {/* Popover container (fixed-positioned child rendered here for outside-click logic) */}
-        <div ref={menuContainerRef} className="absolute left-0 top-20 pointer-events-none">
+        <div ref={menuContainerRef} className="absolute left-0 top-0 pointer-events-none">
           {menuOpen && (
             <div className="pointer-events-auto">
               <WorkspaceMenu anchorRect={anchorRect} onClose={() => setMenuOpen(false)} user={user}/>

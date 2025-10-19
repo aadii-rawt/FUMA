@@ -5,7 +5,7 @@ import { LuPencilLine } from 'react-icons/lu'
 import { RiRadioLine } from 'react-icons/ri'
 const NewAutomation: React.FC = () => {
     return (
-        <div className='w-full max-h-screen'>
+        <div className='w-full max-h-screen rounded-xl overflow-hidden'>
             <div className="w-full border-b border-gray-200 bg-white">
                 <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
                     {/* Left: Editor tab */}
@@ -34,7 +34,7 @@ const NewAutomation: React.FC = () => {
                 <div className='w-1/2'>
                     <Preview />
                 </div>
-                <div className='  w-1/2'>
+                <div className='  w-1/2 overflow-y-scroll'>
                 <Editor />
                 </div>
             </div>

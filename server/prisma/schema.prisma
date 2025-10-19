@@ -15,6 +15,9 @@ model users {
   createdAt   DateTime @default(now())
   access_token String?
   ig_id   Int?
+  plan    String
+  purchaseAt DateTime @default(now())
+  expireAt    DateTime
 }
 
 model Otp {
@@ -26,4 +29,17 @@ model Otp {
   createdAt  DateTime @default(now())
 
   @@index([email])
+}
+
+
+model subscription {
+  id    String @id 
+  plan    String
+  purchaseAt    DateTime  @default(now())
+  expireAt    DateTime
+  amount    Int
+  paymentMode   String
+  transactionId     String
+  createdAt   DateTime @default(now())
+
 }

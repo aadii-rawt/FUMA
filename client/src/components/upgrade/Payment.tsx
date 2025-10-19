@@ -33,16 +33,8 @@ declare global {
 }
 
 export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }: Props) {
-  const summary: PlanSummary =
-    plan ?? {
-      name: "Pro",
-      cycle: "Yearly",
-      priceStruck: "₹14,388",
-      priceFinal: "₹9,588",
-      periodSuffix: "/yr",
-      nextBillingDate: "08 October 2026",
-    };
-
+  
+  const total = (18 / 100) * selectedPlan?.price  + selectedPlan.price
   const [method, setMethod] = useState<Method>("upi"); // purely visual now
   const [loading, setLoading] = useState(false);
 
@@ -75,14 +67,6 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
     return Number.isFinite(n) ? n : 0;
   };
 
-  // Use the total due today visible in the UI. If you compute it elsewhere, replace here.
-  const totalDueINR = useMemo(() => {
-    // You show: Subtotal = summary.priceFinal, IGST = ₹1,726, Total = ₹11,314
-    // We'll default to 11,314 to match your card.
-    const fallback = 11314;
-    const totalFromCardText = 11314; // keep synced with UI
-    return totalFromCardText || parseINR(summary.priceFinal) || fallback;
-  }, [summary.priceFinal]);
 
   const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID as string; // put your key id in env
 
@@ -101,8 +85,8 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
       key: keyId,
       amount: amountINR * 100, // paise
       currency: "INR",
-      name: "Your Company",
-      description: `${summary.name} ${summary.cycle} plan`,
+      name: "FUMA",
+      description: `${selectedPlan.title} plan`,
       // You can create an order on your backend and pass order_id here:
       // order_id: "<from-your-backend>",
       prefill: {
@@ -112,8 +96,8 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
       },
       notes: {
         promo: promo || "",
-        plan_name: summary.name,
-        plan_cycle: summary.cycle,
+        plan_name: "summary.name",
+        plan_cycle:" summary.cycle",
         source_component: "Payment",
       },
       theme: { color: "#7c3aed" },
@@ -164,14 +148,6 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
 
     // Compose your single final payload (no method-specific inputs)
     const payload = {
-      plan: {
-        name: summary.name,
-        cycle: summary.cycle,
-        priceStruck: summary.priceStruck,
-        priceFinal: summary.priceFinal,
-        periodSuffix: summary.periodSuffix,
-        nextBillingDate: summary.nextBillingDate,
-      },
       billedTo: { name, phone },
       billingDetails: { country, city },
       promotion: promo || null,
@@ -184,9 +160,7 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
 
     console.log("🧾 INITIATING RAZORPAY WITH PAYLOAD", payload);
 
-    // If you create an order on backend, do it here then pass order_id in options.
-    // For now, we just open Razorpay with amount from the UI card.
-    openRazorpay(totalDueINR, payload);
+    openRazorpay(total, payload);
   };
 
   return (
@@ -349,13 +323,13 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
               <Divider />
 
               <Row left={<span>Subtotal</span>} right={<span> ₹{selectedPlan.price}</span>} />
-              <Row left={<span>IGST (18%)</span>} right={<span>₹1,726</span>} />
+              <Row left={<span>IGST (18%)</span>} right={<span>₹{(18 / 100) * selectedPlan.price}</span>} />
 
               <Divider />
 
               <Row
-                left={<span className="font-semibold">Total Due Today</span>}
-                right={<span className="font-semibold">₹11,314</span>}
+                left={<span className="font-semibold">Total</span>}
+                right={<span className="font-semibold">₹{total}</span>}
               />
               <button
                 onClick={pay}
