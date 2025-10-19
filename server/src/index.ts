@@ -6,7 +6,7 @@ import authRouter from "./routes/auth";
 import instaRouter from "./routes/instagram";
 import cookieParser from "cookie-parser";
 import igroute from "./routes/ig";
-import { auth } from "./middleware/auth";
+import { passportGoogle } from "./controllers/authController";
 dotenv.config();
 
 const app = express();
@@ -14,6 +14,8 @@ const app = express();
 app.use(cookieParser());
 app.use("/webhook",express.raw({ type: "*/*" }));
 app.use(express.json());
+app.use(passportGoogle.initialize());
+
 
 const allowedOrigins = [
   process.env.CORS_ORIGIN,

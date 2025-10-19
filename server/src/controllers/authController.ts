@@ -5,9 +5,9 @@ import argon2 from "argon2";
 import jwt  from "jsonwebtoken";
 import { hashOTP, OTPgenerator } from "../utils/utils";
 import { sendEmail } from "../utils/sendOTP";
+import passport from "passport";
+import { Strategy as GoogleStrategy, Profile } from "passport-google-oauth20";
 import { loginEmailTemplate, signupEmailTemplate } from "../utils/emailTemplates";
-import axios from "axios";
-
 // login send opt to email 
 export const login  =  async (req : Request,res : Response) => {
    const email = (req.body.email || "").trim().toLowerCase()
@@ -194,3 +194,76 @@ export const getDetails = async (req:Request, res : Response) => {
     res.status(500).json({ message: "Server error" });
   }
 }
+
+
+// --- configure passport strategy here (no sessions; we issue our own JWT) ---
+passport.use(
+  new GoogleStrategy(
+    {
+      // @ts-ignore
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      // @ts-ignore
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+    },
+    // verify callback
+    async (_accessToken: string, _refreshToken: string, profile: Profile, done : any) => {
+      try {
+        const email =
+          profile.emails && profile.emails[0]?.value
+            ? profile.emails[0].value.toLowerCase()
+            : "";
+
+        if (!email) return done(new Error("Google did not return an email"));
+
+        const avatar =
+          profile.photos && profile.photos[0]?.value ? profile.photos[0].value : null;
+        const username = profile.displayName || null;
+
+        let user = await prisma.users.findUnique({ where: { email } });
+
+        if (!user) {
+          user = await prisma.users.create({
+            data: {
+              email,
+            },
+          });
+        } 
+        return done(null, user);
+      } catch (err) {
+        return done(err as Error);
+      }
+    }
+  )
+);
+
+export const passportGoogle = passport;
+
+function setAuthCookie(res: any, userId: string) {
+  const JWT_SECRET = Buffer.from(process.env.JWT_SECRET || "");
+  const token = jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: "1h" });
+
+  res.cookie("token", token, {
+    httpOnly: false, // (recommend true in production; keep to match your current behavior)
+    secure: process.env.NODE_ENV !== "development",               
+    maxAge: 1000 * 60 * 60,    
+    sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+  });
+}
+
+export const googleAuth = passport.authenticate("google", {
+  scope: ["profile", "email"],
+  session: false,
+});
+
+export const googleAuthCallback = (req: any, res: any, next: any) => {
+  passport.authenticate("google", { session: false }, (err, user) => {
+    if (err || !user) {
+      console.error("Google auth error:", err);
+      return res.redirect("/auth/google/failure");
+    }
+    // user is the Prisma user object returned in the strategy
+    setAuthCookie(res, user.id);
+    return res.redirect(process.env.FRONTEND_SUCCESS_URL);
+  })(req, res, next);
+};
