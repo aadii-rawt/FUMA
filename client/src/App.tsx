@@ -65,9 +65,6 @@ const App = () => {
     
   ])
   
-  if(import.meta.env.VITE_APP_ENVIRONMENT == "production"){
-    return (<ComingSoon />)
-  }
   return (
     <RouterProvider router={router} />
   )
