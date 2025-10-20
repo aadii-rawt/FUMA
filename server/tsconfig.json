@@ -15,10 +15,10 @@
 
     "strict": false,
     "verbatimModuleSyntax": false,
-    "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
+    "isolatedModules": false,
+    "noUncheckedSideEffectImports": false,
     "moduleDetection": "force",
-    "skipLibCheck": true
+    "skipLibCheck": false
   },
   "include": ["src"]
 }
