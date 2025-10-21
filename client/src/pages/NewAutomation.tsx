@@ -8,18 +8,21 @@ import useUser from '../context/userContext'
 const NewAutomation: React.FC = () => {
 
     const {selectedPost} = useUser()
+    const { imageUrl,setImageUrl,
+            message,setMessage,} = useUser()
+      const {keywords,setKeywords, anyKeyword,setAnyKeyword} = useUser()        
 
     const handleAutomation = async () => {
         try {
             const res = await Axios.post("/automation",{ post : {   
                 name: "Launch Reel auto DM",
                 description: "Sends DM when users comment a keyword",
-                status: "DRAFT",
+                status: "LIVE",
                 postMediaId: selectedPost.postMediaId,
                 postThumbnail: selectedPost.postThumbnaild,
-                anyKeyword : false,         
-                keywords: ["link", "price"],
-                dmText: "Here is you link of product",      
+                anyKeyword : anyKeyword,         
+                keywords: anyKeyword ? [] : keywords,
+                dmText: message,      
             }})
             console.log(res); 
         } catch (error) {

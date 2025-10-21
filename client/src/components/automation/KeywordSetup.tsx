@@ -5,17 +5,17 @@ type KeywordSetupProps = {
   className?: string;
 };
 
-const KeywordSetup: React.FC<KeywordSetupProps> = ({ className = "" }) => {
+const KeywordSetup: React.FC<KeywordSetupProps> = ({ className = "" }) => {;
   const [input, setInput] = useState<string>("");
-  const {keywords,setKeywords, anyKeyword,setAnyKeyword,selectedPost} = useUser()
+  const {keywords,setKeywords, anyKeyword,setAnyKeyword} = useUser()
 
   // Add keyword on Enter
   const addKeyword = useCallback(() => {
     const k = input.trim();
     if (!k) return;
-    if (selectedPost.anyKeyword) setAnyKeyword((prev) => ({...prev, anyKeyword: false}));
+    if (anyKeyword) setAnyKeyword(false);
 
-    selectedPost((prev) => {
+    setKeywords((prev) => {
       const next = Array.from(new Set([...prev, k])); 
       return next;
     });

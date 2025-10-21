@@ -1,11 +1,12 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { FiTrash2, FiEdit2, FiX, FiImage, FiPlusCircle } from "react-icons/fi";
+import useUser from "../../context/userContext";
 
 type LinkItem = { id: string; title: string; url: string };
 
 const DMComposer: React.FC = () => {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [message, setMessage] = useState("");
+  const { imageUrl,setImageUrl,  message,setMessage,} = useUser()
+  
   const [links, setLinks] = useState<LinkItem[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [draftTitle, setDraftTitle] = useState("");

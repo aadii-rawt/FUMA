@@ -10,8 +10,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         name     :      "new automation",
         description    : "",
         status      :  "",
-        postMediaId  :  "String",       
-        postThumbnail : "String", 
+        postMediaId  :  "",       
+        postThumbnail : "", 
         anyKeyword  : false,
         keywords : [],
         dmText :   ""   
@@ -25,7 +25,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const [anyKeyword, setAnyKeyword] = useState<boolean>(false);
       const [keywords, setKeywords] = useState<string[]>([]);
       const [imageUrl, setImageUrl] = useState<string | null>(null);
-        const [message, setMessage] = useState("");
+         const [message, setMessage] = useState("");
 
 
     useEffect(() => {

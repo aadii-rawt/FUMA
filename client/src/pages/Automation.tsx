@@ -94,7 +94,7 @@ const Automation: React.FC = () => {
 
                 {/* Status col */}
                 <div className="w-[16%] sm:w-[14%]">
-                  {auto.status === "Live" ? (
+                  {auto.status === "LIVE" ? (
                     <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
                       Live
                     </span>

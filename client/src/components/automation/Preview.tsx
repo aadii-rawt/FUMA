@@ -55,7 +55,7 @@ const PhoneCard: React.FC<Props> = ({ className = "", children }) => {
           </div>
 
           {/* Square placeholder */}
-          {selectedPost ?
+          {selectedPost.postThumbnail !== "" ?
             <img src={selectedPost?.postThumbnail} alt="" className="w-full h-60 " /> :
             <div className="px-2">
               <div className="relative w-full overflow-hidden rounded-xl bg-gray-300 text-black">
