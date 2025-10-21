@@ -12,6 +12,7 @@ const instagram_1 = __importDefault(require("./routes/instagram"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const ig_1 = __importDefault(require("./routes/ig"));
 const authController_1 = require("./controllers/authController");
+const automation_1 = __importDefault(require("./routes/automation"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cookie_parser_1.default)());
@@ -154,6 +155,7 @@ app.get("/privacy_policy", (_req, res) => {
 app.use("/api/v1/auth", auth_1.default);
 app.use("/api/v1/instagram", instagram_1.default);
 app.use("/api/v1/ig", ig_1.default);
+app.use("/api/v1/automation", automation_1.default);
 app.all("/webhook", webhook_1.webhook);
 // ----- Start -----
 const port = Number(process.env.PORT) || 8080;

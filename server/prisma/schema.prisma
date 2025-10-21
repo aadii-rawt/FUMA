@@ -18,6 +18,8 @@ model users {
   plan    String?
   purchaseAt DateTime @default(now())
   expireAt    DateTime?
+
+  automations       Automation[]
 }
 
 model Otp {
@@ -31,7 +33,6 @@ model Otp {
   @@index([email])
 }
 
-
 model subscription {
   id    String @id 
   plan    String
@@ -42,4 +43,35 @@ model subscription {
   transactionId     String
   createdAt   DateTime @default(now())
 
+}
+
+enum AutomationStatus {
+  DRAFT
+  LIVE
+  PAUSED
+  ARCHIVED
+}
+
+model Automation {
+  id             String   @id @default(cuid())
+  userId         String
+  user           users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  description    String?
+  status         AutomationStatus  @default(DRAFT)
+  publishedAt    DateTime?
+  postMediaId    String           
+  postThumbnail  String? 
+  anyKeyword     Boolean           @default(false) 
+  keywords       String[]          @default([])  
+  dmText         String          
+  dmImageUrl     String?          
+  dmLinks        Json?   
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+
+  @@index([userId, status])
+  @@index([status, publishedAt])
+  @@index([postMediaId])
 }
