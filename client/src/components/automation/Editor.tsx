@@ -15,7 +15,6 @@ const Editor: React.FC = () => {
   const getPosts = async () => {
     try {
       const res = await Axios.get("/ig/media",{ params: { limit: 3, access_token : user.access_token} });
-      console.log(res.data.data);
       setPosts(res.data.data)
     } catch (error) {
       console.log(error);
@@ -25,6 +24,11 @@ const Editor: React.FC = () => {
   useEffect(() => {
     getPosts()
   }, [])
+
+  const handleSelectPost = (post) => {
+    setSelectedPost((prev) => ({...prev, postMediaId : post.id, postThumbnail : post.thumbnail_url}))
+    console.log(selectedPost);
+  }
 
   return (
     <div className=" px-10 py-6 space-y-5 bg-gray-100">
@@ -46,7 +50,7 @@ const Editor: React.FC = () => {
         {/* Tiles */}
         <div className="mt-5 flex gap-5">
           {posts?.map((post: any,i) => (
-            <div key={i} onClick={() => setSelectedPost(post)} className={`${post.id == selectedPost?.id && "border-2 border-indigo-500"} relative cursor-pointer h-50 w-40 overflow-hidden rounded-xl  p-0`}>
+            <div key={i} onClick={() => handleSelectPost(post)} className={`${post.id == selectedPost?.postMediaId && "border-2 border-indigo-500"} relative cursor-pointer h-50 w-40 overflow-hidden rounded-xl  p-0`}>
               <img
                 src={post?.thumbnail_url}
                 alt="Selected post"

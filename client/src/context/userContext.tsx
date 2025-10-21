@@ -6,10 +6,26 @@ import Axios from "../utils/axios";
 const UserContext = createContext(null);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [selectedPost, setSelectedPost] = useState(null);
+    const [selectedPost, setSelectedPost] = useState({
+        name     :      "new automation",
+        description    : "",
+        status      :  "",
+        postMediaId  :  "String",       
+        postThumbnail : "String", 
+        anyKeyword  : false,
+        keywords : [],
+        dmText :   ""   
+
+    });
     const [isPriceModalOpen,setIsPriceModalOpen] = useState(false)
     const [user,setUser] = useState(null)
     const [loading,setLoading] = useState(true)
+
+
+      const [anyKeyword, setAnyKeyword] = useState<boolean>(false);
+      const [keywords, setKeywords] = useState<string[]>([]);
+      const [imageUrl, setImageUrl] = useState<string | null>(null);
+        const [message, setMessage] = useState("");
 
 
     useEffect(() => {
@@ -28,7 +44,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 }, []);
 
     return (
-        <UserContext.Provider value={{ selectedPost,user,setUser, setSelectedPost,loading,setLoading, isPriceModalOpen,setIsPriceModalOpen }}>
+        <UserContext.Provider value={{ selectedPost,user,setUser, setSelectedPost,loading,setLoading, isPriceModalOpen,setIsPriceModalOpen ,
+            keywords,setKeywords,
+            anyKeyword,setAnyKeyword,
+            imageUrl,setImageUrl,
+            message,setMessage,
+        }}>
             {children}
         </UserContext.Provider>
     );

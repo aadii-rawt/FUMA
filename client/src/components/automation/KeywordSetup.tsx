@@ -1,21 +1,21 @@
 import React, { useCallback, useMemo, useState } from "react";
+import useUser from "../../context/userContext";
 
 type KeywordSetupProps = {
   className?: string;
 };
 
 const KeywordSetup: React.FC<KeywordSetupProps> = ({ className = "" }) => {
-  const [anyKeyword, setAnyKeyword] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
-  const [keywords, setKeywords] = useState<string[]>([]);
+  const {keywords,setKeywords, anyKeyword,setAnyKeyword,selectedPost} = useUser()
 
   // Add keyword on Enter
   const addKeyword = useCallback(() => {
     const k = input.trim();
     if (!k) return;
-    if (anyKeyword) setAnyKeyword(false);
+    if (selectedPost.anyKeyword) setAnyKeyword((prev) => ({...prev, anyKeyword: false}));
 
-    setKeywords((prev) => {
+    selectedPost((prev) => {
       const next = Array.from(new Set([...prev, k])); 
       return next;
     });

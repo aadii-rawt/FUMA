@@ -10,7 +10,7 @@ type Props = {
 };
 
 const PhoneCard: React.FC<Props> = ({ className = "", children }) => {
-  const { selectedPost } = useUser()
+  const { selectedPost ,user} = useUser()
   return (
     <div className="flex items-center justify-center mt-5">
       <div
@@ -46,17 +46,17 @@ const PhoneCard: React.FC<Props> = ({ className = "", children }) => {
           {/* Header */}
           <div className="flex items-center justify-between px-3 py-2">
             <div className="flex items-center gap-2">
-              <div className="grid h-6 w-6 place-items-center rounded-full bg-yellow-500 text-[10px] font-semibold">
-                d
+              <div className="grid h-6 w-6 place-items-center overflow-hidden rounded-full bg-yellow-500 text-[10px] font-semibold">
+               <img src={user?.avatar || ""} alt="" />
               </div>
-              <span className="text-sm font-medium">@dotdiscount</span>
+              <span className="text-sm font-medium">{user?.username}</span>
             </div>
             <FiMoreHorizontal className="text-xl text-white/80" />
           </div>
 
           {/* Square placeholder */}
           {selectedPost ?
-            <img src={selectedPost?.thumbnail_url} alt="" className="w-full h-60 " /> :
+            <img src={selectedPost?.postThumbnail} alt="" className="w-full h-60 " /> :
             <div className="px-2">
               <div className="relative w-full overflow-hidden rounded-xl bg-gray-300 text-black">
                 <div className="aspect-square w-full rounded-xl border border-dashed border-black grid place-items-center px-6 text-center">

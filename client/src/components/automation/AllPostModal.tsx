@@ -36,7 +36,7 @@ const AllPostModal: React.FC<Props> = ({ open, onClose, title, subtitle, setSele
       if (!user) return
       try {
         const res = await Axios.get("/ig/media", { params: { limit: 50,access_token : user?.access_token } });
-        console.log(res);
+
         setPosts(res.data.data)
       } catch (error) {
         console.log(error);
@@ -46,7 +46,7 @@ const AllPostModal: React.FC<Props> = ({ open, onClose, title, subtitle, setSele
   }, [])
 
   const confirmSelection = () => {
-    setSelectedPost(select)
+    setSelectedPost((prev) => ({...prev, postMediaId : select?.id, postThumbnail : select.thumbnail_url }))
     onClose()
   }
 
