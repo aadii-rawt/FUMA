@@ -118,7 +118,7 @@ export const verifySignupOTP = async (req : Request,res : Response) => {
         })
         const JWT_SECRET = Buffer.from(process.env.JWT_SECRET || "")
         const token = jwt.sign({id : user.id},JWT_SECRET, {expiresIn : "1h"})
-        res.cookie("token", user.id , {
+        res.cookie("token", token, {
             httpOnly: false,                  
         // secure: isProd,                  
             secure: process.env.NODE_ENV !== "development",               
@@ -130,7 +130,7 @@ export const verifySignupOTP = async (req : Request,res : Response) => {
         })
     } catch (error) {
         console.log(error);
-        
+  
             res.json({
                 message : error
             })

@@ -15,11 +15,12 @@ model users {
   createdAt   DateTime @default(now())
   access_token String?
   ig_id   Int?
-  plan    String?
+  plan    String? 
   purchaseAt DateTime @default(now())
   expireAt    DateTime?
 
   automations       Automation[]
+  subscriptioin     Subscription[]
 }
 
 model Otp {
@@ -31,18 +32,6 @@ model Otp {
   createdAt  DateTime @default(now())
 
   @@index([email])
-}
-
-model subscription {
-  id    String @id 
-  plan    String
-  purchaseAt    DateTime  @default(now())
-  expireAt    DateTime
-  amount    Int
-  paymentMode   String
-  transactionId     String
-  createdAt   DateTime @default(now())
-
 }
 
 enum AutomationStatus {
@@ -75,4 +64,63 @@ model Automation {
   @@index([userId, status])
   @@index([status, publishedAt])
   @@index([postMediaId])
+}
+
+
+enum PlanInterval {
+  MONTHLY
+  YEARLY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  CANCELED
+  EXPIRED
+}
+
+
+enum PaymentMethod {
+  UPI
+  CARD
+  UNKNOWN
+}
+
+model Subscription {
+  id                   String              @id @default(cuid())
+  userId               String
+  user                 users               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  planKey              String
+  planTitle            String              
+  interval             PlanInterval    @default(MONTHLY)
+
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean             @default(false)
+
+  amountSubtotal       Int             
+  discountAmount       Int                 @default(0)
+  taxAmount            Int                 @default(0)
+  amountTotal          Int                
+          
+  paymentId    String
+  status               SubscriptionStatus  @default(ACTIVE)
+
+  // paymentMethod        PaymentMethod       @default(UNKNOWN)
+  // upiVpa               String?             
+  // cardLast4            String?             
+  // cardNetwork          String?  
+
+  promotionCode        String?
+  billingName          String?
+  billingPhone         String?
+  billingCountry       String?
+  billingCity          String?
+
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+
+  @@index([userId, status])
+  @@index([currentPeriodEnd])
 }

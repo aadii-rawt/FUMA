@@ -1,29 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  FiCreditCard,
-  FiPercent,
-  FiArrowRight,
-  FiLoader,
-  FiMapPin,
-} from "react-icons/fi";
+import { FiCreditCard, FiLoader, FiMapPin } from "react-icons/fi";
+import Axios from "../../utils/axios";
 
 type Method = "card" | "upi";
 
-// Optional: allow parent to pass selected plan & collect payload
-type PlanSummary = {
-  name: string;               // e.g., "Pro"
-  cycle: "Monthly" | "Yearly";
-  priceStruck?: string;       // "₹14,388"
-  priceFinal: string;         // "₹9,588"
-  periodSuffix: string;       // "/yr" or "/mo"
-  nextBillingDate?: string;   // "08 October 2026"
-};
-
 type Props = {
-  selectedPlan : any;
-  plan?: PlanSummary;
-  onPayAllDetails?: (payload: any) => void; // optional callback; still console.log
-  onBack : (payload : any) => void
+  selectedPlan: { title: string; price: number }; // price in INR per month
+  onBack: () => void;
 };
 
 declare global {
@@ -32,20 +15,17 @@ declare global {
   }
 }
 
-export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }: Props) {
-  
-  const total = (18 / 100) * selectedPlan?.price  + selectedPlan.price
-  const [method, setMethod] = useState<Method>("upi"); // purely visual now
+export default function Payment({ selectedPlan, onBack }: Props) {
+  const [method, setMethod] = useState<Method>("upi");
   const [loading, setLoading] = useState(false);
 
-  // ---- form state (no visual change) ----
+  // Minimal form fields (optional but nice for prefill & invoice)
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState(""); // +91 ...
+  const [phone, setPhone] = useState(""); // +91...
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
-  const [promo, setPromo] = useState("");
 
-  // Load Razorpay script once
+  // Load Razorpay once
   useEffect(() => {
     if (window.Razorpay) return;
     const s = document.createElement("script");
@@ -54,23 +34,18 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
     document.body.appendChild(s);
   }, []);
 
-  // Basic validation (no method-specific inputs anymore)
+  const igst = useMemo(() => Math.round(selectedPlan.price * 0.18), [selectedPlan.price]);
+  const total = useMemo(() => selectedPlan.price + igst, [selectedPlan.price, igst]);
+
   const canPay =
     name.trim().length > 1 &&
     phone.trim().length >= 8 &&
     country.trim().length > 1 &&
     city.trim().length > 1;
 
-  // Parse "₹11,314" => 11314 (INR), then paise
-  const parseINR = (inr: string) => {
-    const n = Number(String(inr).replace(/[^\d.]/g, ""));
-    return Number.isFinite(n) ? n : 0;
-  };
+  const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID as string;
 
-
-  const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID as string; // put your key id in env
-
-  const openRazorpay = (amountINR: number, payload: any) => {
+  const openRazorpay = async (amountINR: number) => {
     if (!window.Razorpay) {
       alert("Payment gateway not loaded yet. Please try again in a moment.");
       return;
@@ -83,61 +58,59 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
 
     const options = {
       key: keyId,
-      amount: amountINR * 100, // paise
+      amount: Math.round(amountINR * 100), // paise
       currency: "INR",
       name: "FUMA",
       description: `${selectedPlan.title} plan`,
-      // You can create an order on your backend and pass order_id here:
-      // order_id: "<from-your-backend>",
+      // If you create orders in backend: add order_id here
       prefill: {
         name,
         contact: phone,
-        email: "", // supply if you capture it
-      },
-      notes: {
-        promo: promo || "",
-        plan_name: "summary.name",
-        plan_cycle:" summary.cycle",
-        source_component: "Payment",
       },
       theme: { color: "#7c3aed" },
-      handler: function (response: any) {
-        // Razorpay success
-        const successPayload = {
-          ...payload,
-          razorpay: {
-            payment_id: response.razorpay_payment_id,
-            order_id: response.razorpay_order_id,
-            signature: response.razorpay_signature,
-          },
-          status: "success",
-        };
-        console.log("✅ PAYMENT SUCCESS", successPayload);
-        onPayAllDetails?.(successPayload);
-        setLoading(false);
+      handler: async function (response: any) {
+        // Razorpay success => store in DB
+        try {
+          const payload = {
+            razorpay: {
+              payment_id: response.razorpay_payment_id,
+              order_id: response.razorpay_order_id, // may be undefined if you didn’t create server order
+              signature: response.razorpay_signature,
+            },
+            planKey: selectedPlan.title.toUpperCase().replace(/\s+/g, "_"),
+            planTitle: selectedPlan.title,
+            interval: "MONTHLY", // adjust if you also sell yearly here
+            currency: "INR",
+            amountSubtotal: Math.round(selectedPlan.price * 100), // paise
+            taxAmount: Math.round(igst * 100),                    // paise
+            discountAmount: 0,
+            amountTotal: Math.round(total * 100),                 // paise
+            billingName: name,
+            billingPhone: phone,
+            billingCountry: country,
+            billingCity: city,
+          };
+
+          await Axios.post("/subscriptions/confirm", payload);
+          alert("Payment successful and subscription stored!");
+        } catch (e) {
+          console.error(e);
+          alert("Payment succeeded but storing subscription failed.");
+        } finally {
+          setLoading(false);
+        }
       },
       modal: {
         ondismiss: function () {
-          const failPayload = {
-            ...payload,
-            status: "dismissed",
-          };
-          console.log("ℹ️ Payment modal dismissed", failPayload);
           setLoading(false);
         },
       },
     };
 
     const rzp = new window.Razorpay(options);
-    rzp.on("payment.failed", function (resp: any) {
-      const failPayload = {
-        ...payload,
-        status: "failed",
-        razorpay_error: resp?.error,
-      };
-      console.log("❌ PAYMENT FAILED", failPayload);
-      onPayAllDetails?.(failPayload);
+    rzp.on("payment.failed", function () {
       setLoading(false);
+      alert("Payment failed. Please try again.");
     });
     rzp.open();
   };
@@ -145,22 +118,7 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
   const pay = () => {
     if (!canPay) return;
     setLoading(true);
-
-    // Compose your single final payload (no method-specific inputs)
-    const payload = {
-      billedTo: { name, phone },
-      billingDetails: { country, city },
-      promotion: promo || null,
-      selectedMethodTab: method, // purely visual
-      meta: {
-        createdAt: new Date().toISOString(),
-        component: "Payment",
-      },
-    };
-
-    console.log("🧾 INITIATING RAZORPAY WITH PAYLOAD", payload);
-
-    openRazorpay(total, payload);
+    openRazorpay(total);
   };
 
   return (
@@ -178,18 +136,13 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
-              <div>
-                <Label>Phone</Label>
-                <div className="flex items-center gap-2">
-                  <input
-                    className="w-full rounded-xl border px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-purple-500/40"
-                    placeholder="+91 0000 000 000"
-                    value={phone}
-                    type="number"
-                    onChange={(e) => setPhone(e.target.value)}
-                  />
-                </div>
-              </div>
+              <Input
+                label="Phone"
+                placeholder="+91 0000 000 000"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                type="tel"
+              />
             </div>
           </section>
 
@@ -213,11 +166,9 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
             </div>
           </section>
 
-          {/* Payment details */}
+          {/* Payment method */}
           <section>
-            <h3 className="mb-3 text-sm font-semibold text-gray-500">Payment Details</h3>
-
-            {/* tabs — purely visual now */}
+            <h3 className="mb-3 text-sm font-semibold text-gray-500">Payment Method</h3>
             <div className="grid gap-3 sm:grid-cols-2">
               <button
                 onClick={() => setMethod("card")}
@@ -238,30 +189,15 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
                 <span className="grid h-5 w-10 place-items-center rounded-md bg-purple-100 text-purple-600">
                   ▲
                 </span>
-                UPI or QR
+                UPI / QR
               </button>
             </div>
-
-            {/* banner (keep) */}
-            {method === "upi" && (
-              <div className="mt-3 flex items-center gap-3 rounded-2xl border border-purple-300 bg-purple-50/60 px-4 py-3 text-sm font-semibold text-purple-700">
-                <span className="flex -space-x-1.5">
-                  <Badge url='https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/phonepe-icon.png' />
-                  <Badge url='https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-pay-icon.png' />
-                  <Badge url='https://cdn.iconscout.com/icon/free/png-256/free-paytm-icon-svg-download-png-226448.png?f=webp&w=256' />
-                </span>
-                Scan &amp; pay using your preferred UPI App (via Razorpay)
-              </div>
-            )}
-
-            {/* ❌ removed method-specific input fields as requested */}
           </section>
         </div>
 
         {/* RIGHT: summary card */}
         <aside className="lg:sticky lg:top-6">
           <div className="rounded-3xl border-[1.5px] border-gray-100 bg-[#fafafa]">
-            {/* header gradient */}
             <div className="rounded-xl bg-gradient-to-br from-purple-50 via-white to-purple-100 p-5 m-2 border-2 border-white">
               <div className="flex items-start justify-between">
                 <div>
@@ -272,10 +208,7 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
                     </span>
                   </div>
                   <div className="mt-2 text-sm">
-                    
-                    <span className="font-semibold text-gray-900">
-                      ₹{selectedPlan.price}
-                    </span>
+                    <span className="font-semibold text-gray-900">₹{selectedPlan.price}</span>
                     <span className="text-gray-500">/mo</span>
                   </div>
                 </div>
@@ -285,52 +218,12 @@ export default function Payment({ selectedPlan, plan, onPayAllDetails, onBack }:
               </div>
             </div>
 
-            {/* body */}
             <div className="space-y-4 p-5 px-7">
-              <Row
-                left={
-                  <div>
-                    <div className="font-medium text-gray-800">
-                      {selectedPlan.title} /(mo)
-                    </div>
-                  </div>
-                }
-                right={
-                  <div className="text-right">
-                    <div className="font-semibold text-gray-800">
-                      ₹{selectedPlan.price}
-                    </div>
-                  </div>
-                }
-              />
+              <Row left={<span>Plan ({selectedPlan.title})</span>} right={<span>₹{selectedPlan.price}</span>} />
+              <Row left={<span>IGST (18%)</span>} right={<span>₹{igst}</span>} />
+              <hr className="my-2 border-gray-200" />
+              <Row left={<span className="font-semibold">Total</span>} right={<span className="font-semibold">₹{total}</span>} />
 
-              <button
-                className="flex w-full items-center justify-between rounded-xl border px-3 py-2.5 text-sm font-semibold text-emerald-700 hover:bg-emerald-50"
-                onClick={() => {
-                  const code = prompt("Enter promotion code") || "";
-                  setPromo(code.trim());
-                }}
-              >
-                <span className="inline-flex items-center gap-2">
-                  <span className="grid h-6 w-6 place-items-center rounded-full bg-emerald-100 text-emerald-600">
-                    <FiPercent />
-                  </span>
-                  Add promotion code
-                </span>
-                <FiArrowRight />
-              </button>
-
-              <Divider />
-
-              <Row left={<span>Subtotal</span>} right={<span> ₹{selectedPlan.price}</span>} />
-              <Row left={<span>IGST (18%)</span>} right={<span>₹{(18 / 100) * selectedPlan.price}</span>} />
-
-              <Divider />
-
-              <Row
-                left={<span className="font-semibold">Total</span>}
-                right={<span className="font-semibold">₹{total}</span>}
-              />
               <button
                 onClick={pay}
                 disabled={!canPay || loading}
@@ -354,12 +247,14 @@ function Input({
   LeftIcon,
   value,
   onChange,
+  type = "text",
 }: {
   label: string;
   placeholder?: string;
   LeftIcon?: React.ComponentType<any>;
   value?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  type?: string;
 }) {
   return (
     <div>
@@ -377,6 +272,7 @@ function Input({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          type={type}
         />
       </div>
     </div>
@@ -384,11 +280,7 @@ function Input({
 }
 
 function Label({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="mb-1 text-xs font-medium uppercase tracking-wide text-gray-500">
-      {children}
-    </div>
-  );
+  return <div className="mb-1 text-xs font-medium uppercase tracking-wide text-gray-500">{children}</div>;
 }
 
 function Row({ left, right }: { left: React.ReactNode; right: React.ReactNode }) {
@@ -397,19 +289,5 @@ function Row({ left, right }: { left: React.ReactNode; right: React.ReactNode })
       <div>{left}</div>
       <div>{right}</div>
     </div>
-  );
-}
-
-function Divider() {
-  return <hr className="my-2 border-gray-200" />;
-}
-
-function Badge(url) {
-  // console.log(url);
-  
-  return (
-    <span className="grid h-6 w-6 place-items-center rounded-full border border-purple-300 bg-white text-[11px] font-bold text-purple-700">
-      <img src={url.url} alt="" className="w-full" />
-    </span>
   );
 }

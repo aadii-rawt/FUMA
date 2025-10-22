@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import igroute from "./routes/ig";
 import { passportGoogle } from "./controllers/authController";
 import automationRoute from "./routes/automation";
+import subscriptioinRouter from "./routes/subscription";
 dotenv.config();
 
 const app = express();
@@ -160,6 +161,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/instagram", instaRouter);
 app.use("/api/v1/ig", igroute);
 app.use("/api/v1/automation", automationRoute);
+app.use("/api/v1/subscriptions", subscriptioinRouter);
 
 app.all("/webhook", webhook);
 
