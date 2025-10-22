@@ -7,7 +7,7 @@ const UserContext = createContext(null);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [selectedPost, setSelectedPost] = useState({
-        name     :      "new automation",
+        name     :      "New Automation",
         description    : "",
         status      :  "",
         postMediaId  :  "",       
@@ -25,8 +25,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const [anyKeyword, setAnyKeyword] = useState<boolean>(false);
       const [keywords, setKeywords] = useState<string[]>([]);
       const [imageUrl, setImageUrl] = useState<string | null>(null);
-         const [message, setMessage] = useState("");
-
+        const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
+    const [message, setMessage] = useState("");
+      const [links, setLinks] = useState([]);
 
     useEffect(() => {
         const fetchMe = async () => {
@@ -49,6 +50,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
             anyKeyword,setAnyKeyword,
             imageUrl,setImageUrl,
             message,setMessage,
+            links, setLinks,
+            imageDataUrl, setImageDataUrl
+            
         }}>
             {children}
         </UserContext.Provider>

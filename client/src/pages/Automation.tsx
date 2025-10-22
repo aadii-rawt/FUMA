@@ -5,6 +5,7 @@ import useUser from "../context/userContext";
 import Axios from "../utils/axios";
           {/* JSX only — paste inside your page/render (React + TS). Uses Tailwind classes and react-icons */}
 import { RiRobot2Line, RiStarLine, RiMore2Fill } from "react-icons/ri";
+import { PiLinkSimpleLight } from "react-icons/pi";
 
 const Automation: React.FC = () => {
   const [q, setQ] = useState("");
@@ -23,11 +24,11 @@ const Automation: React.FC = () => {
 
   const {user} = useUser()
   return (
-    <div className="w-full rounded-xl h-full bg-[#f7f7f8] border border-gray-200 bg-white/80">
+    <div className="w-full rounded-xl h-full bg-[#f1f1f1] border border-gray-200 border-[1px] border-gray-500/20">
       <div className="mx-auto max-w-6xl">
 
         {/* Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-5 sm:px-6">
           {/* Search */}
           <div className="relative">
             <LuSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -64,59 +65,61 @@ const Automation: React.FC = () => {
         </div>
 
         {/* Empty state card */}
-        {automations?.length > 0 ? 
-        <div className="mx-4 rounded-xl border border-gray-200 bg-white">
-          {/* Header */}
-          <div className="flex items-center px-4 sm:px-6 py-3 text-sm font-medium text-gray-500">
-            <div className="w-[46%] sm:w-[50%]">Automation</div>
-            <div className="w-[12%] hidden sm:block">Runs</div>
-            <div className="w-[16%] sm:w-[14%]">Status</div>
-            <div className="w-[22%] sm:w-[20%]">Last Published</div>
-            <div className="w-[10%] sm:w-[6%]" />
-          </div>
+        {true ? 
+        <div className="mx-4 overflow-hidden rounded-xl border border-gray-200 bg-white">
+  <table className="w-full text-sm text-gray-700">
+    <thead className="bg-gray-50 border-b border-gray-200">
+      <tr className="text-left text-gray-500 font-medium">
+        <th className="px-6 py-3">Automation</th>
+        <th className="px-6 py-3">Status</th>
+        <th className="px-6 py-3">Last Published</th>
+      </tr>
+    </thead>
 
-          <div className="divide-y">
-            {automations.map((auto, idx) => (
-              <div
-                key={idx}
-                className="flex items-center px-4 sm:px-6 py-4 hover:bg-gray-50"
-              >
-                {/* Automation col */}
-                <div className="w-[46%] sm:w-[50%] flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-md bg-green-100 flex items-center justify-center">
-                    <RiRobot2Line className="text-green-600 text-lg" />
-                  </div>
-                  <div className="text-gray-900">{auto.name}</div>
-                </div>
+    <tbody>
+      {automations?.map((auto, idx) => (
+        <tr
+          key={idx}
+          className="border-b border-gray-100 hover:bg-gray-50 transition"
+        >
+          {/* Automation Name */}
+          <td className="px-6 py-3 text-gray-900 flex items-center gap-3">
+            <span className="p-1 bg-green-300/20 rounded text-center">
 
-                {/* Runs col */}
-                <div className="w-[12%] hidden sm:block text-gray-700">{auto.runs}</div>
+            <PiLinkSimpleLight/>
+            </span>
+            {auto.name}
+          </td>
 
-                {/* Status col */}
-                <div className="w-[16%] sm:w-[14%]">
-                  {auto.status === "LIVE" ? (
-                    <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
-                      Live
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
-                      Draft
-                    </span>
-                  )}
-                </div>
+          {/* Status */}
+          <td className="px-6 py-3">
+            {auto.status === "LIVE" ? (
+              <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+                Live
+              </span>
+            ) : (
+              <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                Draft
+              </span>
+            )}
+          </td>
 
-                {/* Last Published */}
-                <div className="w-[22%] sm:w-[20%] text-gray-700">{auto.createdAt}</div>
+          {/* Last Published */}
+          <td className="px-6 py-3 text-gray-500">
+            {new Date(auto.createdAt).toLocaleDateString("en-IN", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
 
-                {/* Actions */}
-                <div className="w-[10%] sm:w-[6%] flex items-center justify-end gap-3">
-                  <RiStarLine className="text-gray-400 text-xl hover:text-yellow-400 cursor-pointer" />
-                  <RiMore2Fill className="text-gray-500 text-xl cursor-pointer" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
         :
         <div className="px-4 pb-6 sm:px-6">
           <div className="rounded-2xl border border-gray-200 bg-[#fbfbfc] p-12 text-center">

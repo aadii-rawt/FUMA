@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
             <ul className="mt-3 space-y-3">
               <li><Link to='/about' className="text-slate-700 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">About</Link></li>
               <li><Link to='/pricing' className="text-slate-700 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">Pricing</Link></li>
-              <li><Link to='' className="text-slate-700 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">Contact Us</Link></li>
+              <li><a href="mailto:support@dotdazzle.in"  className="text-slate-700 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">Contact Us</a></li>
             </ul>
           </div>
 
@@ -44,7 +44,7 @@ const Footer: React.FC = () => {
           </p>
 
           <nav className="flex flex-wrap items-center gap-x-8 gap-y-2">
-            <Link to="privacy-policy" className="text-slate-800 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">
+            <Link to="/privacy-policy" className="text-slate-800 underline underline-offset-4 decoration-slate-300 hover:text-slate-900">
               Privacy Policy
             </Link>
           </nav>

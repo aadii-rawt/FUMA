@@ -18,6 +18,7 @@ import ConnectInsta from './pages/auth/ConnectInsta'
 import { Authenticate } from './utils/Authenticate'
 import About from './pages/About'
 import NotFound from './pages/404'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -28,6 +29,7 @@ const App = () => {
         { path : "/", element : <Home />},
         { path : "/about", element : <About />},
         { path : "/pricing", element : <Pricing />},
+        { path : "/privacy-policy", element : <PrivacyPolicy />},
       ],
       errorElement : <NotFound />
     },

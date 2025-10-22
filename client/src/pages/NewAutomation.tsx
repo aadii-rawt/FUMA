@@ -1,16 +1,18 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import Editor from '../components/automation/Editor'
 import Preview from '../components/automation/Preview'
 import { LuPencilLine } from 'react-icons/lu'
 import { RiRadioLine } from 'react-icons/ri'
 import Axios from '../utils/axios'
 import useUser from '../context/userContext'
+import { FiEdit } from 'react-icons/fi'
+import { IoMdCheckmarkCircle } from 'react-icons/io'
 const NewAutomation: React.FC = () => {
 
-    const {selectedPost} = useUser()
+    const {selectedPost,setSelectedPost} = useUser()
     const { imageUrl,setImageUrl,
             message,setMessage,} = useUser()
-      const {keywords,setKeywords, anyKeyword,setAnyKeyword} = useUser()        
+      const {keywords,setKeywords, anyKeyword,setAnyKeyword, links, setLinks, imageDataUrl, setImageDataUrl} = useUser()        
 
     const handleAutomation = async () => {
         try {
@@ -22,7 +24,9 @@ const NewAutomation: React.FC = () => {
                 postThumbnail: selectedPost.postThumbnaild,
                 anyKeyword : anyKeyword,         
                 keywords: anyKeyword ? [] : keywords,
-                dmText: message,      
+                dmText: message,    
+                dmLinks : links,
+                dmImageUrl : imageDataUrl
             }})
             console.log(res); 
         } catch (error) {
@@ -31,19 +35,28 @@ const NewAutomation: React.FC = () => {
         
     }
 
+    const inputRef = useRef(null)
+    const [isEditing,setIsEditing] = useState(false)
+   
     return (
         <div className='w-full max-h-screen rounded-xl'>
             <div className="w-full border-b border-gray-200 bg-white">
                 <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
                     {/* Left: Editor tab */}
                     <div className="relative">
-                        <button
-                            type="button"
-                            className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-[17px] font-semibold text-violet-700"
-                        >
-                            <LuPencilLine className="text-xl" />
-                            Editor
-                        </button>
+                       <div className={`${isEditing ? "hidden" : "flex"} gap-3 items-center`}>
+                        <p>{selectedPost.name}</p>
+                            <button onClick={() => { 
+                                inputRef.current.focus()
+                                setIsEditing(true)
+                                }}className='text-gray-400 cursor-pointer'><FiEdit /></button>
+                        </div> 
+                        <div className={`${isEditing ? "flex" : "hidden"} gap-3 items-center`}>
+                            <input ref={inputRef} type="text" value={selectedPost.name} onChange={(e) => setSelectedPost((prev) => ({...prev, name : e.target.value}))} />
+                            <button onClick={() => {
+                                setIsEditing(false)
+                             inputRef.current.blur()}} className='text-gray-400 cursor-pointer bg-primary rounded-full text-white'><IoMdCheckmarkCircle /></button>
+                        </div>
 
                     </div>
 
