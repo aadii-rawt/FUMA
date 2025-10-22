@@ -21,37 +21,41 @@ export const getAutomation = async (req : Request, res : Response) => {
     }
 }
 
-export const createAutomation = async (req : Request,res : Response)  => {
+export const createAutomation = async (req: Request, res: Response) => {
+  try {
     // @ts-ignore
-    const userId = req.id
-    // @ts-ignore
-    const {post} = req.body
-    try {
-        
-        console.log(post);
-        
-        let dmImageUrl: string | null = post.dmImageUrl;
-        
-            console.log(dmImageUrl);
+    const userId: string = req.id;
+    const { post } = req.body 
 
-    // Upload image if provided
-    if (post.imageDataUrl?.startsWith("data:image/")) {
-      const uploaded = await cloudinary.uploader.upload(post.imageDataUrl, {
-        folder: `autodm/${userId}`,
+    if (!post) {
+      return res.status(400).json({ error: "Missing post payload" });
+    }
+
+    let dmImageUrl = post.dmImageUrl ?? null;
+
+    // If we received a data URI, upload it. If it's already a URL, keep it.
+    if (dmImageUrl && dmImageUrl.startsWith("data:image")) {
+      const result = await cloudinary.uploader.upload(dmImageUrl, {
+        folder: "FUMA",
         resource_type: "image",
       });
-      dmImageUrl = uploaded.secure_url;
-    }
+      dmImageUrl = result.secure_url;
+      console.log("Cloudinary URL:", dmImageUrl);
+    } 
 
-        await prisma.automation.create({
-            data : {
-                userId,
-                ...post,
-                dmImageUrl
-            }
-        })
-        res.json({message : "automatin created  "})
-    } catch (error) {
-        res.json({msg : "error get "})
-    }
-}
+    // ⚠️ Avoid re-saving the original base64. Build the data explicitly:
+   
+    await prisma.automation.create({
+      data: {
+        userId,
+        ...post,
+        dmImageUrl : dmImageUrl || null,
+      },
+    });
+
+    return res.json({ message: "automation created", dmImageUrl });
+  } catch (error: any) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to create automation" });
+  }
+};

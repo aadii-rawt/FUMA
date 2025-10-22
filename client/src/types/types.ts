@@ -7,6 +7,7 @@ export type User = {
     keywords : any[],
     dmText :   string,
     msgTitle : string,
-    links : any[]
+    links : any[],
+    dmImageUrl : string
 
 }

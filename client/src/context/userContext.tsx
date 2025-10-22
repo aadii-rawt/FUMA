@@ -9,15 +9,14 @@ const UserContext = createContext(null);
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [selectedPost, setSelectedPost] = useState<User>({
         name     :      "New Automation",
-        status      :  "",
+        status      :  "LIVE",
         postMediaId  :  "",       
         postThumbnail : "", 
         anyKeyword  : false,
         keywords : [],
         dmText :   "",
         msgTitle : "",
-        links : []
-
+        dmLinks : []
     });
     const [isPriceModalOpen,setIsPriceModalOpen] = useState(false)
     const [user,setUser] = useState(null)

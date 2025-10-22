@@ -21,33 +21,36 @@ const getAutomation = async (req, res) => {
 };
 exports.getAutomation = getAutomation;
 const createAutomation = async (req, res) => {
-    // @ts-ignore
-    const userId = req.id;
-    // @ts-ignore
-    const { post } = req.body;
     try {
-        console.log(post);
-        let dmImageUrl = post.dmImageUrl;
-        console.log(dmImageUrl);
-        // Upload image if provided
-        if (post.imageDataUrl?.startsWith("data:image/")) {
-            const uploaded = await cloudinary_1.cloudinary.uploader.upload(post.imageDataUrl, {
-                folder: `autodm/${userId}`,
+        // @ts-ignore
+        const userId = req.id;
+        const { post } = req.body;
+        if (!post) {
+            return res.status(400).json({ error: "Missing post payload" });
+        }
+        let dmImageUrl = post.dmImageUrl ?? null;
+        // If we received a data URI, upload it. If it's already a URL, keep it.
+        if (dmImageUrl && dmImageUrl.startsWith("data:image")) {
+            const result = await cloudinary_1.cloudinary.uploader.upload(dmImageUrl, {
+                folder: "FUMA",
                 resource_type: "image",
             });
-            dmImageUrl = uploaded.secure_url;
+            dmImageUrl = result.secure_url;
+            console.log("Cloudinary URL:", dmImageUrl);
         }
+        // ⚠️ Avoid re-saving the original base64. Build the data explicitly:
         await prisma_1.prisma.automation.create({
             data: {
                 userId,
                 ...post,
-                dmImageUrl
-            }
+                dmImageUrl: dmImageUrl || null,
+            },
         });
-        res.json({ message: "automatin created  " });
+        return res.json({ message: "automation created", dmImageUrl });
     }
     catch (error) {
-        res.json({ msg: "error get " });
+        console.error(error);
+        return res.status(500).json({ error: "Failed to create automation" });
     }
 };
 exports.createAutomation = createAutomation;

@@ -12,7 +12,8 @@ const DMComposer: React.FC = () => {
   const [draftTitle, setDraftTitle] = useState("");
   const [draftUrl, setDraftUrl] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
-
+  const [previewURL, setPreviewURL] = useState<string | null>(null);
+ const objectUrlRef = useRef<string | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const MAX = 80;
 
@@ -91,9 +92,9 @@ const DMComposer: React.FC = () => {
   const saveLink = () => {
     if (!draftTitle.trim() || !draftUrl.trim()) return;
     if (editingId) {
-      setSelectedPost((prev) => ({...prev,links : prev.links.map(l => (l.id === editingId ? { ...l, title: draftTitle.trim(), url: draftUrl.trim() } : l))}))
+      setSelectedPost((prev) => ({...prev,dmLinks : prev.dmLinks.map(l => (l.id === editingId ? { ...l, title: draftTitle.trim(), url: draftUrl.trim() } : l))}))
     } else {
-          setSelectedPost((prev) => ({...prev, links : [...prev.links,{ id: Math.random().toString(36).slice(2), title: draftTitle.trim(), url: draftUrl.trim() }]}))
+          setSelectedPost((prev) => ({...prev, dmLinks : [...prev.dmLinks,{ id: Math.random().toString(36).slice(2), title: draftTitle.trim(), url: draftUrl.trim() }]}))
     }
     setOpenModal(false);
     setDraftTitle("");
@@ -101,7 +102,31 @@ const DMComposer: React.FC = () => {
     setEditingId(null);
   };
 
-  const removeLink = (id: string) => setSelectedPost((prev) => ({...prev, links : prev.links.filter(l => l.id !== id)}));
+  const toDataURL = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string); // data:image/...;base64,XXXX
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) return; // optional: show error
+  if (file.size > 10 * 1024 * 1024) return;   // optional: show error
+
+  if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
+  const objectUrl = URL.createObjectURL(file);
+  objectUrlRef.current = objectUrl;
+  setPreviewURL(objectUrl);
+
+  const dataUri = await toDataURL(file); // data:image/...;base64,XXXX
+  setSelectedPost(prev => ({ ...prev, dmImageUrl: dataUri }));
+};
+
+  const removeLink = (id: string) => setSelectedPost((prev) => ({...prev, dmLinks : prev.dmLinks.filter(l => l.id !== id)}));
 
   const counter = useMemo(() => `${selectedPost.dmText.length} / ${MAX}`, [selectedPost.dmText.length]);
 
@@ -113,7 +138,7 @@ const DMComposer: React.FC = () => {
       </div>
 
       {/* Image picker */}
-      {!imageUrl ? (
+      {!previewURL ? (
         <div
           onClick={onPick}
           onDrop={onDrop}
@@ -127,7 +152,7 @@ const DMComposer: React.FC = () => {
         </div>
       ) : (
         <div className="relative mb-4 overflow-hidden rounded-2xl">
-          <img src={imageUrl} className="block h-48 w-full object-cover" />
+          <img src={previewURL} className="block h-48 w-full object-cover" />
           <button onClick={onPick} className="absolute cursor-pointer left-3 bottom-3 rounded-full bg-black/60 px-3 py-2 text-sm font-semibold text-white backdrop-blur">
             Change
           </button>
@@ -142,7 +167,7 @@ const DMComposer: React.FC = () => {
         type="file"
         accept="image/*"
         hidden
-        onChange={(e) => onFile(e.target.files?.[0])}
+        onChange={handleFileChange}
       />
 
       <div className="rounded-xl border border-gray-200 px-4 py-2">
@@ -169,9 +194,9 @@ const DMComposer: React.FC = () => {
       </div>
 
       {/* Links list */}
-      {selectedPost.links.length > 0 && (
+      {selectedPost.dmLinks.length > 0 && (
         <div className="mt-4 space-y-3">
-          {selectedPost.links.map((l) => (
+          {selectedPost.dmLinks.map((l) => (
             <div key={l.id} className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 text-[15px]">
               <span className="truncate">{l.title}</span>
               <div className="ml-3 flex items-center gap-2">

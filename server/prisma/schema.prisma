@@ -64,6 +64,7 @@ model Automation {
   postThumbnail  String? 
   anyKeyword     Boolean           @default(false) 
   keywords       String[]          @default([])  
+  msgTitle       String?
   dmText         String          
   dmImageUrl     String?          
   dmLinks        Json?   
