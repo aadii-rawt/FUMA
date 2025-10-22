@@ -28,7 +28,7 @@ function buildMessagePayload(automation: any, username?: string) {
     // Optionally include an image "card"
     if (automation.dmImageUrl) {
       elements.push({
-        title: automation.name ?? "Info",
+        title: automation.msgTitle ?? "Info",
         subtitle: automation.dmText ?? "",
         image_url: automation.dmImageUrl,
         buttons: (automation.dmLinks ?? []).slice(0, 3).map((l: any) => ({
@@ -40,7 +40,7 @@ function buildMessagePayload(automation: any, username?: string) {
     } else {
       // A card without image
       elements.push({
-        title: automation.name ?? "Info",
+        title: automation.msgTitle ?? "Info",
         subtitle: automation.dmText ?? "",
         buttons: (automation.dmLinks ?? []).slice(0, 3).map((l: any) => ({
           type: "web_url",

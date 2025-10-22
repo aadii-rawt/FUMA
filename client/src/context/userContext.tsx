@@ -1,20 +1,22 @@
 // src/context/UserContext.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Axios from "../utils/axios";
+import type { User } from "../types/types";
 
 
 const UserContext = createContext(null);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [selectedPost, setSelectedPost] = useState({
+    const [selectedPost, setSelectedPost] = useState<User>({
         name     :      "New Automation",
-        description    : "",
         status      :  "",
         postMediaId  :  "",       
         postThumbnail : "", 
         anyKeyword  : false,
         keywords : [],
-        dmText :   ""   
+        dmText :   "",
+        msgTitle : "",
+        links : []
 
     });
     const [isPriceModalOpen,setIsPriceModalOpen] = useState(false)
@@ -25,8 +27,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const [anyKeyword, setAnyKeyword] = useState<boolean>(false);
       const [keywords, setKeywords] = useState<string[]>([]);
       const [imageUrl, setImageUrl] = useState<string | null>(null);
-        const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
-    const [message, setMessage] = useState("");
+     const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
+        const [message, setMessage] = useState("");
       const [links, setLinks] = useState([]);
 
     useEffect(() => {

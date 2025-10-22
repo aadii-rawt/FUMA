@@ -16,19 +16,19 @@ const NewAutomation: React.FC = () => {
 
     const handleAutomation = async () => {
         try {
-            const res = await Axios.post("/automation",{ post : {   
-                name: "Launch Reel auto DM",
-                description: "Sends DM when users comment a keyword",
-                status: "LIVE",
-                postMediaId: selectedPost.postMediaId,
-                postThumbnail: selectedPost.postThumbnaild,
-                anyKeyword : anyKeyword,         
-                keywords: anyKeyword ? [] : keywords,
-                dmText: message,    
-                dmLinks : links,
-                dmImageUrl : imageDataUrl
-            }})
-            console.log(res); 
+            // const res = await Axios.post("/automation",{ post : {   
+            //     name: "Launch Reel auto DM",
+            //     description: "Sends DM when users comment a keyword",
+            //     status: "LIVE",
+            //     postMediaId: selectedPost.postMediaId,
+            //     postThumbnail: selectedPost.postThumbnaild,
+            //     anyKeyword : anyKeyword,         
+            //     keywords: anyKeyword ? [] : keywords,
+            //     dmText: message,    
+            //     dmLinks : links,
+            //     dmImageUrl : imageDataUrl
+            // }})
+            console.log(selectedPost); 
         } catch (error) {
             console.log(error);    
         }
