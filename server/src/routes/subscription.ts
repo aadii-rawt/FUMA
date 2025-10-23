@@ -4,7 +4,7 @@ import { createSubscription, getSubscriptionDetails } from "../controllers/subsc
 
 const subscriptioinRouter = Router()
 
-subscriptioinRouter.get("/", auth, getSubscriptionDetails )
+subscriptioinRouter.get("/history", auth, getSubscriptionDetails )
 subscriptioinRouter.post("/confirm" , auth, createSubscription)
 
 

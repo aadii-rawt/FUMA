@@ -266,9 +266,8 @@ function Input({
           </span>
         )}
         <input
-          className={`w-full rounded-xl border px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-purple-500/40 ${
-            LeftIcon ? "pl-9" : ""
-          }`}
+          className={`w-full rounded-xl border px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-purple-500/40 ${LeftIcon ? "pl-9" : ""
+            }`}
           placeholder={placeholder}
           value={value}
           onChange={onChange}

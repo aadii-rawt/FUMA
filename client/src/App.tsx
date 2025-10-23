@@ -19,6 +19,7 @@ import { Authenticate } from './utils/Authenticate'
 import About from './pages/About'
 import NotFound from './pages/404'
 import PrivacyPolicy from './pages/PrivacyPolicy'
+import BillingHistory from './pages/settings/BillingHistory'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -51,6 +52,10 @@ const App = () => {
         {path : "/setting/billing", element : <Billing />},
       ],
         errorElement : <NotFound />
+    },
+    {
+      path : "/setting/billing/history",
+      element : <BillingHistory />
     },
 
     {

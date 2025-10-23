@@ -1,92 +1,89 @@
-import { FiGitBranch, FiMessageCircle, FiUsers } from "react-icons/fi";
+import { useEffect, useState } from "react";
+import { FiGitBranch, FiUsers } from "react-icons/fi";
+import { FiPlusSquare, FiMessageCircle, FiUser } from "react-icons/fi";
+import {
+  FiDownload,
+  FiCreditCard,
+  FiSmartphone,
+  FiCheckCircle,
+  FiClock,
+  FiXCircle,
+} from "react-icons/fi";
+import { Link } from "react-router-dom";
+import Axios from "../../utils/axios";
 
-type Stat = {
-  label: string;
-  value: string | number;
-  of?: string | number;
-  icon?: React.ReactNode;
-};
-
-type PlanCardProps = {
-  name: string;            // e.g., "Free"
-  subtitle?: string;       // e.g., "Current Plan"
-  price: string;           // e.g., "₹0"
-  cadence?: string;        // e.g., "/mo"
-  stats?: Stat[];          // list of plan limits/usage
-  className?: string;
-};
 
 export default function Billing() {
+
+
+
   return (
-    <div
-      className={`rounded-2xl border bg-white shadow-sm px-5 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6`}
-      style={{ boxShadow: "0 6px 24px rgba(16, 24, 40, 0.06)" }}
-    >
-      <div className="flex items-start gap-4">
-        <div className="flex-1">
-          <h3 className="text-xl sm:text-2xl font-semibold text-gray-900">free</h3>
-          <p className="mt-1 text-gray-500">"dfsdjlk</p>
+    <div className='f-full p-4'>
+       <section className="space-y-2">
+        <div className="flex items-center justify-between">
+      <h2 className="text-2xl font-semibold text-gray-900">Billing Information</h2>
+       <Link to='/setting/billing/history' className="text-sm text-violet-500 underline">Billing History</Link>
         </div>
-        <div className="text-right">
-          <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">
-            {"free"}
-            <span className="text-base font-semibold text-gray-500">"dfsjlk</span>
+      <p className="text-gray-500">
+        Update your payment information or switch plans according to your needs
+      </p>
+
+      <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+        {/* Top row */}
+        <div className="flex items-start justify-between">
+          <div>
+            <div className="text-xl font-semibold text-gray-900">Free</div>
+            <div className="text-sm text-gray-500">Current Plan</div>
+          </div>
+
+          <div className="text-right">
+            <div className="text-2xl font-bold text-gray-900">
+              ₹0<span className="text-base font-medium text-gray-500">/mo</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="mt-4 h-px w-full bg-gray-100" />
+
+        {/* Feature stats */}
+        <div className="mt-4 grid gap-6 sm:grid-cols-3">
+          {/* Automations */}
+          <div className="flex items-center gap-3">
+            <span className="grid h-9 w-9 place-items-center rounded-lg bg-purple-100 text-purple-600">
+              <FiPlusSquare className="text-lg" />
+            </span>
+            <div>
+              <div className="text-sm font-semibold text-gray-800">11 / 3</div>
+              <div className="text-xs text-gray-500">Automations</div>
+            </div>
+          </div>
+
+          {/* DMs */}
+          <div className="flex items-center gap-3">
+            <span className="grid h-9 w-9 place-items-center rounded-lg bg-purple-100 text-purple-600">
+              <FiMessageCircle className="text-lg" />
+            </span>
+            <div>
+              <div className="text-sm font-semibold text-gray-800">319 / 1K</div>
+              <div className="text-xs text-gray-500">DMs</div>
+            </div>
+          </div>
+
+          {/* Contacts */}
+          <div className="flex items-center gap-3">
+            <span className="grid h-9 w-9 place-items-center rounded-lg bg-purple-100 text-purple-600">
+              <FiUser className="text-lg" />
+            </span>
+            <div>
+              <div className="text-sm font-semibold text-gray-800">295 / 1K</div>
+              <div className="text-xs text-gray-500">Contacts</div>
+            </div>
           </div>
         </div>
       </div>
+    </section>
 
-      {/* <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-5">
-        {stats.map((s, i) => (
-          <div key={i} className="flex items-start gap-3">
-            <div className="mt-0.5">
-              {s.icon ?? <div className="h-5 w-5 rounded-md bg-purple-100" />}
-            </div>
-            <div>
-              <div className="text-gray-900 font-semibold">
-                {s.value}
-                {s.of !== undefined && (
-                  <span className="text-gray-400"> / {s.of}</span>
-                )}
-              </div>
-              <div className="text-sm text-gray-500">{s.label}</div>
-            </div>
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 }
-
-// handy presets for the three stats you showed
-export const defaultPlanStats: Stat[] = [
-  {
-    label: "Automations",
-    value: "11",
-    of: "3",
-    icon: (
-      <div className="h-6 w-6 rounded-lg bg-purple-100 grid place-items-center">
-        <FiGitBranch className="text-purple-600" />
-      </div>
-    ),
-  },
-  {
-    label: "DMs",
-    value: "319",
-    of: "1K",
-    icon: (
-      <div className="h-6 w-6 rounded-lg bg-purple-100 grid place-items-center">
-        <FiMessageCircle className="text-purple-600" />
-      </div>
-    ),
-  },
-  {
-    label: "Contacts",
-    value: "295",
-    of: "1K",
-    icon: (
-      <div className="h-6 w-6 rounded-lg bg-purple-100 grid place-items-center">
-        <FiUsers className="text-purple-600" />
-      </div>
-    ),
-  },
-];

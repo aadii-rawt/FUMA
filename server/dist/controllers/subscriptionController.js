@@ -3,6 +3,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createSubscription = exports.getSubscriptionDetails = void 0;
 const prisma_1 = require("../lib/prisma");
 const getSubscriptionDetails = async (req, res) => {
+    try {
+        // @ts-ignore
+        const id = req.id;
+        if (!id)
+            return res.status(401).json({ error: "Unauthorized" });
+        const data = await prisma_1.prisma.subscription.findMany({
+            where: { userId: id }
+        });
+        console.log("data :", data);
+        res.json({ data });
+    }
+    catch (error) {
+    }
 };
 exports.getSubscriptionDetails = getSubscriptionDetails;
 const createSubscription = async (req, res) => {
