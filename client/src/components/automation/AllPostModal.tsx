@@ -7,13 +7,12 @@ import useUser from "../../context/userContext";
 type Props = {
   open: boolean;
   onClose: () => void;
-  children: React.ReactNode;
-  title?: string;
   subtitle?: string;
-  setSelectedPost? : any
+  setSelectedPost? : () => void,
+
 };
 
-const AllPostModal: React.FC<Props> = ({ open, onClose, title, subtitle, setSelectedPost }) => {
+const AllPostModal: React.FC<Props> = ({ open, onClose, setSelectedPost }) => {
   const el = document.getElementById("portal") as HTMLElement;
   const [posts, setPosts] = useState([])
   const [select, setSelect] = useState(null)

@@ -4,6 +4,7 @@ import useUser from "../../context/userContext";
 import AllPostModal from "./AllPostModal";
 import KeywordSetup from "./KeywordSetup";
 import DMComposer from "./DMComposer";
+import ReelShimmer from "../shimmer/ReelShimmer";
 
 
 const Editor: React.FC = () => {
@@ -11,13 +12,18 @@ const Editor: React.FC = () => {
   const { selectedPost, setSelectedPost } = useUser()
   const [allPostModalOpen, setAllPostModalOpen] = useState(false)
   const {user} = useUser()
+  const [loading,setLoading] = useState(true)
 
   const getPosts = async () => {
+    if(!user) return
     try {
+      setLoading(true)
       const res = await Axios.get("/ig/media",{ params: { limit: 3, access_token : user.access_token} });
       setPosts(res.data.data)
     } catch (error) {
       console.log(error);
+    } finally{
+      setLoading(false)
     }
   }
 
@@ -49,7 +55,7 @@ const Editor: React.FC = () => {
 
         {/* Tiles */}
         <div className="mt-5 flex gap-5">
-          {posts?.map((post: any,i) => (
+          {loading ? <ReelShimmer /> : posts?.map((post: any,i) => (
             <div key={i} onClick={() => handleSelectPost(post)} className={`${post.id == selectedPost?.postMediaId && "border-2 border-indigo-500"} relative cursor-pointer h-50 w-40 overflow-hidden rounded-xl  p-0`}>
               <img
                 src={post?.thumbnail_url}
@@ -68,7 +74,7 @@ const Editor: React.FC = () => {
         >
           Show More
         </button>
-        <AllPostModal open={allPostModalOpen} onClose={() => setAllPostModalOpen(false)} selectedPost={selectedPost} setSelectedPost={setSelectedPost} />
+        <AllPostModal open={allPostModalOpen} onClose={() => setAllPostModalOpen(false)}  setSelectedPost={setSelectedPost} />
 
       </div>
       <KeywordSetup />

@@ -7,11 +7,11 @@ import {
   HiGift,
   HiCog6Tooth,
   HiFire,
-  HiCheckCircle,
 } from "react-icons/hi2";
 import { RiRobot2Line } from "react-icons/ri";
 import useUser from "../context/userContext";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import Axios from "../utils/axios";
 
 function Badge({ children, tone = "purple" }) {
   const base =
@@ -23,9 +23,12 @@ function Badge({ children, tone = "purple" }) {
   return <span className={`${base} ${theme}`}>{children}</span>;
 }
 
-function MenuItem({ icon: Icon, label, active, rightBadge, glow }) {
+function MenuItem({ icon: Icon, label, active, rightBadge, glow,url}) {
+
+
   return (
-    <div
+    <NavLink
+    to={url}
       className={[
         "relative group rounded-xl cursor-pointer",
         active ? "bg-white/90 shadow-[0_2px_14px_rgba(17,12,46,0.04)]" : "",
@@ -57,7 +60,7 @@ function MenuItem({ icon: Icon, label, active, rightBadge, glow }) {
         </span>
         <span className="ml-auto">{rightBadge}</span>
       </button>
-    </div>
+    </NavLink>
   );
 }
 
@@ -66,18 +69,20 @@ function WorkspaceMenu({
   anchorRect,
   onClose,
   user,
+  logout
 }: {
   anchorRect: DOMRect | null;
   onClose: () => void;
-  user : any
+  user: any,
+  logout: () => void;
 }) {
   // Position the popover under the anchor; fallback to a nice default.
   const style: React.CSSProperties = anchorRect
     ? {
-        position: "fixed",
-        top: anchorRect.bottom + 8,
-        left: anchorRect.left,
-      }
+      position: "fixed",
+      top: anchorRect.bottom + 8,
+      left: anchorRect.left,
+    }
     : { position: "fixed", top: 0, left: 0 };
 
   return (
@@ -85,7 +90,7 @@ function WorkspaceMenu({
       role="menu"
       aria-label="Workspace menu"
       className="z-[100] fixed top-16 rounded-2xl bg-white border border-gray-200 shadow-[0_24px_60px_rgba(2,6,23,0.12)] w-[260px] overflow-hidden"
-      // style={style}
+    // style={style}
     >
       <div className="p-2">
         <button
@@ -93,7 +98,7 @@ function WorkspaceMenu({
           onClick={onClose}
         >
           <div className="w-7 h-7 grid place-items-center overflow-hidden rounded bg-gray-900 text-white text-[12px] font-bold">
-           <img src={user?.avatar} alt="" />
+            <img src={user?.avatar} alt="" />
           </div>
           <div className="text-[14px] font-semibold text-gray-900">{user?.username}</div>
         </button>
@@ -109,7 +114,7 @@ function WorkspaceMenu({
 
         <div className="my-2 h-[1px] bg-gray-200" />
 
-        <button className="flex cursor-pointer w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
+        <button onClick={logout} className="flex cursor-pointer w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
           <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
             ⤴
           </span>
@@ -128,7 +133,10 @@ export default function Sidebar() {
   const headerBtnRef = useRef<HTMLButtonElement>(null);
   const menuContainerRef = useRef<HTMLDivElement>(null);
   const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
-  const {user} = useUser()
+  const { user } = useUser()
+
+  const navigate = useNavigate()
+
 
   // Open/close
   const toggleMenu = () => {
@@ -161,6 +169,19 @@ export default function Sidebar() {
     };
   }, [menuOpen]);
 
+  const handleLogout = async () => {
+    if (!user) return
+    try {
+      const res = await Axios.post("/auth/logout")
+      if (res.status) {
+        navigate("/auth/login")
+      }
+    } catch (error) {
+      console.log("Something went wrong", error);
+
+    }
+  }
+
   return (
     <aside className="sticky top-0 left-0 w-[280px] h-screen px-3">
       <div className="pointer-events-none absolute inset-y-0 right-0 w-10 " />
@@ -168,8 +189,8 @@ export default function Sidebar() {
       {/* Top header */}
       <div className="h-16 flex items-center justify-between relative">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 grid place-items-center overflow-hidden rounded-lg bg-gray-900 text-white font-semibold">
-           <img src={user?.avatar} alt="" />
+          <div className="w-8 h-8 grid place-items-center overflow-hidden rounded-lg bg-gray-300 text-white font-semibold">
+            <img src={user?.avatar || "https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"} alt="" className="w-full" />
           </div>
           <button
             ref={headerBtnRef}
@@ -178,48 +199,48 @@ export default function Sidebar() {
             aria-haspopup="menu"
             aria-expanded={menuOpen}
           >
-           {user?.username} <HiChevronDown className="text-gray-500" />
+            {user?.username} <HiChevronDown className="text-gray-500" />
           </button>
         </div>
-        <div className="w-8 h-8 rounded-lg border border-gray-200 bg-white" />
-
-        {/* Popover container (fixed-positioned child rendered here for outside-click logic) */}
         <div ref={menuContainerRef} className="absolute left-0 top-0 pointer-events-none">
           {menuOpen && (
             <div className="pointer-events-auto">
-              <WorkspaceMenu anchorRect={anchorRect} onClose={() => setMenuOpen(false)} user={user}/>
+              <WorkspaceMenu anchorRect={anchorRect} logout={handleLogout} onClose={() => setMenuOpen(false)} user={user} />
             </div>
           )}
         </div>
       </div>
 
       {/* Divider */}
+
       <div className="">
-        <MenuItem icon={HiHome} label="Home" active={false} />
+        <MenuItem icon={HiHome} label="Home" url='/app' active={false} />
       </div>
 
       <div className="my-2 mx-4 h-[1px] bg-gray-300" />
 
       <nav className=" space-y-2">
-        <MenuItem
+        {/* <MenuItem
           icon={RiRobot2Line}
           label="AI Studio"
           glow
           rightBadge={<Badge>SOON</Badge>}
-        />
+        /> */}
 
         <MenuItem
           icon={RiRobot2Line}
           label="Automations"
           active
+          url="/automation"
           rightBadge={null}
         />
 
-        <MenuItem icon={HiUserGroup} label="Contacts" />
+        {/* <MenuItem icon={HiUserGroup} label="Contacts" /> */}
 
         <MenuItem
           icon={HiClipboardDocumentList}
           label="Forms"
+          url="/forms"
           rightBadge={<Badge tone="pink">NEW</Badge>}
         />
       </nav>
@@ -227,20 +248,21 @@ export default function Sidebar() {
       <div className="my-2 mx-4 h-[1px] bg-gray-300" />
 
       <nav className="space-y-2">
-        <MenuItem icon={HiGift} label="Refer & Earn" />
-        <MenuItem icon={HiCog6Tooth} label="Settings" />
+        {/* <MenuItem icon={HiGift} label="Refer & Earn" /> */}
+        <MenuItem icon={HiCog6Tooth} label="Settings" url="/setting/general" />
       </nav>
 
-      {/* Bottom perks */}
-      <div className="absolute left-0 right-0 bottom-0 p-4">
-        <button
-          onClick={() => setIsPriceModalOpen(true)}
-          className="w-full  cursor-pointer inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-violet-600 text-white py-3 rounded-xl font-semibold shadow-[0_8px_18px_rgba(124,58,237,.35)] hover:opacity-95"
-        >
-          <HiFire className="text-[18px]" />
-          Upgrade Plan
-        </button>
-      </div>
+      {user?.plan == "FREE" &&
+        <div className="absolute left-0 right-0 bottom-0 p-4">
+          <button
+            onClick={() => setIsPriceModalOpen(true)}
+            className="w-full  cursor-pointer inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-violet-600 text-white py-3 rounded-xl font-semibold shadow-[0_8px_18px_rgba(124,58,237,.35)] hover:opacity-95"
+          >
+            <HiFire className="text-[18px]" />
+            Upgrade Plan
+          </button>
+        </div>
+      }
     </aside>
   );
 }

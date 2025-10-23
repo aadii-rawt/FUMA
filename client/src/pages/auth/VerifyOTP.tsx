@@ -157,7 +157,7 @@ const VerifyOTP: React.FC = () => {
         <div className="mt-4 w-full">
           <button
             type="submit"
-            disabled={!isComplete}
+            disabled={!isComplete || loading}
             className={`border w-full text-center py-2 cursor-pointer border-gray-200 mt-5 rounded-xl ${
               isComplete ? "bg-violet-700 text-white" : "bg-gray-200 text-gray-500 cursor-not-allowed"
             }`}
