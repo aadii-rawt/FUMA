@@ -8,4 +8,5 @@ export declare const getDetails: (req: Request, res: Response) => Promise<Respon
 export declare const passportGoogle: passport.PassportStatic;
 export declare const googleAuth: any;
 export declare const googleAuthCallback: (req: any, res: any, next: any) => void;
+export declare const logout: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
 //# sourceMappingURL=authController.d.ts.map

@@ -43,7 +43,7 @@ function buildMessagePayload(automation, username) {
             // A card without image
             elements.push({
                 title: automation.msgTitle ?? "Info",
-                subtitle: automation.dmText ?? "",
+                subtitle: automation.dmText ? `${automation.dmText} || Powered by fuma.dotdazzle.in` : "",
                 buttons: (automation.dmLinks ?? []).slice(0, 3).map((l) => ({
                     type: "web_url",
                     url: l.url,

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.googleAuthCallback = exports.googleAuth = exports.passportGoogle = exports.getDetails = exports.verifySignupOTP = exports.signup = exports.verifyLoginOTP = exports.login = void 0;
+exports.logout = exports.googleAuthCallback = exports.googleAuth = exports.passportGoogle = exports.getDetails = exports.verifySignupOTP = exports.signup = exports.verifyLoginOTP = exports.login = void 0;
 const prisma_1 = require("../lib/prisma");
 const argon2_1 = __importDefault(require("argon2"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -239,4 +239,24 @@ const googleAuthCallback = (req, res, next) => {
     })(req, res, next);
 };
 exports.googleAuthCallback = googleAuthCallback;
+const logout = async (req, res) => {
+    // @ts-ignore
+    const id = req.id;
+    if (!id)
+        return res.status(401).json({ error: "Unauthorized" });
+    try {
+        res.clearCookie("token", {
+            httpOnly: false,
+            // secure: isProd,                  
+            secure: process.env.NODE_ENV !== "development",
+            maxAge: 1000 * 60 * 60,
+            sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+        });
+        res.status(200).json({ msg: "logut", success: true });
+    }
+    catch (error) {
+        res.status(500).json({ msg: "Something went worng" });
+    }
+};
+exports.logout = logout;
 //# sourceMappingURL=authController.js.map

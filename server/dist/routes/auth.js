@@ -11,5 +11,6 @@ authRouter.post("/signup/verify", authController_1.verifySignupOTP);
 authRouter.get("/me", auth_1.auth, authController_1.getDetails);
 authRouter.get("/google", authController_1.googleAuth);
 authRouter.get("/google/callback", authController_1.googleAuthCallback);
+authRouter.post("/logout", authController_1.logout);
 exports.default = authRouter;
 //# sourceMappingURL=auth.js.map

@@ -1,5 +1,5 @@
 
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 import { prisma } from "../lib/prisma";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
@@ -267,3 +267,25 @@ export const googleAuthCallback = (req: any, res: any, next: any) => {
     return res.redirect(process.env.FRONTEND_SUCCESS_URL);
   })(req, res, next);
 };
+
+
+export const logout = async (req : Request, res: Response) => {
+  // @ts-ignore
+  const id = req.id
+
+  if (!id) return res.status(401).json({error : "Unauthorized"}) 
+    try {
+        res.clearCookie("token", {
+          httpOnly: false,
+          // secure: isProd,                  
+          secure: process.env.NODE_ENV !== "development",
+          maxAge: 1000 * 60 * 60,
+          sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+        })
+      
+        res.status(200).json({msg : "logut", success : true})
+    } catch (error) {
+      res.status(500).json({msg : "Something went worng"})
+    }
+    
+}
