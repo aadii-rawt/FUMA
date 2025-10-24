@@ -59,3 +59,74 @@ export const createAutomation = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Failed to create automation" });
   }
 };
+
+export const updateAutomation = async (req: Request, res: Response) => {
+  try {
+    // @ts-ignore
+    const userId: string = req.id;
+    const { id } = req.params; // Automation ID
+    const { post } = req.body;
+
+    if (!id) return res.status(400).json({ error: "Missing automation ID" });
+    if (!post) return res.status(400).json({ error: "Missing post payload" });
+
+    let dmImageUrl = post.dmImageUrl ?? null;
+
+    // 🔹 If new image is provided as base64 (data URI)
+    if (dmImageUrl && dmImageUrl.startsWith("data:image")) {
+      const uploaded = await cloudinary.uploader.upload(dmImageUrl, {
+        folder: `FUMA/${userId}`,
+        resource_type: "image",
+      });
+      dmImageUrl = uploaded.secure_url;
+      console.log("Updated Cloudinary image:", dmImageUrl);
+    }
+
+    // 🔹 Update only fields that are allowed to be changed
+    const updated = await prisma.automation.update({
+      where: { id },
+      data: {
+        ...post,
+        dmImageUrl: dmImageUrl || null,
+        updatedAt: new Date(),
+      },
+    });
+
+    return res.json({
+      message: "Automation updated successfully",
+      automation: updated,
+    });
+  } catch (error: any) {
+    console.error(error);
+    return res.status(500).json({
+      error: "Failed to update automation",
+      details: error.message,
+    });
+  }
+};
+
+
+export const stopAutomation = async (req : Request, res : Response) => {
+  // @ts-ignore
+  const id = req.id 
+  // @ts-ignore
+  const {id : postId} = req.params
+  try {
+    
+    const data = await prisma.automation.update({
+      where : {
+        userId : id,
+        id : postId
+      },
+      data : {
+        status : "PAUSED"
+      }
+    })
+
+    res.status(200).json({msg : "automation updated"})
+    
+  } catch (error) {
+    res.json({error : "something went worng"})
+  }
+  
+}

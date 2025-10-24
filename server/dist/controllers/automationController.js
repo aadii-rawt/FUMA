@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createAutomation = exports.getAutomation = void 0;
+exports.stopAutomation = exports.updateAutomation = exports.createAutomation = exports.getAutomation = void 0;
 const cloudinary_1 = require("../lib/cloudinary");
 const prisma_1 = require("../lib/prisma");
 const getAutomation = async (req, res) => {
@@ -54,4 +54,69 @@ const createAutomation = async (req, res) => {
     }
 };
 exports.createAutomation = createAutomation;
+const updateAutomation = async (req, res) => {
+    try {
+        // @ts-ignore
+        const userId = req.id;
+        const { id } = req.params; // Automation ID
+        const { post } = req.body;
+        if (!id)
+            return res.status(400).json({ error: "Missing automation ID" });
+        if (!post)
+            return res.status(400).json({ error: "Missing post payload" });
+        let dmImageUrl = post.dmImageUrl ?? null;
+        // 🔹 If new image is provided as base64 (data URI)
+        if (dmImageUrl && dmImageUrl.startsWith("data:image")) {
+            const uploaded = await cloudinary_1.cloudinary.uploader.upload(dmImageUrl, {
+                folder: `FUMA/${userId}`,
+                resource_type: "image",
+            });
+            dmImageUrl = uploaded.secure_url;
+            console.log("Updated Cloudinary image:", dmImageUrl);
+        }
+        // 🔹 Update only fields that are allowed to be changed
+        const updated = await prisma_1.prisma.automation.update({
+            where: { id },
+            data: {
+                ...post,
+                dmImageUrl: dmImageUrl || null,
+                updatedAt: new Date(),
+            },
+        });
+        return res.json({
+            message: "Automation updated successfully",
+            automation: updated,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            error: "Failed to update automation",
+            details: error.message,
+        });
+    }
+};
+exports.updateAutomation = updateAutomation;
+const stopAutomation = async (req, res) => {
+    // @ts-ignore
+    const id = req.id;
+    // @ts-ignore
+    const { id: postId } = req.params;
+    try {
+        const data = await prisma_1.prisma.automation.update({
+            where: {
+                userId: id,
+                id: postId
+            },
+            data: {
+                status: "PAUSED"
+            }
+        });
+        res.status(200).json({ msg: "automation updated" });
+    }
+    catch (error) {
+        res.json({ error: "something went worng" });
+    }
+};
+exports.stopAutomation = stopAutomation;
 //# sourceMappingURL=automationController.js.map

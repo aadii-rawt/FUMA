@@ -6,5 +6,7 @@ const automationController_1 = require("../controllers/automationController");
 const automationRoute = (0, express_1.Router)();
 automationRoute.get("/", automationController_1.getAutomation);
 automationRoute.post("/", auth_1.auth, automationController_1.createAutomation);
+automationRoute.put("/:id", auth_1.auth, automationController_1.updateAutomation);
+automationRoute.put("/stop/:id", auth_1.auth, automationController_1.stopAutomation);
 exports.default = automationRoute;
 //# sourceMappingURL=automation.js.map
