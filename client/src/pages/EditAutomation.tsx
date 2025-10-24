@@ -40,14 +40,14 @@ const EditAutomtion: React.FC = () => {
                     {/* Left: Editor tab */}
                     <div className="relative">
                        <div className={`${isEditing ? "hidden" : "flex"} gap-3 items-center`}>
-                        <p>{selectedPost.name}</p>
+                        <p>{selectedPost?.name}</p>
                             <button onClick={() => { 
                                 inputRef.current.focus()
                                 setIsEditing(true)
                                 }}className='text-gray-400 cursor-pointer'><FiEdit /></button>
                         </div> 
                         <div className={`${isEditing ? "flex" : "hidden"} gap-3 items-center`}>
-                            <input ref={inputRef} type="text" value={selectedPost.name} onChange={(e) => setSelectedPost((prev) => ({...prev, name : e.target.value}))} />
+                            <input ref={inputRef} type="text" value={selectedPost?.name} onChange={(e) => setSelectedPost((prev) => ({...prev, name : e.target.value}))} />
                             <button onClick={() => {
                                 setIsEditing(false)
                              inputRef.current.blur()}} className='text-gray-400 cursor-pointer bg-primary rounded-full text-white'><IoMdCheckmarkCircle /></button>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Editor from '../components/automation/Editor'
 import Preview from '../components/automation/Preview'
 import { LuPencilLine } from 'react-icons/lu'
@@ -9,15 +9,27 @@ import { FiEdit } from 'react-icons/fi'
 import { IoMdCheckmarkCircle } from 'react-icons/io'
 const NewAutomation: React.FC = () => {
 
-    const {selectedPost,setSelectedPost} = useUser()
-    const { imageUrl,setImageUrl,
-            message,setMessage,} = useUser()
-      const {keywords,setKeywords, anyKeyword,setAnyKeyword, links, setLinks, imageDataUrl, setImageDataUrl} = useUser()        
+    const {selectedPost,setSelectedPost,user} = useUser()
+    useEffect(() => {
+        setSelectedPost({
+        name: "New Automation",
+        status: "LIVE",
+        postMediaId: "",
+        postThumbnail: "",
+        anyKeyword: false,
+        keywords: [],
+        dmText: "",
+        msgTitle: "",
+        dmLinks: []
+    })
+    },[])
 
     const handleAutomation = async () => {
+        if(!user) return 
         try {
             const res = await Axios.post("/automation",{ post : selectedPost})
             console.log(selectedPost); 
+            setSelectedPost(null)
         } catch (error) {
             console.log(error);    
         }

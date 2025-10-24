@@ -92,10 +92,15 @@ export default function Payment({ selectedPlan, onBack }: Props) {
           };
 
           await Axios.post("/subscriptions/confirm", payload);
-          alert("Payment successful and subscription stored!");
+          setMethod("upi")
+          setName("")
+          setCity("")
+          setCountry("")
+          setPhone("")
+          alert("Payment successful!");
         } catch (e) {
           console.error(e);
-          alert("Payment succeeded but storing subscription failed.");
+          alert("Payment failed.");
         } finally {
           setLoading(false);
         }

@@ -342,10 +342,10 @@ const Home: React.FC = () => {
 
               <div className="pb-12">
                   <div className="relative">
-                      <div className="absolute inset-0 h-2/3 "></div>
+                      {/* <div className="absolute inset-0 h-2/3 "></div> */}
                       <div className="relative mx-auto">
-                          <div className="lg:max-w-6xl lg:mx-auto">
-                              {/* <img className="transform scale-110" src="https://cdn.rareblocks.xyz/collection/clarity/images/hero/2/illustration.png" alt="" /> */}
+                          <div className="lg:max-w-3xl lg:mx-auto">
+                              <img className="transform scale-110" src="/hwoto.png" alt="" />
                           </div>
                       </div>
                   </div>

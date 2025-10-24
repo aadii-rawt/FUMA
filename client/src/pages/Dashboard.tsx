@@ -3,8 +3,8 @@ import { FiCheckCircle, FiLink2, FiInstagram, FiZap, FiUsers } from "react-icons
 
 export default function Dashboard() {
   return (
-    <section className="space-y-4">
-      <h2 className="text-2xl font-bold text-gray-900">Get Started with Zorcha</h2>
+    <section className="space-y-4 border-gray-200 border-[1px] border-gray-500/20 overflow-hidden rounded-xl p-4 h-full">
+      <h2 className="text-2xl font-bold text-gray-900">Get Started with FUMA</h2>
 
       <div className="rounded-3xl border border-gray-200 bg-white p-4 sm:p-6">
         {/* Top grid: Connect IG / Create Automation */}
@@ -13,7 +13,7 @@ export default function Dashboard() {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="text-lg font-semibold text-gray-900">
-                Connect your Instagram <br className="hidden sm:block" /> Page to Zorcha
+                Connect your Instagram <br className="hidden sm:block" /> Page to FUMA
               </div>
 
               <span className="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-semibold text-emerald-700">
@@ -27,7 +27,7 @@ export default function Dashboard() {
                 <div className="grid place-items-center rounded-2xl bg-gradient-to-br from-fuchsia-100 via-white to-purple-100 py-14">
                   <div className="flex items-center gap-4 text-purple-600">
                     <span className="grid h-12 w-12 place-items-center rounded-2xl bg-purple-600 text-white">
-                      Z
+                      F
                     </span>
                     <FiZap className="text-2xl opacity-70" />
                     <span className="grid h-12 w-12 place-items-center rounded-2xl bg-pink-100 text-pink-600">
@@ -124,7 +124,7 @@ export default function Dashboard() {
                   </span>
                 </div>
                 <p className="mt-4 text-sm text-gray-500 text-center max-w-sm">
-                  Invite creators and brands to Zorcha and earn a commission for every paid
+                  Invite creators and brands to FUMA and earn a commission for every paid
                   subscription they keep.
                 </p>
               </div>

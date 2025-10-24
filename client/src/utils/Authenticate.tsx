@@ -1,9 +1,10 @@
 import { Navigate, useLocation } from "react-router-dom";
 import useUser from "../context/userContext";
+import Loading from "../components/shimmer/Loading";
 export function Authenticate({children}) {
   const { user, loading } = useUser();
   const location = useLocation();
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />
 
   
   // if (!user) return <Navigate to="/auth/login" replace state={{ from: location }} />;
