@@ -1,13 +1,10 @@
-// src/context/UserContext.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Axios from "../utils/axios";
-import type { User } from "../types/types";
-
 
 const UserContext = createContext(null);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [selectedPost, setSelectedPost] = useState<User>({
+    const [selectedPost, setSelectedPost] = useState({
         name: "New Automation",
         status: "LIVE",
         postMediaId: "",
@@ -17,13 +14,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         dmText: "",
         msgTitle: "",
         dmLinks: [],
-        dmImageUrl : ""
+        dmImageUrl: ""
     });
     const [isPriceModalOpen, setIsPriceModalOpen] = useState(false)
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
 
-  const [previewURL, setPreviewURL] = useState<string | null>(null);
+    const [previewURL, setPreviewURL] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchMe = async () => {
@@ -44,7 +41,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         <UserContext.Provider value={{
             selectedPost, user, setUser, setSelectedPost, loading, setLoading, isPriceModalOpen, setIsPriceModalOpen,
             previewURL, setPreviewURL
-
         }}>
             {children}
         </UserContext.Provider>

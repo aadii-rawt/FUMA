@@ -41,7 +41,7 @@ const NewAutomation: React.FC = () => {
     const [isEditing,setIsEditing] = useState(false)
    
     return (
-        <div className='w-full max-h-screen rounded-xl'>
+        <div className='w-full max-h-screen rounded-xl overflow-hidden'>
             <div className="w-full border-b border-gray-200 bg-white">
                 <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
                     {/* Left: Editor tab */}
@@ -73,11 +73,11 @@ const NewAutomation: React.FC = () => {
                     </button>
                 </div>
             </div>
-            <div className='flex'>
+            <div className='flex h-full'>
                 <div className='w-1/2'>
                     <Preview />
                 </div>
-                <div className='  w-1/2 overflow-y-scroll'>
+                <div className='w-1/2 h-full'>
                 <Editor />
                 </div>
             </div>

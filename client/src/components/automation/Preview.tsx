@@ -86,7 +86,9 @@ const PhoneCard: React.FC<Props> = ({ className = "", children }) => {
 
             {/* Caption / comments */}
             <div className="px-3 pt-3">
-              {!selectedPost?.keywords?.length > 0 ? <div className="space-y-1 pb-3">
+              { 
+              // @ts-ignore
+              !selectedPost?.keywords?.length > 0 ? <div className="space-y-1 pb-3">
               <div>
                 <p className="text-xs">{selectedPost?.caption}</p>
                 <button className="mt-1 text-xs">View all comments</button>

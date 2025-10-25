@@ -13,119 +13,6 @@ import useUser from "../context/userContext";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Axios from "../utils/axios";
 
-function Badge({ children, tone = "purple" }) {
-  const base =
-    "text-[10px] font-bold px-2 py-[2px] rounded-md leading-none inline-flex items-center";
-  const theme =
-    tone === "purple"
-      ? "bg-purple-100 text-purple-700 border border-purple-200 shadow-[inset_0_-1px_0_rgba(255,255,255,.6)]"
-      : "bg-pink-100 text-pink-700 border border-pink-200 shadow-[inset_0_-1px_0_rgba(255,255,255,.6)]";
-  return <span className={`${base} ${theme}`}>{children}</span>;
-}
-
-function MenuItem({ icon: Icon, label, active, rightBadge, glow,url}) {
-
-
-  return (
-    <NavLink
-    to={url}
-      className={[
-        "relative group rounded-xl cursor-pointer",
-        active ? "bg-white/90 shadow-[0_2px_14px_rgba(17,12,46,0.04)]" : "",
-      ].join(" ")}
-    >
-      {active && (
-        <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-r from-white/70 to-transparent" />
-      )}
-      {glow && (
-        <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full blur-xl bg-purple-400/40" />
-      )}
-
-      <button
-        className={[
-          "relative z-[1] cursor-pointer w-full flex items-center gap-3 px-4 py-2",
-          active ? "text-purple-700" : "text-gray-400 hover:text-gray-700",
-        ].join(" ")}
-      >
-        <span className="grid place-items-center rounded-lg w-8 h-8">
-          <Icon className="text-[18px]" />
-        </span>
-        <span
-          className={[
-            "text-[15px] font-medium",
-            active ? "text-purple-700" : "text-gray-400 hover:text-gray-700",
-          ].join(" ")}
-        >
-          {label}
-        </span>
-        <span className="ml-auto">{rightBadge}</span>
-      </button>
-    </NavLink>
-  );
-}
-
-/* ---------------- Workspace menu (popover) ---------------- */
-function WorkspaceMenu({
-  anchorRect,
-  onClose,
-  user,
-  logout
-}: {
-  anchorRect: DOMRect | null;
-  onClose: () => void;
-  user: any,
-  logout: () => void;
-}) {
-  // Position the popover under the anchor; fallback to a nice default.
-  const style: React.CSSProperties = anchorRect
-    ? {
-      position: "fixed",
-      top: anchorRect.bottom + 8,
-      left: anchorRect.left,
-    }
-    : { position: "fixed", top: 0, left: 0 };
-
-  return (
-    <div
-      role="menu"
-      aria-label="Workspace menu"
-      className="z-[100] fixed top-16 rounded-2xl bg-white border border-gray-200 shadow-[0_24px_60px_rgba(2,6,23,0.12)] w-[260px] overflow-hidden"
-    // style={style}
-    >
-      <div className="p-2">
-        <button
-          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 hover:bg-gray-50"
-          onClick={onClose}
-        >
-          <div className="w-7 h-7 grid place-items-center overflow-hidden rounded bg-gray-900 text-white text-[12px] font-bold">
-            <img src={user?.avatar} alt="" />
-          </div>
-          <div className="text-[14px] font-semibold text-gray-900">{user?.username}</div>
-        </button>
-
-        <div className="my-2 h-[1px] bg-gray-200" />
-
-        <Link to='/setting/general' className="flex cursor-pointer w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
-          <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
-            👤
-          </span>
-          Account Settings
-        </Link>
-
-        <div className="my-2 h-[1px] bg-gray-200" />
-
-        <button onClick={logout} className="flex cursor-pointer w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
-          <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
-            ⤴
-          </span>
-          Sign out
-        </button>
-      </div>
-    </div>
-  );
-}
-
-/* ---------------- Sidebar ---------------- */
 export default function Sidebar() {
   const { setIsPriceModalOpen } = useUser();
 
@@ -195,7 +82,7 @@ export default function Sidebar() {
           <button
             ref={headerBtnRef}
             onClick={toggleMenu}
-            className="flex items-center gap-1 text-[15px] font-semibold text-gray-800"
+            className="flex items-center cursor-pointer gap-1 text-[15px] font-semibold text-gray-800"
             aria-haspopup="menu"
             aria-expanded={menuOpen}
           >
@@ -211,45 +98,47 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Divider */}
-
-      <div className="">
-        <MenuItem icon={HiHome} label="Home" url='/app' active={false} />
-      </div>
+      <NavLink to="/app"
+        className={({ isActive }) => `w-full flex items-center gap-3 px-4 py-2 font-medium ${isActive ? "text-purple-500 rounded-2xl bg-gradient-to-r from-white/70 to-transparent" : "text-gray-400 hover:text-gray-700"}`}>
+        <span className="grid place-items-center rounded-lg w-8 h-8">
+          <HiHome className="text-[18px]" />
+        </span>
+        <span >Home</span>
+      </NavLink>
 
       <div className="my-2 mx-4 h-[1px] bg-gray-300" />
 
       <nav className=" space-y-2">
-        {/* <MenuItem
-          icon={RiRobot2Line}
-          label="AI Studio"
-          glow
-          rightBadge={<Badge>SOON</Badge>}
-        /> */}
+        <NavLink to="/automation"
+          className={({ isActive }) => `w-full flex items-center gap-3 px-4 py-2 font-medium ${isActive ? "text-purple-500 rounded-2xl bg-gradient-to-r from-white/70 to-transparent" : "text-gray-400 hover:text-gray-700"}`}>
+          <span className="grid place-items-center rounded-lg w-8 h-8">
+            <RiRobot2Line className="text-[18px]" />
+          </span>
+          <span >Automation</span>
+        </NavLink>
 
-        <MenuItem
-          icon={RiRobot2Line}
-          label="Automations"
-          active
-          url="/automation"
-          rightBadge={null}
-        />
+        <div className={`w-full cursor-pointer  flex items-center gap-3 px-4 py-2 font-medium text-gray-500 hover:text-gray-700`}>
+          <div className="flex items-center gap-3">
+            <span className="grid place-items-center rounded-lg w-8 h-8">
+              <HiClipboardDocumentList className="text-[18px]" />
+            </span>
+            <span className="grid place-items-center rounded-lg w-8 h-8">Forms</span>
+          </div>
+           <span className="ml-auto text-xs text-purple-700 px-2 py-1 bg-purple-100 border-[1px] border-purple-400/20 rounded-xl">Coming Soon</span>
+        </div>
 
-        {/* <MenuItem icon={HiUserGroup} label="Contacts" /> */}
-
-        <MenuItem
-          icon={HiClipboardDocumentList}
-          label="Forms"
-          url="/forms"
-          rightBadge={<Badge tone="pink">NEW</Badge>}
-        />
       </nav>
 
       <div className="my-2 mx-4 h-[1px] bg-gray-300" />
 
       <nav className="space-y-2">
-        {/* <MenuItem icon={HiGift} label="Refer & Earn" /> */}
-        <MenuItem icon={HiCog6Tooth} label="Settings" url="/setting/general" />
+        <NavLink to="/setting/general"
+          className={({ isActive }) => `w-full flex items-center gap-3 px-4 py-2 font-medium ${isActive ? "text-purple-500 rounded-2xl bg-gradient-to-r from-white/70 to-transparent" : "text-gray-400 hover:text-gray-700"}`}>
+          <span className="grid place-items-center rounded-lg w-8 h-8">
+            <HiCog6Tooth className="text-[18px]" />
+          </span>
+          <span >Settings</span>
+        </NavLink>
       </nav>
 
       {user?.plan == "FREE" &&
@@ -263,6 +152,68 @@ export default function Sidebar() {
           </button>
         </div>
       }
+
     </aside>
+  );
+}
+
+/* ---------------- Workspace menu (popover) ---------------- */
+function WorkspaceMenu({
+  anchorRect,
+  onClose,
+  user,
+  logout
+}: {
+  anchorRect: DOMRect | null;
+  onClose: () => void;
+  user: any,
+  logout: () => void;
+}) {
+  // Position the popover under the anchor; fallback to a nice default.
+  const style: React.CSSProperties = anchorRect
+    ? {
+      position: "fixed",
+      top: anchorRect.bottom + 8,
+      left: anchorRect.left,
+    }
+    : { position: "fixed", top: 0, left: 0 };
+
+  return (
+    <div
+      role="menu"
+      aria-label="Workspace menu"
+      className="z-[100] fixed top-16 rounded-2xl bg-white border border-gray-200 shadow-[0_24px_60px_rgba(2,6,23,0.12)] w-[260px] overflow-hidden"
+    // style={style}
+    >
+      <div className="p-2">
+        <button
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 hover:bg-gray-50"
+          onClick={onClose}
+        >
+          <div className="w-7 h-7 grid place-items-center overflow-hidden rounded bg-gray-900 text-white text-[12px] font-bold">
+            <img src={user?.avatar} alt="" />
+          </div>
+          <div className="text-[14px] font-semibold text-gray-900">{user?.username}</div>
+        </button>
+
+        <div className="my-2 h-[1px] bg-gray-200" />
+
+        <Link to='/setting/general' className="flex cursor-pointer w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
+          <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
+            👤
+          </span>
+          Account Settings
+        </Link>
+
+        <div className="my-2 h-[1px] bg-gray-200" />
+
+        <button onClick={logout} className="flex cursor-pointer w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
+          <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
+            ⤴
+          </span>
+          Sign out
+        </button>
+      </div>
+    </div>
   );
 }

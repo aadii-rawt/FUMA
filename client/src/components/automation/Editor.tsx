@@ -37,7 +37,7 @@ const Editor: React.FC = () => {
   }
 
   return (
-    <div className=" px-10 py-6 space-y-5 bg-gray-100">
+    <div className=" px-10 py-6 space-y-5 bg-gray-100 h-full overflow-y-scroll">
       <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between">

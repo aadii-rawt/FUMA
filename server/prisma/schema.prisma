@@ -18,7 +18,6 @@ model users {
   plan    String? 
   purchaseAt DateTime @default(now())
   expireAt    DateTime?
-
   automations       Automation[]
   subscriptioin     Subscription[]
 }

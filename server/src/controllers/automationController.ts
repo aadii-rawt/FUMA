@@ -105,7 +105,6 @@ export const updateAutomation = async (req: Request, res: Response) => {
   }
 };
 
-
 export const stopAutomation = async (req : Request, res : Response) => {
   // @ts-ignore
   const id = req.id 

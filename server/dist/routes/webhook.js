@@ -142,8 +142,6 @@ const webhook = async (req, res) => {
                     console.warn(`No page token for user ${auto.userId}; cannot send DM`);
                     continue;
                 }
-                // (Optional) Add 7-day window & once-per-comment guard here (DB table)
-                // TODO: enforce once-per-comment; check comment timestamp < 7d
                 // 4) Build message from automation
                 const payload = buildMessagePayload(auto, username);
                 // 5) Send private reply
