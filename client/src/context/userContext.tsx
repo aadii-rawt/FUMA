@@ -16,19 +16,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         keywords: [],
         dmText: "",
         msgTitle: "",
-        dmLinks: []
+        dmLinks: [],
+        dmImageUrl : ""
     });
     const [isPriceModalOpen, setIsPriceModalOpen] = useState(false)
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
 
-
-    const [anyKeyword, setAnyKeyword] = useState<boolean>(false);
-    const [keywords, setKeywords] = useState<string[]>([]);
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
-    const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
-    const [message, setMessage] = useState("");
-    const [links, setLinks] = useState([]);
+  const [previewURL, setPreviewURL] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchMe = async () => {
@@ -48,12 +43,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return (
         <UserContext.Provider value={{
             selectedPost, user, setUser, setSelectedPost, loading, setLoading, isPriceModalOpen, setIsPriceModalOpen,
-            keywords, setKeywords,
-            anyKeyword, setAnyKeyword,
-            imageUrl, setImageUrl,
-            message, setMessage,
-            links, setLinks,
-            imageDataUrl, setImageDataUrl
+            previewURL, setPreviewURL
 
         }}>
             {children}

@@ -32,7 +32,7 @@ const Editor: React.FC = () => {
   }, [])
 
   const handleSelectPost = (post) => {
-    setSelectedPost((prev) => ({...prev, postMediaId : post.id, postThumbnail : post.thumbnail_url}))
+    setSelectedPost((prev) => ({...prev, postMediaId : post.id, postThumbnail : post.thumbnail_url,caption : post.caption}))
     console.log(selectedPost);
   }
 

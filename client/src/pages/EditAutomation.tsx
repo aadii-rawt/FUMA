@@ -89,7 +89,7 @@ const EditAutomtion: React.FC = () => {
                              <button onClick={() => handleStatus("LIVE")} className={`text-green-500 font-semibold flex items-center gap-2 px-3 py-1 cursor-pointer rounded-xl border rounded border-gray-500/20`}>
                              <RxResume  className=''/>   Live
                             </button> }
-                        </div>
+                    </div>
                     </div>
                     {/* Right: Go Live button */}
                 </div>

@@ -20,7 +20,8 @@ const NewAutomation: React.FC = () => {
         keywords: [],
         dmText: "",
         msgTitle: "",
-        dmLinks: []
+        dmLinks: [],
+        dmImageUrl : ""
     })
     },[])
 

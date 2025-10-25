@@ -6,14 +6,14 @@ type LinkItem = { id: string; title: string; url: string };
 
 const DMComposer: React.FC = () => {
   // 🔽 Add imageDataUrl + setter from your context
-  const {selectedPost,setSelectedPost, imageUrl, setImageUrl, imageDataUrl, setImageDataUrl, message, setMessage, links, setLinks } = useUser();
+  const { selectedPost, setSelectedPost, imageUrl, setImageUrl,previewURL, setPreviewURL} = useUser();
 
   const [openModal, setOpenModal] = useState(false);
   const [draftTitle, setDraftTitle] = useState("");
   const [draftUrl, setDraftUrl] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [previewURL, setPreviewURL] = useState<string | null>(null);
- const objectUrlRef = useRef<string | null>(null);
+
+  const objectUrlRef = useRef<string | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const MAX = 80;
 
@@ -28,51 +28,10 @@ const DMComposer: React.FC = () => {
       r.readAsDataURL(file);
     });
 
-  const onFile = useCallback(async (f?: File) => {
-    if (!f) return;
-
-    // Optional validation
-    if (!f.type.startsWith("image/")) {
-      alert("Please select an image file.");
-      return;
-    }
-    if (f.size > 8 * 1024 * 1024) {
-      alert("Max file size is 8MB.");
-      return;
-    }
-
-    // 1) Show preview immediately
-    const preview = URL.createObjectURL(f);
-    setImageUrl(prev => {
-      if (prev?.startsWith("blob:")) URL.revokeObjectURL(prev);
-      return preview;
-    });
-
-    // 2) Convert to data URL for server
-    try {
-      const dataUrl = await fileToDataUrl(f);
-      setImageDataUrl(dataUrl); // <-- this is what you'll include in /automation payload
-    } catch (e) {
-      console.error("Failed to read file", e);
-      setImageDataUrl(null);
-      setImageUrl(prev => {
-        if (prev?.startsWith("blob:")) URL.revokeObjectURL(prev);
-        return null;
-      });
-      alert("Could not read the image file");
-    }
-  }, [setImageUrl, setImageDataUrl]);
-
-  const onDrop: React.DragEventHandler<HTMLDivElement> = (e) => {
-    e.preventDefault();
-    const f = e.dataTransfer.files?.[0];
-    if (f) onFile(f);
-  };
-
   const removeImage = () => {
     if (imageUrl?.startsWith("blob:")) URL.revokeObjectURL(imageUrl);
     setImageUrl(null);
-    setImageDataUrl(null); // keep context in sync
+    // setImageDataUrl(null); // keep context in sync
   };
 
   const startAdd = () => {
@@ -92,9 +51,9 @@ const DMComposer: React.FC = () => {
   const saveLink = () => {
     if (!draftTitle.trim() || !draftUrl.trim()) return;
     if (editingId) {
-      setSelectedPost((prev) => ({...prev,dmLinks : prev.dmLinks.map(l => (l.id === editingId ? { ...l, title: draftTitle.trim(), url: draftUrl.trim() } : l))}))
+      setSelectedPost((prev) => ({ ...prev, dmLinks: prev.dmLinks.map(l => (l.id === editingId ? { ...l, title: draftTitle.trim(), url: draftUrl.trim() } : l)) }))
     } else {
-          setSelectedPost((prev) => ({...prev, dmLinks : [...prev.dmLinks,{ id: Math.random().toString(36).slice(2), title: draftTitle.trim(), url: draftUrl.trim() }]}))
+      setSelectedPost((prev) => ({ ...prev, dmLinks: [...prev.dmLinks, { id: Math.random().toString(36).slice(2), title: draftTitle.trim(), url: draftUrl.trim() }] }))
     }
     setOpenModal(false);
     setDraftTitle("");
@@ -111,22 +70,22 @@ const DMComposer: React.FC = () => {
     });
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  if (!file.type.startsWith("image/")) return; // optional: show error
-  if (file.size > 10 * 1024 * 1024) return;   // optional: show error
+    if (!file.type.startsWith("image/")) return; // optional: show error
+    if (file.size > 10 * 1024 * 1024) return;   // optional: show error
 
-  if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
-  const objectUrl = URL.createObjectURL(file);
-  objectUrlRef.current = objectUrl;
-  setPreviewURL(objectUrl);
+    if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
+    const objectUrl = URL.createObjectURL(file);
+    objectUrlRef.current = objectUrl;
+    setPreviewURL(objectUrl);
 
-  const dataUri = await toDataURL(file); // data:image/...;base64,XXXX
-  setSelectedPost(prev => ({ ...prev, dmImageUrl: dataUri }));
-};
+    const dataUri = await toDataURL(file); // data:image/...;base64,XXXX
+    setSelectedPost(prev => ({ ...prev, dmImageUrl: dataUri }));
+  };
 
-  const removeLink = (id: string) => setSelectedPost((prev) => ({...prev, dmLinks : prev.dmLinks.filter(l => l.id !== id)}));
+  const removeLink = (id: string) => setSelectedPost((prev) => ({ ...prev, dmLinks: prev.dmLinks.filter(l => l.id !== id) }));
 
   const counter = useMemo(() => `${selectedPost.dmText.length} / ${MAX}`, [selectedPost.dmText.length]);
 
@@ -141,8 +100,8 @@ const DMComposer: React.FC = () => {
       {!previewURL ? (
         <div
           onClick={onPick}
-          onDrop={onDrop}
-          onDragOver={(e) => e.preventDefault()}
+          // onDrop={onDrop}
+          // onDragOver={(e) => e.preventDefault()}
           className="mb-4 grid h-28 w-full cursor-pointer place-items-center rounded-2xl border-2 border-dashed border-gray-300 text-slate-400"
         >
           <div className="flex items-center gap-2 text-[15px]">
@@ -171,9 +130,9 @@ const DMComposer: React.FC = () => {
       />
 
       <div className="rounded-xl border border-gray-200 px-4 py-2">
-        <input type="text" placeholder="Enter message title" 
-        value={selectedPost.msgTitle}
-        onChange={(e) => setSelectedPost((prev) => ({...prev,msgTitle : e.target.value}))}
+        <input type="text" placeholder="Enter message title"
+          value={selectedPost.msgTitle}
+          onChange={(e) => setSelectedPost((prev) => ({ ...prev, msgTitle: e.target.value }))}
           className="outline-none w-full auto-scale font-medium resize-none border-0 p-0 text-[15px] placeholder:text-slate-400 focus:ring-0"
         />
       </div>
@@ -183,7 +142,7 @@ const DMComposer: React.FC = () => {
         <textarea
           value={selectedPost.dmText}
           maxLength={MAX}
-          onChange={(e) => setSelectedPost((prev) => ({...prev, dmText : e.target.value}))}
+          onChange={(e) => setSelectedPost((prev) => ({ ...prev, dmText: e.target.value }))}
           placeholder="Enter your message here..."
           className="outline-none w-full auto-scale resize-none border-0 p-0 text-[15px] placeholder:text-slate-400 focus:ring-0"
         />
