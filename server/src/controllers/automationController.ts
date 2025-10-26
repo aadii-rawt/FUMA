@@ -1,31 +1,32 @@
 
+import { error } from "console"
 import { cloudinary } from "../lib/cloudinary"
 import { prisma } from "../lib/prisma"
 import { Request, Response } from "express"
 
 
-export const getAutomation = async (req : Request, res : Response) => {
-    // @ts-ignore
-    const userId = req.id
-    try {
-        const data = await  prisma.automation.findMany({
-            where : {
-                userId
-            }
-        })
-        console.log(data);
-        res.json(data)
-    } catch (error) {
-        console.log(error);
-        
-    }
+export const getAutomation = async (req: Request, res: Response) => {
+  // @ts-ignore
+  const userId = req.id
+  try {
+    const data = await prisma.automation.findMany({
+      where: {
+        userId
+      }
+    })
+    console.log(data);
+    res.json(data)
+  } catch (error) {
+    console.log(error);
+
+  }
 }
 
 export const createAutomation = async (req: Request, res: Response) => {
   try {
     // @ts-ignore
     const userId: string = req.id;
-    const { post } = req.body 
+    const { post } = req.body
 
     if (!post) {
       return res.status(400).json({ error: "Missing post payload" });
@@ -41,15 +42,15 @@ export const createAutomation = async (req: Request, res: Response) => {
       });
       dmImageUrl = result.secure_url;
       console.log("Cloudinary URL:", dmImageUrl);
-    } 
+    }
 
     // ⚠️ Avoid re-saving the original base64. Build the data explicitly:
-   
+
     await prisma.automation.create({
       data: {
         userId,
         ...post,
-        dmImageUrl : dmImageUrl || null,
+        dmImageUrl: dmImageUrl || null,
       },
     });
 
@@ -105,27 +106,46 @@ export const updateAutomation = async (req: Request, res: Response) => {
   }
 };
 
-export const stopAutomation = async (req : Request, res : Response) => {
+export const stopAutomation = async (req: Request, res: Response) => {
   // @ts-ignore
-  const id = req.id 
+  const id = req.id
   // @ts-ignore
-  const {id : postId} = req.params
+  const { id: postId } = req.params
   try {
-    
+
     const data = await prisma.automation.update({
-      where : {
-        userId : id,
-        id : postId
+      where: {
+        userId: id,
+        id: postId
       },
-      data : {
-        status : "PAUSED"
+      data: {
+        status: "PAUSED"
       }
     })
 
-    res.status(200).json({msg : "automation updated"})
-    
+    res.status(200).json({ msg: "automation updated" })
+
   } catch (error) {
-    res.json({error : "something went worng"})
+    res.json({ error: "something went worng" })
   }
+
+}
+
+export const automationCount = async (req : Request,res : Response) => {
+  // @ts-ignore
+  const userId = req.id
   
+  if(!userId) return res.status(401).json({error : "Unauthorized"}) 
+
+  const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+    const automationsThisMonth = await prisma.automation.count({
+        where: {
+            userId,
+            createdAt: { gte: startOfMonth },
+        },
+    });
+    res.json({data : automationsThisMonth})
+    
 }

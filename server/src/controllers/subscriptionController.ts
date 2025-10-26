@@ -6,16 +6,16 @@ export const getSubscriptionDetails = async (req: Request, res: Response) => {
     try {
         // @ts-ignore
         const id = req.id
-        if (!id) return res.status(401).json({error : "Unauthorized"})
+        if (!id) return res.status(401).json({ error: "Unauthorized" })
 
         const data = await prisma.subscription.findMany({
-            where : {userId : id}
+            where: { userId: id }
         })
         console.log("data :", data);
-        
-        res.json({data})
+
+        res.json({ data })
     } catch (error) {
-        
+
     }
 }
 
@@ -86,10 +86,12 @@ export const createSubscription = async (req: Request, res: Response) => {
                     billingCity: billingCity || null,
                 },
             });
+
             const user = await prisma.users.update({
                 where: { id },
                 data: {
                     plan: planTitle,
+                    purchaseAt: currentPeriodStart,
                     expireAt: currentPeriodEnd,
                 },
             });
@@ -105,5 +107,23 @@ export const createSubscription = async (req: Request, res: Response) => {
     } catch (err) {
         console.error("Subscription confirm error:", err);
         return res.status(500).json({ error: "Failed to store subscription" });
+    }
+}
+
+export const subscriptionExpire = async (req: Request, res: Response) => {
+    // @ts-ignore
+    const userId = req.id
+
+    if (!userId) return res.status(401).json({ error: "unauthorized" })
+
+    try {
+        const data = await prisma.users.update({
+            where: { id: userId },
+            data: { plan: "FREE" }
+        })
+        res.json({msg : "plan updated", data})
+
+    } catch (error) {
+        res.status(500).json({error : "someting went wrong"})
     }
 }

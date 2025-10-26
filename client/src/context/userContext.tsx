@@ -37,6 +37,33 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         fetchMe();
     }, []);
 
+    useEffect(() => {
+        if (!user) return;
+
+        if (user.plan === "FREE") return
+
+        const expireDate = new Date(user.expireAt);
+        const now = new Date();
+
+        const planExpire = async () => {
+            try {
+               const res =  await Axios.put("/subscriptions/expire")
+               setUser(res.data.data)
+               
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+
+        if (expireDate && now >= expireDate) {
+            planExpire()
+        }
+
+
+    }, [user]);
+
+
     return (
         <UserContext.Provider value={{
             selectedPost, user, setUser, setSelectedPost, loading, setLoading, isPriceModalOpen, setIsPriceModalOpen,

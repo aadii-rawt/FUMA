@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.stopAutomation = exports.updateAutomation = exports.createAutomation = exports.getAutomation = void 0;
+exports.automationCount = exports.stopAutomation = exports.updateAutomation = exports.createAutomation = exports.getAutomation = void 0;
 const cloudinary_1 = require("../lib/cloudinary");
 const prisma_1 = require("../lib/prisma");
 const getAutomation = async (req, res) => {
@@ -119,4 +119,21 @@ const stopAutomation = async (req, res) => {
     }
 };
 exports.stopAutomation = stopAutomation;
+const automationCount = async (req, res) => {
+    // @ts-ignore
+    const userId = req.id;
+    if (!userId)
+        return res.status(401).json({ error: "Unauthorized" });
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+    const automationsThisMonth = await prisma_1.prisma.automation.count({
+        where: {
+            userId,
+            createdAt: { gte: startOfMonth },
+        },
+    });
+    res.json({ data: automationsThisMonth });
+};
+exports.automationCount = automationCount;
 //# sourceMappingURL=automationController.js.map

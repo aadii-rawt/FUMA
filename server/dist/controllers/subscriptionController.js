@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createSubscription = exports.getSubscriptionDetails = void 0;
+exports.subscriptionExpire = exports.createSubscription = exports.getSubscriptionDetails = void 0;
 const prisma_1 = require("../lib/prisma");
 const getSubscriptionDetails = async (req, res) => {
     try {
@@ -66,6 +66,7 @@ const createSubscription = async (req, res) => {
                 where: { id },
                 data: {
                     plan: planTitle,
+                    purchaseAt: currentPeriodStart,
                     expireAt: currentPeriodEnd,
                 },
             });
@@ -82,4 +83,21 @@ const createSubscription = async (req, res) => {
     }
 };
 exports.createSubscription = createSubscription;
+const subscriptionExpire = async (req, res) => {
+    // @ts-ignore
+    const userId = req.id;
+    if (!userId)
+        return res.status(401).json({ error: "unauthorized" });
+    try {
+        const data = await prisma_1.prisma.users.update({
+            where: { id: userId },
+            data: { plan: "FREE" }
+        });
+        res.json({ msg: "plan updated", data });
+    }
+    catch (error) {
+        res.status(500).json({ error: "someting went wrong" });
+    }
+};
+exports.subscriptionExpire = subscriptionExpire;
 //# sourceMappingURL=subscriptionController.js.map

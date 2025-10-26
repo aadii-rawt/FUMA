@@ -6,5 +6,6 @@ const subscriptionController_1 = require("../controllers/subscriptionController"
 const subscriptioinRouter = (0, express_1.Router)();
 subscriptioinRouter.get("/history", auth_1.auth, subscriptionController_1.getSubscriptionDetails);
 subscriptioinRouter.post("/confirm", auth_1.auth, subscriptionController_1.createSubscription);
+subscriptioinRouter.put("/expire", auth_1.auth, subscriptionController_1.subscriptionExpire);
 exports.default = subscriptioinRouter;
 //# sourceMappingURL=subscription.js.map
