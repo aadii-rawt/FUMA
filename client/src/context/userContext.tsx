@@ -21,6 +21,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [loading, setLoading] = useState(true)
 
     const [previewURL, setPreviewURL] = useState<string | null>(null);
+    const [showSubscriptionModal, setShowSubscriptionModal] = useState(false)
 
     useEffect(() => {
         const fetchMe = async () => {
@@ -47,15 +48,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         const planExpire = async () => {
             try {
-               const res =  await Axios.put("/subscriptions/expire")
-               setUser(res.data.data)
-               
+                const res = await Axios.put("/subscriptions/expire")
+                setUser(res.data.data)
             } catch (error) {
                 console.log(error);
-
             }
         }
-
         if (expireDate && now >= expireDate) {
             planExpire()
         }
@@ -63,11 +61,35 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     }, [user]);
 
+    useEffect(() => {
+        if (!user) return;
 
+        const maybeShowModal = async () => {
+            try {
+                // if (user.plan !== "FREE") return;
+
+                const alreadyShown = sessionStorage.getItem("subsModalShown") === "1";
+                if (alreadyShown) return;
+
+                const res = await Axios.get("/automation/count");
+                const count = Number(res?.data?.data ?? 0);
+
+                if (count >= 3) {
+                    setShowSubscriptionModal(true);
+                    sessionStorage.setItem("subsModalShown", "1");
+                }
+            } catch (e) {
+                // ignore silently
+            }
+        };
+
+        maybeShowModal();
+    }, [user]);
     return (
         <UserContext.Provider value={{
             selectedPost, user, setUser, setSelectedPost, loading, setLoading, isPriceModalOpen, setIsPriceModalOpen,
-            previewURL, setPreviewURL
+            previewURL, setPreviewURL,
+            showSubscriptionModal, setShowSubscriptionModal
         }}>
             {children}
         </UserContext.Provider>

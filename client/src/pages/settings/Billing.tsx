@@ -15,8 +15,7 @@ export default function Billing() {
 
       try {
           const res = await Axios.get("/automation/count")
-          console.log(res);
-          
+          console.log(res);      
       } catch (error) {
 
       }

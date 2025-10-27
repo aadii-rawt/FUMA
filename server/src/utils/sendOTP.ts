@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 export const sendEmail = async ({ to, subject, html }) => {
   try {
     await transporter.sendMail({
-      from: "FUMA Varification",
+      from: `"FUMA varification" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       html,
