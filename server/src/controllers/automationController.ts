@@ -149,3 +149,27 @@ export const automationCount = async (req : Request,res : Response) => {
     res.json({data : automationsThisMonth})
     
 }
+
+export const linkRedirect = async (req : Request, res : Response) => {
+  try {
+    const { id } = req.params;
+    const redirectUrl = req.query.to as string;
+    console.log("to : ", req.query);
+    
+
+    if (!redirectUrl || !id)
+      return res.status(400).send("Invalid link");
+
+    // increment the counter
+    await prisma.automation.update({
+      where: { id },
+      data: { clickCount: { increment: 1 } },
+    });
+
+    // redirect to the actual link
+    return res.redirect(302, redirectUrl);
+  } catch (error) {
+    console.error("Tracking error:", error);
+    return res.status(500).send("Server error");
+  }
+}

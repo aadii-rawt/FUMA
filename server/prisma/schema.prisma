@@ -56,6 +56,8 @@ model Automation {
   dmText         String          
   dmImageUrl     String?          
   dmLinks        Json?   
+
+  clickCount  Int?      @default(0)
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
 

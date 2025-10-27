@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.automationCount = exports.stopAutomation = exports.updateAutomation = exports.createAutomation = exports.getAutomation = void 0;
+exports.linkRedirect = exports.automationCount = exports.stopAutomation = exports.updateAutomation = exports.createAutomation = exports.getAutomation = void 0;
 const cloudinary_1 = require("../lib/cloudinary");
 const prisma_1 = require("../lib/prisma");
 const getAutomation = async (req, res) => {
@@ -136,4 +136,25 @@ const automationCount = async (req, res) => {
     res.json({ data: automationsThisMonth });
 };
 exports.automationCount = automationCount;
+const linkRedirect = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const redirectUrl = req.query.to;
+        console.log("to : ", req.query);
+        if (!redirectUrl || !id)
+            return res.status(400).send("Invalid link");
+        // increment the counter
+        await prisma_1.prisma.automation.update({
+            where: { id },
+            data: { clickCount: { increment: 1 } },
+        });
+        // redirect to the actual link
+        return res.redirect(302, redirectUrl);
+    }
+    catch (error) {
+        console.error("Tracking error:", error);
+        return res.status(500).send("Server error");
+    }
+};
+exports.linkRedirect = linkRedirect;
 //# sourceMappingURL=automationController.js.map

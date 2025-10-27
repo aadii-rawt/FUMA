@@ -13,5 +13,6 @@ automationRoute.post("/", auth_1.auth, planValidatin_1.default, automationContro
 automationRoute.get("/count", auth_1.auth, automationController_1.automationCount);
 automationRoute.put("/:id", auth_1.auth, automationController_1.updateAutomation);
 automationRoute.put("/stop/:id", auth_1.auth, automationController_1.stopAutomation);
+automationRoute.get("/track/:id", automationController_1.linkRedirect);
 exports.default = automationRoute;
 //# sourceMappingURL=automation.js.map

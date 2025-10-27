@@ -21,6 +21,7 @@ function matchesKeywords(text, anyKeyword, keywords) {
     return keywords.some(k => t.includes(k.toLowerCase()));
 }
 function buildMessagePayload(automation, username) {
+    console.log("automation :", automation);
     // If you want to send cards/buttons/image -> use a template payload.
     // If you just want text -> use { message: { text: ... } }
     const hasLinks = Array.isArray(automation.dmLinks) && automation.dmLinks.length > 0;
@@ -34,7 +35,7 @@ function buildMessagePayload(automation, username) {
                 image_url: automation.dmImageUrl,
                 buttons: (automation.dmLinks ?? []).slice(0, 3).map((l) => ({
                     type: "web_url",
-                    url: l.url,
+                    url: `https://dynastical-bosseyed-nathaly.ngrok-free.dev/api/v1/automation/track/${automation.id}?to=${l.url}`,
                     title: l.title?.slice(0, 20) || "Open",
                 })),
             });

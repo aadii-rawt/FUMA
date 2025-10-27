@@ -77,6 +77,7 @@ const Automation: React.FC = () => {
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr className="text-left text-gray-500 font-medium">
                 <th className="px-6 py-3">Automation</th>
+                <th className="px-6 py-3">Runs</th>
                 <th className="px-6 py-3">Status</th>
                 <th className="px-6 py-3">Last Published</th>
               </tr>
@@ -98,7 +99,11 @@ const Automation: React.FC = () => {
                     {auto.name}
                   </td>
 
-                  {/* Status */}
+
+                  <td className="px-6 py-3 text-gray-400">
+                   {auto.clickCount}
+                  </td>
+
                   <td className="px-6 py-3">
                     {auto.status === "LIVE" ? (
                       <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
