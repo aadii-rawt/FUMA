@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+   "type": "module",
   "engines": { "node": "22.x" },
   "scripts": {
-   "build": "tsc -b",
+    "build": "tsc -p tsconfig.json",
     "start": "node api/index.js",
-    "postinstall": "prisma generate || echo 'no prisma schema found'"
+    "postinstall": "prisma generate || echo 'no prisma schema found'; tsc -p tsconfig.json"
   },
   "author": "",
   "license": "ISC",
