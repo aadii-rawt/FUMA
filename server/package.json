@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -b",
-    "start": "node dist/index.js",
-    "dev": "tsc -b && concurrently \"tsc -b -w\" \"nodemon dist/index.js\""
+   "build": "tsc -b",
+    "start": "node api/index.js",
+    "postinstall": "prisma generate || echo 'no prisma schema found'"
   },
   "author": "",
   "license": "ISC",
