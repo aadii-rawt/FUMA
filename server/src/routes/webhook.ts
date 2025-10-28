@@ -35,7 +35,7 @@ function buildMessagePayload(automation: any, username?: string) {
         image_url: automation.dmImageUrl,
         buttons: (automation.dmLinks ?? []).slice(0, 3).map((l: any) => ({
           type: "web_url",
-          url:`https://dynastical-bosseyed-nathaly.ngrok-free.dev/api/v1/automation/track/${automation.id}?to=${l.url}`,
+          url:`${process.env.BACKEND_URL}/api/v1/automation/track/${automation.id}?to=${l.url}`,
           title: l.title?.slice(0, 20) || "Open",
         })),
       });
