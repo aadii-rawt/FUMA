@@ -31,7 +31,7 @@ function buildMessagePayload(automation: any, username?: string) {
     if (automation.dmImageUrl) {
       elements.push({
         title: automation.msgTitle ?? "Info",
-        subtitle: automation.dmText ?? "",
+        subtitle:automation.dmText ? `${automation.dmText} || Powered by fuma.dotdazzle.in` : "",
         image_url: automation.dmImageUrl,
         buttons: (automation.dmLinks ?? []).slice(0, 3).map((l: any) => ({
           type: "web_url",
