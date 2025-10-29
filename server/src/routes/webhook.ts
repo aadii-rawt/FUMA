@@ -93,7 +93,7 @@ async function replyToComment(
   pageAccessToken: string
 ) {
   // Public reply to the IG comment
-  const url = `https://graph.facebook.com/v21.0/${commentId}/replies`;
+  const url = `https://graph.instagram.com/v21.0/${commentId}/replies`;
   await axios.post(
     url,
     { message },

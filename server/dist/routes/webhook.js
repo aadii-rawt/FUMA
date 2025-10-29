@@ -79,7 +79,7 @@ async function sendPrivateReplyToComment(commentId, payload, pageAccessToken) {
 }
 async function replyToComment(commentId, message, pageAccessToken) {
     // Public reply to the IG comment
-    const url = `https://graph.facebook.com/v21.0/${commentId}/replies`;
+    const url = `https://graph.instagram.com/v21.0/${commentId}/replies`;
     await axios_1.default.post(url, { message }, { params: { access_token: pageAccessToken } });
 }
 // Safely pull mediaId and the IG business account ID out of the webhook.
