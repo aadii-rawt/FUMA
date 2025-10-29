@@ -18,8 +18,8 @@ function matchesKeywords(text: string, anyKeyword: boolean, keywords: string[]):
 }
 
 function buildMessagePayload(automation: any, username?: string) {
-    console.log("automation :", automation);
-    
+  console.log("automation :", automation);
+
   // If you want to send cards/buttons/image -> use a template payload.
   // If you just want text -> use { message: { text: ... } }
   const hasLinks = Array.isArray(automation.dmLinks) && automation.dmLinks.length > 0;
@@ -35,7 +35,7 @@ function buildMessagePayload(automation: any, username?: string) {
         image_url: automation.dmImageUrl,
         buttons: (automation.dmLinks ?? []).slice(0, 3).map((l: any) => ({
           type: "web_url",
-          url:`${process.env.BACKEND_URL}/api/v1/automation/track/${automation.id}?to=${l.url}`,
+          url: `${process.env.BACKEND_URL}/api/v1/automation/track/${automation.id}?to=${l.url}`,
           title: l.title?.slice(0, 20) || "Open",
         })),
       });
@@ -43,7 +43,7 @@ function buildMessagePayload(automation: any, username?: string) {
       // A card without image
       elements.push({
         title: automation.msgTitle ?? "Info",
-        subtitle: automation.dmText ?  `${automation.dmText} || Powered by fuma.dotdazzle.in` : "",
+        subtitle: automation.dmText ? `${automation.dmText} || Powered by fuma.dotdazzle.in` : "",
         buttons: (automation.dmLinks ?? []).slice(0, 3).map((l: any) => ({
           type: "web_url",
           url: l.url,
@@ -86,6 +86,21 @@ async function sendPrivateReplyToComment(
   const { data } = await axios.post(url, body, { headers });
   return data;
 }
+
+async function replyToComment(
+  commentId: string,
+  message: string,
+  pageAccessToken: string
+) {
+  // Public reply to the IG comment
+  const url = `https://graph.facebook.com/v21.0/${commentId}/replies`;
+  await axios.post(
+    url,
+    { message },
+    { params: { access_token: pageAccessToken } }
+  );
+}
+
 
 // Safely pull mediaId and the IG business account ID out of the webhook.
 // Webhook shapes vary; keep fallbacks.
@@ -161,16 +176,26 @@ export const webhook = async (req: Request, res: Response) => {
           console.warn(`No page token for user ${auto.userId}; cannot send DM`);
           continue;
         }
-        
+
         // 4) Build message from automation
         const payload = buildMessagePayload(auto, username);
 
         // 5) Send private reply
         try {
+          // A) Public reply to the comment first
+          const publicReply = (username ? `Thanks @${username}! I’ve sent you a DM ✉️` : `Thanks! I’ve sent you a DM ✉️`);
+
+          await replyToComment(commentId, publicReply, pageAccessToken);
+          console.log("Public comment reply posted.");
+
+          // B) Then send the private message (DM)
           const resp = await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
           console.log("Private reply sent:", resp);
+
+          // Optional: stop after first successful automation to avoid multiple replies
+          break;
         } catch (err: any) {
-          console.error("Send failed:", err?.response?.data || err);
+          console.error("Reply/DM failed:", err?.response?.data || err);
         }
       }
     } catch (e: any) {

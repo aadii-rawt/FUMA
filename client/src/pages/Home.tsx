@@ -345,7 +345,7 @@ const Home: React.FC = () => {
                       {/* <div className="absolute inset-0 h-2/3 "></div> */}
                       <div className="relative mx-auto">
                           <div className="lg:max-w-3xl lg:mx-auto">
-                              <img className="transform scale-110" src="/hwoto.png" alt="" />
+                              {/* <img className="transform scale-110" src="/hwoto.png" alt="" /> */}
                           </div>
                       </div>
                   </div>

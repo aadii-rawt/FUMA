@@ -1,14 +1,15 @@
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import  { webhook } from "./routes/webhook";
-import authRouter from "./routes/auth"; 
-import instaRouter from "./routes/instagram";
 import cookieParser from "cookie-parser";
-import igroute from "./routes/ig";
-import { passportGoogle } from "./controllers/authController";
-import automationRoute from "./routes/automation";
-import subscriptioinRouter from "./routes/subscription";
+import { passportGoogle } from "./controllers/authController.js";
+import authRouter from "./routes/auth.js";
+import instaRouter from "./routes/instagram.js";
+import igroute from "./routes/ig.js";
+import automationRoute from "./routes/automation.js";
+import subscriptioinRouter from "./routes/subscription.js";
+import { webhook } from "./routes/webhook.js";
 dotenv.config();
 
 const app = express();

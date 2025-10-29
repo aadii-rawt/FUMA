@@ -77,6 +77,11 @@ async function sendPrivateReplyToComment(commentId, payload, pageAccessToken) {
     const { data } = await axios_1.default.post(url, body, { headers });
     return data;
 }
+async function replyToComment(commentId, message, pageAccessToken) {
+    // Public reply to the IG comment
+    const url = `https://graph.facebook.com/v21.0/${commentId}/replies`;
+    await axios_1.default.post(url, { message }, { params: { access_token: pageAccessToken } });
+}
 // Safely pull mediaId and the IG business account ID out of the webhook.
 // Webhook shapes vary; keep fallbacks.
 function extractIdsFromWebhook(value) {
@@ -147,11 +152,18 @@ const webhook = async (req, res) => {
                 const payload = buildMessagePayload(auto, username);
                 // 5) Send private reply
                 try {
+                    // A) Public reply to the comment first
+                    const publicReply = (username ? `Thanks @${username}! I’ve sent you a DM ✉️` : `Thanks! I’ve sent you a DM ✉️`);
+                    await replyToComment(commentId, publicReply, pageAccessToken);
+                    console.log("Public comment reply posted.");
+                    // B) Then send the private message (DM)
                     const resp = await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
                     console.log("Private reply sent:", resp);
+                    // Optional: stop after first successful automation to avoid multiple replies
+                    break;
                 }
                 catch (err) {
-                    console.error("Send failed:", err?.response?.data || err);
+                    console.error("Reply/DM failed:", err?.response?.data || err);
                 }
             }
         }

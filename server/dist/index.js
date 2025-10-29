@@ -6,20 +6,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const webhook_1 = require("./routes/webhook");
-const auth_1 = __importDefault(require("./routes/auth"));
-const instagram_1 = __importDefault(require("./routes/instagram"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const ig_1 = __importDefault(require("./routes/ig"));
-const authController_1 = require("./controllers/authController");
-const automation_1 = __importDefault(require("./routes/automation"));
-const subscription_1 = __importDefault(require("./routes/subscription"));
+const authController_js_1 = require("./controllers/authController.js");
+const auth_js_1 = __importDefault(require("./routes/auth.js"));
+const instagram_js_1 = __importDefault(require("./routes/instagram.js"));
+const ig_js_1 = __importDefault(require("./routes/ig.js"));
+const automation_js_1 = __importDefault(require("./routes/automation.js"));
+const subscription_js_1 = __importDefault(require("./routes/subscription.js"));
+const webhook_js_1 = require("./routes/webhook.js");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cookie_parser_1.default)());
 app.use("/webhook", express_1.default.raw({ type: "*/*" }));
 app.use(express_1.default.json({ limit: "50mb" }));
-app.use(authController_1.passportGoogle.initialize());
+app.use(authController_js_1.passportGoogle.initialize());
 const allowedOrigins = [
     process.env.CORS_ORIGIN,
 ].filter(Boolean);
@@ -153,12 +153,12 @@ app.get("/privacy_policy", (_req, res) => {
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.status(200).send(html);
 });
-app.use("/api/v1/auth", auth_1.default);
-app.use("/api/v1/instagram", instagram_1.default);
-app.use("/api/v1/ig", ig_1.default);
-app.use("/api/v1/automation", automation_1.default);
-app.use("/api/v1/subscriptions", subscription_1.default);
-app.all("/webhook", webhook_1.webhook);
+app.use("/api/v1/auth", auth_js_1.default);
+app.use("/api/v1/instagram", instagram_js_1.default);
+app.use("/api/v1/ig", ig_js_1.default);
+app.use("/api/v1/automation", automation_js_1.default);
+app.use("/api/v1/subscriptions", subscription_js_1.default);
+app.all("/webhook", webhook_js_1.webhook);
 // ----- Start -----
 const port = Number(process.env.PORT) || 8080;
 app.listen(port, () => console.log("server running on", port));
