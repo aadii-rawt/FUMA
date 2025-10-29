@@ -9,7 +9,6 @@ import Subscription from "../components/Subscription";
 export default function Layout() {
   const { isPriceModalOpen } = useUser()
   const { showSubscriptionModal, setShowSubscriptionModal } = useUser();
-  console.log(showSubscriptionModal);
 
   return (
     <div className="flex h-screen max-h-screen overflow-hidden bg-[#EBEBEB] relative">

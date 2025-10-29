@@ -81,7 +81,7 @@ const DMComposer: React.FC = () => {
   const counter = useMemo(() => `${selectedPost.dmText.length} / ${MAX}`, [selectedPost.dmText.length]);
 
   return (
-    <div className="w-full mb-20 max-w-xl rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+    <div className="w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
       <div className="mb-4 flex items-center gap-3">
         <span className="grid h-8 w-8 place-items-center rounded-lg bg-slate-900 text-sm font-semibold text-white">3</span>
         <h2 className="text-xl font-semibold text-slate-900">Send a DM</h2>

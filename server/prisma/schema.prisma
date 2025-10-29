@@ -60,6 +60,9 @@ model Automation {
   clickCount  Int?      @default(0)
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
+  openingMsg     Boolean @default(false)
+  openingMsgData    Json?
+  commentReply    Boolean @default(false)
 
 
   @@index([userId, status])

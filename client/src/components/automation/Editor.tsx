@@ -5,24 +5,26 @@ import AllPostModal from "./AllPostModal";
 import KeywordSetup from "./KeywordSetup";
 import DMComposer from "./DMComposer";
 import ReelShimmer from "../shimmer/ReelShimmer";
+import OpeningMessage from "./OpeningMessage";
+import CommentReply from "./CommentReply";
 
 
 const Editor: React.FC = () => {
   const [posts, setPosts] = useState([])
   const { selectedPost, setSelectedPost } = useUser()
   const [allPostModalOpen, setAllPostModalOpen] = useState(false)
-  const {user} = useUser()
-  const [loading,setLoading] = useState(true)
+  const { user } = useUser()
+  const [loading, setLoading] = useState(true)
 
   const getPosts = async () => {
-    if(!user) return
+    if (!user) return
     try {
       setLoading(true)
-      const res = await Axios.get("/ig/media",{ params: { limit: 3, access_token : user.access_token} });
+      const res = await Axios.get("/ig/media", { params: { limit: 3, access_token: user.access_token } });
       setPosts(res.data.data)
     } catch (error) {
       console.log(error);
-    } finally{
+    } finally {
       setLoading(false)
     }
   }
@@ -32,7 +34,7 @@ const Editor: React.FC = () => {
   }, [])
 
   const handleSelectPost = (post) => {
-    setSelectedPost((prev) => ({...prev, postMediaId : post.id, postThumbnail : post.thumbnail_url,caption : post.caption}))
+    setSelectedPost((prev) => ({ ...prev, postMediaId: post.id, postThumbnail: post.thumbnail_url, caption: post.caption }))
     console.log(selectedPost);
   }
 
@@ -55,7 +57,7 @@ const Editor: React.FC = () => {
 
         {/* Tiles */}
         <div className="mt-5 flex gap-5">
-          {loading ? <ReelShimmer /> : posts?.map((post: any,i) => (
+          {loading ? <ReelShimmer /> : posts?.map((post: any, i) => (
             <div key={i} onClick={() => handleSelectPost(post)} className={`${post.id == selectedPost?.postMediaId && "border-2 border-indigo-500"} relative cursor-pointer h-50 w-40 overflow-hidden rounded-xl  p-0`}>
               <img
                 src={post?.thumbnail_url}
@@ -74,12 +76,25 @@ const Editor: React.FC = () => {
         >
           Show More
         </button>
-        <AllPostModal open={allPostModalOpen} onClose={() => setAllPostModalOpen(false)}  setSelectedPost={setSelectedPost} />
+        <AllPostModal open={allPostModalOpen} onClose={() => setAllPostModalOpen(false)} setSelectedPost={setSelectedPost} />
 
       </div>
       <KeywordSetup />
 
       <DMComposer />
+
+
+      <OpeningMessage />
+
+      <div className="mb-20  border-t-2 border-gray-200">
+        <div className="my-5">
+          <h1 className="text-xl font-medium">Advanced Automations</h1>
+          <p className="text-gray-400 w-2/3">Grow your audience faster — with smart,
+            hands-free engagement.</p>
+        </div>
+
+        <CommentReply />
+      </div>
     </div>
   );
 };

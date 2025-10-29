@@ -67,7 +67,7 @@ const KeywordSetup: React.FC<KeywordSetupProps> = ({ className = "" }) => {;
           onClick={handleToggle}
           aria-pressed={selectedPost.anyKeyword}
           className={[
-            "relative inline-flex h-6 w-12 items-center rounded-full transition-colors",
+            "relative inline-flex cursor-pointer h-6 w-12 items-center rounded-full transition-colors",
             selectedPost.anyKeyword ? "bg-violet-600" : "bg-gray-300",
           ].join(" ")}
           title="Any keyword"

@@ -21,30 +21,34 @@ const NewAutomation: React.FC = () => {
             dmText: "",
             msgTitle: "",
             dmLinks: [],
-            dmImageUrl: ""
+            dmImageUrl: "",
+            openingMsg: false,
         })
     }, [])
 
     const handleAutomation = async () => {
-        if (!user) return
-        try {
-            const res = await Axios.post("/automation", { post: selectedPost })
-            console.log(selectedPost);
-            setSelectedPost({
-                name: "New Automation",
-                status: "LIVE",
-                postMediaId: "",
-                postThumbnail: "",
-                anyKeyword: false,
-                keywords: [],
-                dmText: "",
-                msgTitle: "",
-                dmLinks: [],
-                dmImageUrl: ""
-            })
-        } catch (error) {
-            console.log(error);
-        }
+        console.log("data :", selectedPost);
+        
+        // if (!user) return
+        // try {
+        //     const res = await Axios.post("/automation", { post: selectedPost })
+        //     console.log(selectedPost);
+        //     setSelectedPost({
+        //         name: "New Automation",
+        //         status: "LIVE",
+        //         postMediaId: "",
+        //         postThumbnail: "",
+        //         anyKeyword: false,
+        //         keywords: [],
+        //         dmText: "",
+        //         msgTitle: "",
+        //         dmLinks: [],
+        //         dmImageUrl: "",
+        //         openingMsg: false,
+        //     })
+        // } catch (error) {
+        //     console.log(error);
+        // }
 
     }
 

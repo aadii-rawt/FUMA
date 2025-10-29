@@ -14,7 +14,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         dmText: "",
         msgTitle: "",
         dmLinks: [],
-        dmImageUrl: ""
+        dmImageUrl: "",
+        openingMsg: false,
+        commentReply : false,
     });
     const [isPriceModalOpen, setIsPriceModalOpen] = useState(false)
     const [user, setUser] = useState(null)
