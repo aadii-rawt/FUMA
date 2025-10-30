@@ -181,12 +181,11 @@ const webhook = async (req, res) => {
                                     type: "template",
                                     payload: {
                                         template_type: "button",
-                                        text: auto.openingMsgData?.text ||
-                                            "Hey there! 👋 Thanks for your comment. Tap below and I’ll send you the link!",
+                                        text: "Hey there! 👋 Thanks for your comment. Tap below and I’ll send you the link!",
                                         buttons: [
                                             {
                                                 type: "postback",
-                                                title: auto.openingMsgData?.btnText || "Send me the link",
+                                                title: "Send me the link",
                                                 payload: `SEND_LINK:${auto.id}`, // this gets handled in webhook postback
                                             },
                                         ],

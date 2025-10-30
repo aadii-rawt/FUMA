@@ -23,30 +23,30 @@ const NewAutomation: React.FC = () => {
             dmLinks: [],
             dmImageUrl: "",
             openingMsg: false,
-            commentReply : false
+            commentReply: false
         })
     }, [])
 
     const handleAutomation = async () => {
         // console.log("data :", selectedPost);
-        
+
         if (!user) return
         try {
             const res = await Axios.post("/automation", { post: selectedPost })
             console.log(selectedPost);
             setSelectedPost({
-               name: "New Automation",
-            status: "LIVE",
-            postMediaId: "",
-            postThumbnail: "",
-            anyKeyword: false,
-            keywords: [],
-            dmText: "",
-            msgTitle: "",
-            dmLinks: [],
-            dmImageUrl: "",
-            openingMsg: false,
-            commentReply : false
+                name: "New Automation",
+                status: "LIVE",
+                postMediaId: "",
+                postThumbnail: "",
+                anyKeyword: false,
+                keywords: [],
+                dmText: "",
+                msgTitle: "",
+                dmLinks: [],
+                dmImageUrl: "",
+                openingMsg: false,
+                commentReply: false
             })
         } catch (error) {
             console.log(error);
