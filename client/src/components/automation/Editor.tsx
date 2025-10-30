@@ -7,6 +7,7 @@ import DMComposer from "./DMComposer";
 import ReelShimmer from "../shimmer/ReelShimmer";
 import OpeningMessage from "./OpeningMessage";
 import CommentReply from "./CommentReply";
+import FollowForDM from "./FollowForDM";
 
 
 const Editor: React.FC = () => {
@@ -93,7 +94,11 @@ const Editor: React.FC = () => {
             hands-free engagement.</p>
         </div>
 
+          <div className="space-y-5">
         <CommentReply />
+        <FollowForDM />
+
+          </div>
       </div>
     </div>
   );

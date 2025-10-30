@@ -176,11 +176,11 @@ export const webhook = async (req: Request, res: Response) => {
 
     try {
 
-         // 0) Handle POSTBACKS first (button clicks)
+      // inside export const webhook = async (req, res) => { ... } just after parsing 'body'
       const { postbackPayload, senderId } = extractPostback(body);
       if (postbackPayload && senderId) {
-        // Expecting SEND_LINK:<automationId>
-        if (postbackPayload.startsWith("SEND_LINK:")) {
+        // FOLLOW gate and "send link" gate both land here
+        if (postbackPayload.startsWith("FOLLOWED:") || postbackPayload.startsWith("SEND_LINK:")) {
           const automationId = postbackPayload.split(":")[1];
           const auto = await prisma.automation.findUnique({
             where: { id: automationId },
@@ -191,12 +191,15 @@ export const webhook = async (req: Request, res: Response) => {
             return res.status(200).send("ok");
           }
           const pageAccessToken = auto.user.access_token;
+
+          // After user confirms follow (or presses "Send me the link") -> send the link/card
           const linkPayload = buildMessagePayload(auto, undefined);
           await sendDMToUser(senderId, linkPayload, pageAccessToken);
-          console.log("✅ Link sent after button click");
+          console.log("✅ Link sent after postback:", postbackPayload);
         }
         return res.status(200).send("ok");
-      } 
+      }
+
       const entry = body?.entry?.[0];
       const change = entry?.changes?.[0];
       const value = change?.value;
@@ -249,19 +252,46 @@ export const webhook = async (req: Request, res: Response) => {
             await replyToComment(commentId, replyText, pageAccessToken);
           }
 
-          // // B) Then send the private message (DM)
-          // const resp = await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
-          // console.log("Private reply sent:", resp);
 
-         if (auto.openingMsg) {
-            // ✅ ONLY send opening message with button. Do NOT send link here.
+          // 1) FOLLOW-FOR-DM GATE
+          if (auto.followForDM) {
+            const visitTitle =  "Visit Profile";
+            const confirmTitle =  "I'm following ✅";
+            const followText = "Oh no! It seems you're not following me yet. Tap 'Visit Profile', follow, then press 'I'm following ✅' to get the link ✨.";
+
+            // Try to build a profile URL
+            const profileUrl = `https://instagram.com/${auto.user.username}`
+
+            const followGatePayload = {
+              message: {
+                attachment: {
+                  type: "template",
+                  payload: {
+                    template_type: "button",
+                    text: followText,
+                    buttons: [
+                      { type: "web_url", url: profileUrl, title: visitTitle },
+                      { type: "postback", title: confirmTitle, payload: `FOLLOWED:${auto.id}` },
+                    ],
+                  },
+                },
+              },
+            };
+
+            await sendPrivateReplyToComment(commentId, followGatePayload, pageAccessToken);
+            console.log("✅ Follow gate sent; waiting for postback FOLLOWED:<id>");
+            break; // stop after first matching automation
+          }
+
+          // 2) OPENING MESSAGE (ONLY if follow gate is not enabled)
+          if (auto.openingMsg) {
             const openingPayload = {
               message: {
                 attachment: {
                   type: "template",
                   payload: {
                     template_type: "button",
-                    text: "Hey there! 👋 Thanks for your comment. Tap below and I’ll send you the link!",
+                    text:  "Hey there! 👋 Thanks for your comment. Tap below and I’ll send you the link!",
                     buttons: [
                       {
                         type: "postback",
@@ -275,15 +305,14 @@ export const webhook = async (req: Request, res: Response) => {
             };
 
             await sendPrivateReplyToComment(commentId, openingPayload, pageAccessToken);
-            console.log("✅ Opening message sent (waiting for button click)");
-          } else {
-            // 🚀 No opening message: send link directly
-            const payload = buildMessagePayload(auto, username);
-            await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
-            console.log("✅ Direct link sent");
+            console.log("✅ Opening message sent; waiting for postback SEND_LINK:<id>");
+            break;
           }
 
-          // Optional: stop after first successful automation to avoid multiple replies
+          // 3) DIRECT SEND (no follow gate, no opening message)
+          const payload = buildMessagePayload(auto, username);
+          await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
+          console.log("✅ Direct link sent");
           break;
         } catch (err: any) {
           console.error("Reply/DM failed:", err?.response?.data || err);
