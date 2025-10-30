@@ -139,6 +139,28 @@ function extractIdsFromWebhook(value: any) {
   return { commentId, username, text, mediaId, igBusinessId };
 }
 
+async function sendDMToUser(recipientId: string, payload: any, pageAccessToken: string) {
+  // Message to a user id (used after postback)
+  const url = `https://graph.instagram.com/v21.0/me/messages`;
+  const headers = {
+    Authorization: `Bearer ${pageAccessToken}`,
+    "Content-Type": "application/json",
+  };
+  const body = { recipient: { id: recipientId }, ...payload };
+  const { data } = await axios.post(url, body, { headers });
+  return data;
+}
+
+// Try to detect a Messenger/IG messaging postback
+function extractPostback(body: any) {
+  // Page/IG messaging webhooks often under entry[].messaging[]
+  const entry = body?.entry?.[0];
+  const messaging = entry?.messaging?.[0];
+  const postbackPayload = messaging?.postback?.payload as string | undefined;
+  const senderId = messaging?.sender?.id as string | undefined;
+  return { postbackPayload, senderId };
+}
+
 // ---------- Main webhook ----------
 export const webhook = async (req: Request, res: Response) => {
   if (req.method === "POST") {
@@ -153,6 +175,28 @@ export const webhook = async (req: Request, res: Response) => {
     }
 
     try {
+
+         // 0) Handle POSTBACKS first (button clicks)
+      const { postbackPayload, senderId } = extractPostback(body);
+      if (postbackPayload && senderId) {
+        // Expecting SEND_LINK:<automationId>
+        if (postbackPayload.startsWith("SEND_LINK:")) {
+          const automationId = postbackPayload.split(":")[1];
+          const auto = await prisma.automation.findUnique({
+            where: { id: automationId },
+            include: { user: true },
+          });
+          if (!auto || !auto.user?.access_token) {
+            console.warn("Postback: automation or page token missing");
+            return res.status(200).send("ok");
+          }
+          const pageAccessToken = auto.user.access_token;
+          const linkPayload = buildMessagePayload(auto, undefined);
+          await sendDMToUser(senderId, linkPayload, pageAccessToken);
+          console.log("✅ Link sent after button click");
+        }
+        return res.status(200).send("ok");
+      } 
       const entry = body?.entry?.[0];
       const change = entry?.changes?.[0];
       const value = change?.value;
@@ -209,21 +253,20 @@ export const webhook = async (req: Request, res: Response) => {
           // const resp = await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
           // console.log("Private reply sent:", resp);
 
-          if (auto.openingMsg) {
-            // Step 1: send opening message first
+         if (auto.openingMsg) {
+            // ✅ ONLY send opening message with button. Do NOT send link here.
             const openingPayload = {
               message: {
                 attachment: {
                   type: "template",
                   payload: {
                     template_type: "button",
-                    text:
-                       "Hey there! 👋 Thanks for your comment. Tap below and I’ll send you the link!",
+                    text: "Hey there! 👋 Thanks for your comment. Tap below and I’ll send you the link!",
                     buttons: [
                       {
                         type: "postback",
-                        title:  "Send me the link",
-                        payload: `SEND_LINK:${auto.id}`, // this gets handled in webhook postback
+                        title: "Send me the link",
+                        payload: `SEND_LINK:${auto.id}`,
                       },
                     ],
                   },
@@ -231,22 +274,14 @@ export const webhook = async (req: Request, res: Response) => {
               },
             };
 
-
             await sendPrivateReplyToComment(commentId, openingPayload, pageAccessToken);
-
-            // Step 2: then send link (card or text)
-            const payload = buildMessagePayload(auto, username);
-            await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
-
-            console.log("✅ Opening message + link sent");
+            console.log("✅ Opening message sent (waiting for button click)");
           } else {
-            // 🚀 If no opening message, send link directly
+            // 🚀 No opening message: send link directly
             const payload = buildMessagePayload(auto, username);
             await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
-
             console.log("✅ Direct link sent");
           }
-
 
           // Optional: stop after first successful automation to avoid multiple replies
           break;
