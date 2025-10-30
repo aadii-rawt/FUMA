@@ -77,6 +77,16 @@ async function sendPrivateReplyToComment(commentId, payload, pageAccessToken) {
     const { data } = await axios_1.default.post(url, body, { headers });
     return data;
 }
+function buildOpeningReplyButtonPayload(automation) {
+    const text = automation?.openingMsgData?.text ??
+        "Hey there! Thanks for your interest ✨ Tap below and I’ll send you the link in a sec.";
+    // Button sends a postback we’ll catch in the webhook
+    return {
+        message: text,
+        ctaTitle: automation?.openingMsgData?.ctaTitle || "Send me the link",
+        postbackPayload: `SEND_LINK:${automation.id}`,
+    };
+}
 async function replyToComment(commentId, message, pageAccessToken) {
     // Public reply to the IG comment
     const url = `https://graph.instagram.com/v21.0/${commentId}/replies`;
@@ -160,9 +170,42 @@ const webhook = async (req, res) => {
                         const replyText = auto?.commentReplyData?.[randomIdx]?.reply;
                         await replyToComment(commentId, replyText, pageAccessToken);
                     }
-                    // B) Then send the private message (DM)
-                    const resp = await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
-                    console.log("Private reply sent:", resp);
+                    // // B) Then send the private message (DM)
+                    // const resp = await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
+                    // console.log("Private reply sent:", resp);
+                    if (auto.openingMsg) {
+                        // Step 1: send opening message first
+                        const openingPayload = {
+                            message: {
+                                attachment: {
+                                    type: "template",
+                                    payload: {
+                                        template_type: "button",
+                                        text: auto.openingMsgData?.text ||
+                                            "Hey there! 👋 Thanks for your comment. Tap below and I’ll send you the link!",
+                                        buttons: [
+                                            {
+                                                type: "postback",
+                                                title: auto.openingMsgData?.btnText || "Send me the link",
+                                                payload: `SEND_LINK:${auto.id}`, // this gets handled in webhook postback
+                                            },
+                                        ],
+                                    },
+                                },
+                            },
+                        };
+                        await sendPrivateReplyToComment(commentId, openingPayload, pageAccessToken);
+                        // Step 2: then send link (card or text)
+                        const payload = buildMessagePayload(auto, username);
+                        await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
+                        console.log("✅ Opening message + link sent");
+                    }
+                    else {
+                        // 🚀 If no opening message, send link directly
+                        const payload = buildMessagePayload(auto, username);
+                        await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
+                        console.log("✅ Direct link sent");
+                    }
                     // Optional: stop after first successful automation to avoid multiple replies
                     break;
                 }
