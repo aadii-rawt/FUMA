@@ -23,6 +23,7 @@ const NewAutomation: React.FC = () => {
             dmLinks: [],
             dmImageUrl: "",
             openingMsg: false,
+            commentReply : false
         })
     }, [])
 
@@ -34,17 +35,18 @@ const NewAutomation: React.FC = () => {
         //     const res = await Axios.post("/automation", { post: selectedPost })
         //     console.log(selectedPost);
         //     setSelectedPost({
-        //         name: "New Automation",
-        //         status: "LIVE",
-        //         postMediaId: "",
-        //         postThumbnail: "",
-        //         anyKeyword: false,
-        //         keywords: [],
-        //         dmText: "",
-        //         msgTitle: "",
-        //         dmLinks: [],
-        //         dmImageUrl: "",
-        //         openingMsg: false,
+        //        name: "New Automation",
+            // status: "LIVE",
+            // postMediaId: "",
+            // postThumbnail: "",
+            // anyKeyword: false,
+            // keywords: [],
+            // dmText: "",
+            // msgTitle: "",
+            // dmLinks: [],
+            // dmImageUrl: "",
+            // openingMsg: false,
+            // commentReply : false
         //     })
         // } catch (error) {
         //     console.log(error);

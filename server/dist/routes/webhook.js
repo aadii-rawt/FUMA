@@ -153,9 +153,13 @@ const webhook = async (req, res) => {
                 // 5) Send private reply
                 try {
                     // A) Public reply to the comment first
-                    const publicReply = (username ? `Thanks @${username}! I’ve sent you a DM ✉️` : `Thanks! I’ve sent you a DM ✉️`);
-                    await replyToComment(commentId, publicReply, pageAccessToken);
-                    console.log("Public comment reply posted.");
+                    if (auto.commentReply) {
+                        // const replies = auto.openingMsgData ?? [];
+                        const randomIdx = Math.floor(Math.random() * 3);
+                        // const replyText = randomIdx >= 0 ? replies[randomIdx]?.reply ?? "" : ""; 
+                        const replyText = auto?.commentReplyData?.[randomIdx]?.reply;
+                        await replyToComment(commentId, replyText, pageAccessToken);
+                    }
                     // B) Then send the private message (DM)
                     const resp = await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
                     console.log("Private reply sent:", resp);

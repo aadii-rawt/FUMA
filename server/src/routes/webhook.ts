@@ -31,7 +31,7 @@ function buildMessagePayload(automation: any, username?: string) {
     if (automation.dmImageUrl) {
       elements.push({
         title: automation.msgTitle ?? "Info",
-        subtitle:automation.dmText ? `${automation.dmText} || Powered by fuma.dotdazzle.in` : "",
+        subtitle: automation.dmText ? `${automation.dmText} || Powered by fuma.dotdazzle.in` : "",
         image_url: automation.dmImageUrl,
         buttons: (automation.dmLinks ?? []).slice(0, 3).map((l: any) => ({
           type: "web_url",
@@ -182,11 +182,15 @@ export const webhook = async (req: Request, res: Response) => {
 
         // 5) Send private reply
         try {
-          // A) Public reply to the comment first
-          const publicReply = (username ? `Thanks @${username}! I’ve sent you a DM ✉️` : `Thanks! I’ve sent you a DM ✉️`);
 
-          await replyToComment(commentId, publicReply, pageAccessToken);
-          console.log("Public comment reply posted.");
+          // A) Public reply to the comment first
+          if (auto.commentReply) {
+            // const replies = auto.openingMsgData ?? [];
+            const randomIdx = Math.floor(Math.random() * 3);
+            // const replyText = randomIdx >= 0 ? replies[randomIdx]?.reply ?? "" : ""; 
+            const replyText = auto?.commentReplyData?.[randomIdx]?.reply
+            await replyToComment(commentId, replyText, pageAccessToken);
+          }
 
           // B) Then send the private message (DM)
           const resp = await sendPrivateReplyToComment(commentId, payload, pageAccessToken);

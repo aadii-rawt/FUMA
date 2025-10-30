@@ -63,6 +63,7 @@ model Automation {
   openingMsg     Boolean @default(false)
   openingMsgData    Json?
   commentReply    Boolean @default(false)
+  commentReplyData    Json?
 
 
   @@index([userId, status])
