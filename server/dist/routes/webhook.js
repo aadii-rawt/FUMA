@@ -87,48 +87,6 @@ function buildOpeningReplyButtonPayload(automation) {
         postbackPayload: `SEND_LINK:${automation.id}`,
     };
 }
-async function checkIfCommenterFollowsBusiness(commenterUsername, igBusinessId, pageAccessToken) {
-    // WARNING: Checking a specific user's follow status (relationship check) on Instagram via the Graph API 
-    // is often brittle, complex, and heavily rate-limited. It typically requires two steps:
-    // 1. Resolving the commenter's IG User ID from their username.
-    // 2. Using an endpoint like GET /{ig-business-id}/followed_by?user_id={commenter-id} to check the relationship.
-    // For simplicity and to integrate into your existing structure, we are using a simplified, direct check
-    // that assumes the necessary permissions (like business_management) and configuration. 
-    // You may need to refine this API call based on your exact Meta App permissions and features.
-    try {
-        // This is a placeholder for the actual complex API call to check the relationship.
-        // There is no official single-step public endpoint for "Is this user following me?" by username.
-        // For demonstration, we'll try to resolve the commenter's ID via Business Discovery, which 
-        // implies the commenter is visible and searchable by the business account.
-        const discoveryUrl = `https://graph.instagram.com/v21.0/${igBusinessId}`;
-        const discoveryParams = {
-            // Fields needed to resolve the relationship if an explicit endpoint is not available.
-            fields: `business_discovery.username(${commenterUsername}){id}`,
-            access_token: pageAccessToken
-        };
-        const { data: discoveryData } = await axios_1.default.get(discoveryUrl, { params: discoveryParams });
-        const commenterIgId = discoveryData?.business_discovery?.id;
-        if (!commenterIgId) {
-            // If the username cannot be resolved (e.g., private profile, username doesn't exist), assume false
-            return false;
-        }
-        // --- Step 2: Attempt a Relationship Check (Requires specific Business Permissions) ---
-        // A hypothetical, direct relationship check endpoint.
-        const checkUrl = `https://graph.instagram.com/v21.0/${igBusinessId}/is_followed_by`;
-        const checkParams = {
-            target_id: commenterIgId, // ID of the user whose relationship to check
-            access_token: pageAccessToken
-        };
-        const { data: checkData } = await axios_1.default.get(checkUrl, { params: checkParams });
-        // Assuming the response structure returns 'is_followed' for the relationship.
-        return checkData?.is_followed ?? false;
-    }
-    catch (e) {
-        // Log errors, but return false to enforce the Follow Gate on failure (fail-safe).
-        console.warn(`[Follow Check] Failed for ${commenterUsername}. Enforcing gate. Error:`, e?.response?.data || e.message);
-        return false;
-    }
-}
 async function replyToComment(commentId, message, pageAccessToken) {
     // Public reply to the IG comment
     const url = `https://graph.instagram.com/v21.0/${commentId}/replies`;
@@ -254,45 +212,31 @@ const webhook = async (req, res) => {
                         const replyText = auto?.commentReplyData?.[randomIdx]?.reply;
                         await replyToComment(commentId, replyText, pageAccessToken);
                     }
-                    let shouldSendDirectly = false;
+                    // 1) FOLLOW-FOR-DM GATE
                     if (auto.followForDM) {
-                        const isFollowing = await checkIfCommenterFollowsBusiness(username, igBusinessId, pageAccessToken);
-                        if (isFollowing) {
-                            console.log(`User @${username} is already following. Proceeding directly.`);
-                            shouldSendDirectly = true;
-                        }
-                        else {
-                            console.log(`User @${username} is NOT following. Sending Follow Gate.`);
-                            // 1) SEND FOLLOW-FOR-DM GATE
-                            const visitTitle = "Visit Profile";
-                            const confirmTitle = "I'm following ✅";
-                            // Updated message to match the image content as closely as possible
-                            const followText = "Oh no! It seems you're not following me 😟 It would really mean a lot if you visit my profile and hit the follow button 😊. Once you have done that, click on the 'I'm following' button below and you will get the link ✨.";
-                            // Try to build a profile URL
-                            const profileUrl = `https://instagram.com/${auto.user.username}`;
-                            const followGatePayload = {
-                                message: {
-                                    attachment: {
-                                        type: "template",
-                                        payload: {
-                                            template_type: "button",
-                                            text: followText,
-                                            buttons: [
-                                                { type: "web_url", url: profileUrl, title: visitTitle },
-                                                { type: "postback", title: confirmTitle, payload: `FOLLOWED:${auto.id}` },
-                                            ],
-                                        },
+                        const visitTitle = "Visit Profile";
+                        const confirmTitle = "I'm following ✅";
+                        const followText = "Oh no! It seems you're not following me yet. Tap 'Visit Profile', follow, then press 'I'm following ✅' to get the link ✨.";
+                        // Try to build a profile URL
+                        const profileUrl = `https://instagram.com/${auto.user.username}`;
+                        const followGatePayload = {
+                            message: {
+                                attachment: {
+                                    type: "template",
+                                    payload: {
+                                        template_type: "button",
+                                        text: followText,
+                                        buttons: [
+                                            { type: "web_url", url: profileUrl, title: visitTitle },
+                                            { type: "postback", title: confirmTitle, payload: `FOLLOWED:${auto.id}` },
+                                        ],
                                     },
                                 },
-                            };
-                            await sendPrivateReplyToComment(commentId, followGatePayload, pageAccessToken);
-                            console.log("✅ Follow gate sent; waiting for postback FOLLOWED:<id>");
-                            break; // stop after first matching automation
-                        }
-                    }
-                    else {
-                        // followForDM is false, so we send directly or use opening message
-                        shouldSendDirectly = true;
+                            },
+                        };
+                        await sendPrivateReplyToComment(commentId, followGatePayload, pageAccessToken);
+                        console.log("✅ Follow gate sent; waiting for postback FOLLOWED:<id>");
+                        break; // stop after first matching automation
                     }
                     // 2) OPENING MESSAGE (ONLY if follow gate is not enabled)
                     if (auto.openingMsg) {
