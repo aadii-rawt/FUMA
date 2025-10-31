@@ -12,6 +12,19 @@
   background-color:  #7008e7;
 }
 
+/* For all browsers */
+.hide-scrollbar {
+  overflow: auto;
+  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+/* For Chrome, Safari, and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+
 /* === Infinite marquee for the brand cards === */
 .marquee {
   position: relative;
