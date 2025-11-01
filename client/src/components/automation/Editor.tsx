@@ -14,7 +14,7 @@ const Editor: React.FC = () => {
   const [posts, setPosts] = useState([])
   const { selectedPost, setSelectedPost } = useUser()
   const [allPostModalOpen, setAllPostModalOpen] = useState(false)
-  const { user } = useUser()
+  const { user, setCurrentPreview } = useUser()
   const [loading, setLoading] = useState(true)
 
   const getPosts = async () => {
@@ -41,7 +41,7 @@ const Editor: React.FC = () => {
 
   return (
     <div className=" px-10 py-6 space-y-5 bg-gray-100 h-full overflow-y-scroll">
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+      <div onClick={() => setCurrentPreview("post")} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -94,11 +94,10 @@ const Editor: React.FC = () => {
             hands-free engagement.</p>
         </div>
 
-          <div className="space-y-5">
-        <CommentReply />
-        <FollowForDM />
-
-          </div>
+        <div className="space-y-5">
+          <CommentReply />
+          <FollowForDM />
+        </div>
       </div>
     </div>
   );

@@ -6,6 +6,8 @@ import useUser from "../../context/userContext";
 import { BiHeart, BiShare, BiUser } from "react-icons/bi";
 import { MdMic } from "react-icons/md";
 import { ImImage } from "react-icons/im";
+import { RiArrowLeftSLine } from "react-icons/ri";
+import { IoCallOutline, IoVideocamOutline } from "react-icons/io5";
 
 type Props = {
   className?: string;
@@ -13,9 +15,9 @@ type Props = {
 };
 
 const PhoneCard: React.FC<Props> = ({ className = "", children }) => {
-  const { selectedPost, user, previewURL } = useUser()
+  const { selectedPost, user, previewURL, currentPreview } = useUser()
   return (
-    <div className="flex items-center justify-center mt-5">
+    <div className="flex items-center relative justify-center mt-5">
       <div
         className={[
           // card
@@ -45,12 +47,9 @@ const PhoneCard: React.FC<Props> = ({ className = "", children }) => {
               "linear-gradient(to right,#111111,#222222,#333333,#464646,#595959)",
           }}
         />
-
-        {/* {!selectedPost?.dmImageUrl && !selectedPost?.msgTitle ?
-          <PostPreview user={user} selectedPost={selectedPost} />
-          : */}
-        <MessagePreview user={user} selectedPost={selectedPost} previewURL={previewURL} />
-        {/* } */}
+        {(currentPreview == "post" || currentPreview == "msgComment" || currentPreview == "msgCommentReply") && <PostPreview user={user} selectedPost={selectedPost} currentPreview={currentPreview} />}
+        {currentPreview == "msg" && <MessagePreview user={user} selectedPost={selectedPost} previewURL={previewURL} />
+        }
 
         {/* top notch */}
         <div className="absolute right-1/2 top-0 h-[18px] w-[35%] translate-x-1/2 rounded-b-[10px] bg-black" />
@@ -69,7 +68,7 @@ const PhoneCard: React.FC<Props> = ({ className = "", children }) => {
 export default PhoneCard;
 
 
-const PostPreview = ({ user, selectedPost }: any) => {
+const PostPreview = ({ user, selectedPost, currentPreview }: any) => {
   return (
     <div className="h-full relative w-full bg-black rounded-[35px] overflow-y-scroll no-scrollbar pt-3 text-white">
 
@@ -125,7 +124,7 @@ const PostPreview = ({ user, selectedPost }: any) => {
         }
       </div>
 
-      <div className="absolute w-full bottom-0 left-0 flex flex-col justify-between pb-3 h-[60%] z-50 bg-[#3B3A3A] rounded-t-2xl">
+      {(currentPreview == "msgComment" || currentPreview == "msgCommentReply") && <div className="absolute w-full bottom-0 left-0 flex flex-col justify-between pb-3 h-[60%] z-50 bg-[#3B3A3A] rounded-t-2xl">
         <div>
           <div className="flex items-center justify-center"><span className="w-10 my-2 rounded-xl h-1.5 bg-gray-300"></span></div>
           <div className="flex items-center justify-between px-4">
@@ -133,17 +132,36 @@ const PostPreview = ({ user, selectedPost }: any) => {
             <div className="text-sm font-medium">Comments</div>
             <div><BiShare /></div>
           </div>
+
+
           <div className="border-t-2 mt-2 w-full flex justify-between border-gray-500/60 p-3 pt-5">
             <div className="flex gap-3">
               <div className=" w-7 h-7 rounded-full bg-gray-400"></div>
               <div className="flex flex-col text-xs">
                 <span className="font-semibold">User</span>
-                <span className="font-medium">Leaves a new comment</span>
+                <span className="font-medium">{selectedPost?.keywords[0] || "Leaves a new comment"}</span>
                 <span className="text-gray-400">Reply</span>
               </div>
             </div>
             <BiHeart className="text-sm" />
           </div>
+
+          {/* comment reply */}
+          {currentPreview == "msgCommentReply" && <div className="flex justify-end px-3">
+            <div className="w-[95%] flex justify-end p-3">
+              <div className="flex gap-3">
+                <div className=" w-7 h-7 rounded-full bg-gray-400"></div>
+                <div className="flex flex-col text-xs">
+                  <span className="font-semibold">{user?.username}</span>
+                  <span className="font-medium">{selectedPost?.commentReplyData?.[0]?.reply || "Leaves a new comment"}</span>
+                  <span className="text-gray-400">Reply</span>
+                </div>
+              </div>
+              <BiHeart className="text-sm" />
+
+            </div>
+          </div>
+          }
         </div>
 
         <div>
@@ -165,20 +183,29 @@ const PostPreview = ({ user, selectedPost }: any) => {
           </div>
         </div>
       </div>
+      }
     </div>
   )
 }
 
 const MessagePreview = ({ user, selectedPost, previewURL }: any) => {
   return (
-    <div className="py-6 px-3 relative h-full ">
-      <div className="flex gap-3 items-center">
-        <div className="w-7 h-7 bg-gray-200 rounded-full"></div>
-        <h1 className="text-white text-sm">{user?.username}</h1>
+    <div className="py-6 px-3 relative h-full">
+      <div className="flex gap-3 items-center justify-between">
+        <div className="flex gap-2 items-center">
+          <RiArrowLeftSLine className="text-gray-400 text-xl" />
+          <div className="w-5 h-5 bg-gray-200 rounded-full"></div>
+          <h1 className="text-white text-sm">{user?.username}</h1>
+        </div>
+        <div className="flex gap-2 items-center">
+          <IoCallOutline className="text-gray-400 " />
+          <IoVideocamOutline className="text-gray-400 " />
+
+        </div>
       </div>
       {/* opening message */}
 
-      <div className="flex gap-2 items-end mt-10 max-w-[200px]">
+      {selectedPost?.openingMsg && <div className="flex gap-2 items-end mt-10 max-w-[200px]">
         <div>
           <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
         </div>
@@ -195,9 +222,9 @@ const MessagePreview = ({ user, selectedPost, previewURL }: any) => {
 
         </div>
       </div>
-
+      }
       {/* follow to dm */}
-      <div className="flex gap-2 items-end mt-10 max-w-[200px]">
+      {selectedPost?.followForDM && <div className="flex gap-2 items-end mt-10 max-w-[200px]">
         <div>
           <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
         </div>
@@ -215,7 +242,7 @@ const MessagePreview = ({ user, selectedPost, previewURL }: any) => {
           </div>
         </div>
       </div>
-
+      }
       {/* message */}
       <div className="flex gap-2 items-end my-10 max-w-[200px]">
         <div>
@@ -224,7 +251,7 @@ const MessagePreview = ({ user, selectedPost, previewURL }: any) => {
         <div className="w-full rounded-xl overflow-hidden">
           <img src={previewURL || selectedPost?.dmImageUrl} alt="" className="max-h-[200px]" />
           <div className="p-2 bg-[#262626]">
-            <h1 className="text-sm text-white">{selectedPost?.msgTitle}</h1>
+            <h1 className="text-sm text-white">{selectedPost?.msgTitle || "Set up a message"}</h1>
             <p className="text-xs text-gray-400">{selectedPost?.dmText}</p>
             {selectedPost?.dmLinks?.length > 0 && <div className="flex items-center justify-center rounded-lg mt-2 bg-[#363636] text-white text-xs py-1">
               {selectedPost?.dmLinks?.[0]?.title}
@@ -235,11 +262,13 @@ const MessagePreview = ({ user, selectedPost, previewURL }: any) => {
         </div>
       </div>
 
-      <div className="bg-[#262626] sticky bottom-2 left-0 w-full p-2 rounded-2xl flex items-center justify-between">
-        <p className="text-gray-500 text-xs">Message...</p>
-        <div className="text-gray-300 flex gap-3">
-          <MdMic />
-          <ImImage />
+      <div className="absolute bottom-4 left-0 px-4 w-full ">
+        <div className="bg-[#262626]  bottom-0 p-2 rounded-2xl flex items-center justify-between">
+          <p className="text-gray-500 text-xs">Message...</p>
+          <div className="text-gray-300 flex gap-3">
+            <MdMic />
+            <ImImage />
+          </div>
         </div>
       </div>
     </div>

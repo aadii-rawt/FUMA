@@ -22,7 +22,7 @@ const defaultReply = [
 
 const CommentReply = () => {
 
-    const { selectedPost, setSelectedPost } = useUser()
+    const { selectedPost, setSelectedPost,setCurrentPreview } = useUser()
 
     const handleToggle = useCallback(() => {
         if (selectedPost.commentReply) {
@@ -45,7 +45,7 @@ const CommentReply = () => {
     }
 
     return (
-        <div className={`w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-5 shadow-sm`}>
+        <div onClick={() => setCurrentPreview("msgCommentReply")} className={`w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-5 shadow-sm`}>
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">

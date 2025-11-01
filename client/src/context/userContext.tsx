@@ -22,6 +22,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [isPriceModalOpen, setIsPriceModalOpen] = useState(false)
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [currentPreview, setCurrentPreview] = useState<string | null>("post");
 
     const [previewURL, setPreviewURL] = useState<string | null>(null);
     const [showSubscriptionModal, setShowSubscriptionModal] = useState(false)
@@ -92,7 +93,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         <UserContext.Provider value={{
             selectedPost, user, setUser, setSelectedPost, loading, setLoading, isPriceModalOpen, setIsPriceModalOpen,
             previewURL, setPreviewURL,
-            showSubscriptionModal, setShowSubscriptionModal
+            showSubscriptionModal, setShowSubscriptionModal,
+            currentPreview, setCurrentPreview
         }}>
             {children}
         </UserContext.Provider>

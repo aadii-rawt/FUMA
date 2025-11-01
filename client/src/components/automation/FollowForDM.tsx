@@ -5,7 +5,7 @@ import useUser from '../../context/userContext'
 const Defaultmsg = `Oh no! It seems you're not following me 👀It would really mean a lot if you visit my profile and hit the follow button😁. Once you have done that, click on the 'I'm following' button below and you will get the link ✨.`
 const FollowForDM = () => {
 
-    const { selectedPost, setSelectedPost } = useUser()
+    const { selectedPost, setSelectedPost ,setCurrentPreview} = useUser()
 
     const handleToggle = useCallback(() => {
         if (selectedPost.followForDM) {
@@ -27,7 +27,7 @@ const FollowForDM = () => {
     }, [selectedPost.followForDM]);
 
     return (
-        <div className={`w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-5 shadow-sm`}>
+        <div  onClick={() => setCurrentPreview("msg")} className={`w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-5 shadow-sm`}>
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">

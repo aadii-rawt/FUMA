@@ -7,7 +7,7 @@ const Defaultmsg = `Hey there! I’m so happy you’re here, thanks so much for 
 Click below andfdfd I’ll sen kjd you the link in just a sec ✨`
 const OpeningMessage: React.FC = () => {
 
-    const { selectedPost, setSelectedPost } = useUser()
+    const { selectedPost, setSelectedPost ,setCurrentPreview} = useUser()
 
     const handleToggle = useCallback(() => {
         if (selectedPost.openingMsg) {
@@ -28,7 +28,7 @@ const OpeningMessage: React.FC = () => {
     }, [selectedPost.openingMsg]);
 
     return (
-        <div className={`w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-5 shadow-sm`}>
+        <div  onClick={() => setCurrentPreview("msg")} className={`w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-5 shadow-sm`}>
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">

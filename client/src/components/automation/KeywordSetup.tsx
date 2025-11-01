@@ -7,7 +7,7 @@ type KeywordSetupProps = {
 
 const KeywordSetup: React.FC<KeywordSetupProps> = ({ className = "" }) => {;
   const [input, setInput] = useState<string>("");
-  const {keywords,setKeywords, anyKeyword,setAnyKeyword, selectedPost, setSelectedPost} = useUser()
+  const {setCurrentPreview, anyKeyword,setAnyKeyword, selectedPost, setSelectedPost} = useUser()
 
   // Add keyword on Enter
   const addKeyword = useCallback(() => {
@@ -51,7 +51,7 @@ const KeywordSetup: React.FC<KeywordSetupProps> = ({ className = "" }) => {;
   );
 
   return (
-    <div className={`w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-5 shadow-sm ${className}`}>
+    <div onClick={() => setCurrentPreview("msgComment")} className={`w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-5 shadow-sm ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
