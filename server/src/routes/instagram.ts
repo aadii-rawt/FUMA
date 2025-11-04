@@ -16,24 +16,24 @@ const SCOPES = [
   "instagram_business_manage_comments",
 ].join(",");
 
-
-instaRouter.get("/connect", (req: Request, res: Response) => {
+instaRouter.get("/connect", auth, (req: Request, res: Response) => {
+  // @ts-ignore
+  const id = req.id
   const url = new URL(IG_OAUTH_DIALOG);
   url.search = new URLSearchParams({
     client_id: CLIENT_ID,
     redirect_uri: REDIRECT_URI,
     response_type: "code",
-    scope: SCOPES
+    scope: SCOPES,
+    id : id
   }).toString();
 
-  console.log("reached.");
-  
   return res.redirect(302, url.toString());
 })
 
 instaRouter.get("/callback", async (req: Request, res: Response) => {
   try {
-    const { code } = req.query as { code?: string; id?: string };
+    const { code,id } = req.query as { code?: string; id?: string };
     if (!code) return res.status(400).send("Missing code");
 
     // generate token    
@@ -74,7 +74,7 @@ instaRouter.get("/callback", async (req: Request, res: Response) => {
     
     console.log("long lived token : ",longLivedToken);  
     await prisma.users.update({
-      where: { id : "cmgqsrrhh0001ydpo3317qyw8"}, 
+      where: { id : id}, 
       //@ts-ignore
         data: {
         access_token: longLivedToken,
