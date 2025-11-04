@@ -169,4 +169,6 @@ app.all("/webhook", webhook);
 
 // ----- Start -----
 const port = Number(process.env.PORT) || 8080;
-app.listen(port, () => console.log("server running on", port));
+// app.listen(port, () => console.log("server running on", port));
+
+module.exports = app;

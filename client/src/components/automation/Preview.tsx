@@ -86,7 +86,7 @@ const PostPreview = ({ user, selectedPost, currentPreview }: any) => {
       {selectedPost?.postThumbnail !== "" ?
         <img src={selectedPost?.postThumbnail} alt="" className="w-full h-60 " /> :
         <div className="px-2">
-          <div className="relative w-full overflow-hidden rounded-xl bg-slate-900 text-white">
+          <div className="relative w-full overflow-hidden rounded-xl bg-[#262626] text-white">
             <div className="aspect-square w-full rounded-xl border border-dashed border-gray-600 grid place-items-center px-6 text-center">
               <p className="text-[13px] leading-5 ">
                 You haven’t picked a post or reel
