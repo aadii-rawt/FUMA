@@ -1,4 +1,4 @@
-import {Request, Response, Router} from "express"
+import { Request, Response, Router } from "express"
 const instaRouter = Router()
 import axios from "axios";
 import { prisma } from "../lib/prisma";
@@ -19,15 +19,16 @@ const SCOPES = [
 instaRouter.get("/connect", auth, (req: Request, res: Response) => {
   // @ts-ignore
   const id = req.id
-  console.log("id from :", id);
-  
+  const state = Buffer.from(JSON.stringify({ id })).toString("base64");
+
+
   const url = new URL(IG_OAUTH_DIALOG);
   url.search = new URLSearchParams({
     client_id: CLIENT_ID,
     redirect_uri: REDIRECT_URI,
     response_type: "code",
     scope: SCOPES,
-    id : id
+    state,
   }).toString();
 
   return res.redirect(302, url.toString());
@@ -35,26 +36,29 @@ instaRouter.get("/connect", auth, (req: Request, res: Response) => {
 
 instaRouter.get("/callback", async (req: Request, res: Response) => {
   try {
-    const { code,id } = req.query as { code?: string; id?: string };
+    const { code, state } = req.query as { code?: string; state?: string };
     if (!code) return res.status(400).send("Missing code");
-    console.log("user id :", id)
+
+    // Decode the state back to get your user ID
+    const decoded = JSON.parse(Buffer.from(state!, "base64").toString());
+    const id = decoded.id;
 
     // generate token    
     const tokenResp = await axios.post(
-    "https://api.instagram.com/oauth/access_token",
-    new URLSearchParams({
+      "https://api.instagram.com/oauth/access_token",
+      new URLSearchParams({
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET,
         grant_type: "authorization_code",
-        redirect_uri: REDIRECT_URI, 
-        code,                
-    }).toString(),
-    {
+        redirect_uri: REDIRECT_URI,
+        code,
+      }).toString(),
+      {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    }
+      }
     );
 
-    const { access_token} = tokenResp.data;  
+    const { access_token } = tokenResp.data;
     //long-lived token
     const llResp = await axios.get("https://graph.instagram.com/access_token", {
       params: {
@@ -68,24 +72,24 @@ instaRouter.get("/callback", async (req: Request, res: Response) => {
     const longLivedToken = llResp.data.access_token;
     const fields = "id,user_id,username,name,profile_picture_url"
     const user = await axios.get("https://graph.instagram.com/v21.0/me", {
-      params : {
-        fields : fields,
-        access_token : longLivedToken
+      params: {
+        fields: fields,
+        access_token: longLivedToken
       }
     })
     console.log("user data :", user.data);
-    
-    console.log("long lived token : ", longLivedToken);  
+
+    console.log("long lived token : ", longLivedToken);
     await prisma.users.update({
-      where: { id : id}, 
+      where: { id: id },
       //@ts-ignore
-        data: {
+      data: {
         access_token: longLivedToken,
         // @ts-ignore
-        username : user.data.username,
+        username: user.data.username,
         // @ts-ignore
-        avatar : user.data.profile_picture_url
-    },
+        avatar: user.data.profile_picture_url
+      },
     });
 
     const ui = new URL(`${process.env.CORS_ORIGIN}/app`);
