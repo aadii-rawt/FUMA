@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -b && prisma generate && prisma migrate deploy",
+    "build": "tsc -b",
     "start": "node dist/index.js",
     "vercel-start": "node dist/index.js",
     "dev": "tsc -b && concurrently \"tsc -b -w\" \"nodemon dist/index.js\""
