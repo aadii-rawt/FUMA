@@ -19,6 +19,8 @@ const SCOPES = [
 instaRouter.get("/connect", auth, (req: Request, res: Response) => {
   // @ts-ignore
   const id = req.id
+  console.log("id from :", id);
+  
   const url = new URL(IG_OAUTH_DIALOG);
   url.search = new URLSearchParams({
     client_id: CLIENT_ID,
@@ -35,6 +37,7 @@ instaRouter.get("/callback", async (req: Request, res: Response) => {
   try {
     const { code,id } = req.query as { code?: string; id?: string };
     if (!code) return res.status(400).send("Missing code");
+    console.log("user id :", id)
 
     // generate token    
     const tokenResp = await axios.post(
@@ -72,7 +75,7 @@ instaRouter.get("/callback", async (req: Request, res: Response) => {
     })
     console.log("user data :", user.data);
     
-    console.log("long lived token : ",longLivedToken);  
+    console.log("long lived token : ", longLivedToken);  
     await prisma.users.update({
       where: { id : id}, 
       //@ts-ignore
