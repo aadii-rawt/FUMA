@@ -162,4 +162,5 @@ app.all("/webhook", webhook_js_1.webhook);
 // ----- Start -----
 const port = Number(process.env.PORT) || 8080;
 // app.listen(port, () => console.log("server running on", port));
+exports.default = app;
 //# sourceMappingURL=index.js.map
