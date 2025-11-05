@@ -12,6 +12,8 @@ import { RiRobot2Line } from "react-icons/ri";
 import useUser from "../context/userContext";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Axios from "../utils/axios";
+import { IoSettingsOutline } from "react-icons/io5";
+import { TbArrowBackUp } from "react-icons/tb";
 
 export default function Sidebar() {
   const { setIsPriceModalOpen } = useUser();
@@ -200,7 +202,7 @@ function WorkspaceMenu({
 
         <Link to='/setting/general' className="flex cursor-pointer w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
           <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
-            👤
+            <IoSettingsOutline /> 
           </span>
           Account Settings
         </Link>
@@ -209,7 +211,7 @@ function WorkspaceMenu({
 
         <button onClick={logout} className="flex cursor-pointer w-full items-center gap-3 rounded-xl px-3 py-2 text-[14px] text-gray-700 hover:bg-gray-50">
           <span className="grid h-6 w-6 place-items-center rounded-md border border-gray-200">
-            ⤴
+           <TbArrowBackUp />
           </span>
           Sign out
         </button>

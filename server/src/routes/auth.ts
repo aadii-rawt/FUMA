@@ -13,6 +13,6 @@ authRouter.get("/me",auth, getDetails)
 authRouter.get("/google", googleAuth);
 authRouter.get("/google/callback", googleAuthCallback);
 
-authRouter.post("/logout",logout)
+authRouter.post("/logout",auth,logout)
 
 export default authRouter

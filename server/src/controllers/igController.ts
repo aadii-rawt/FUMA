@@ -4,7 +4,7 @@ import { Request, Response } from "express"
 export const getPost = async (req : Request, res: Response) => {
     try {
         const {limit,access_token} = req.query
-        const fields = "thumbnail_url,media_type,media_product_type,timestamp,like_count,comments_count,media_url,permalink"
+        const fields = "thumbnail_url,media_type,media_product_type,timestamp,like_count,comments_count,caption,media_url,permalink"
         const data = await axios.get(`${process.env.INSTA_API}/${process.env.IG_BUSINESS_ID}/media`,
                     {
                         params: {

@@ -238,7 +238,7 @@ export const webhook = async (req: Request, res: Response) => {
         }
 
         // 4) Build message from automation
-        const payload = buildMessagePayload(auto, username);
+        const payload = buildMessagePayload(auto, username,);
 
         // 5) Send private reply
         try {
@@ -255,8 +255,8 @@ export const webhook = async (req: Request, res: Response) => {
 
           // 1) FOLLOW-FOR-DM GATE
           if (auto.followForDM) {
-            const visitTitle =  "Visit Profile";
-            const confirmTitle =  "I'm following ✅";
+            const visitTitle = "Visit Profile";
+            const confirmTitle = "I'm following ✅";
             const followText = "Oh no! It seems you're not following me yet. Tap 'Visit Profile', follow, then press 'I'm following ✅' to get the link ✨.";
 
             // Try to build a profile URL
@@ -291,7 +291,7 @@ export const webhook = async (req: Request, res: Response) => {
                   type: "template",
                   payload: {
                     template_type: "button",
-                    text:  "Hey there! 👋 Thanks for your comment. Tap below and I’ll send you the link!",
+                    text: "Hey there! 👋 Thanks for your comment. Tap below and I’ll send you the link!",
                     buttons: [
                       {
                         type: "postback",
@@ -313,6 +313,9 @@ export const webhook = async (req: Request, res: Response) => {
           const payload = buildMessagePayload(auto, username);
           await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
           console.log("✅ Direct link sent");
+          const userId = auto?.user?.id
+          await saveContact(username, userId)
+
           break;
         } catch (err: any) {
           console.error("Reply/DM failed:", err?.response?.data || err);
@@ -333,4 +336,19 @@ export const webhook = async (req: Request, res: Response) => {
   }
 
   return res.sendStatus(405);
+};
+
+
+const saveContact = async (username: string, userId: string) => {
+  try {
+    await prisma.contacts.create({
+      data: {
+        username,
+        user: { connect: { id: userId } },
+      }
+    });
+    console.log("✅ Contact saved successfully");
+  } catch (error) {
+    console.error("❌ Error saving contact:", error);
+  }
 };

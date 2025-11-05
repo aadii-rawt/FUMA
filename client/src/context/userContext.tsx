@@ -7,6 +7,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [selectedPost, setSelectedPost] = useState({
         name: "New Automation",
         status: "LIVE",
+        caption : "",
         postMediaId: "",
         postThumbnail: "",
         anyKeyword: false,

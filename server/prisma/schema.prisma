@@ -20,6 +20,7 @@ model users {
   expireAt    DateTime?
   automations       Automation[]
   subscriptioin     Subscription[]
+  contacts         Contacts[]
 }
 
 model Otp {
@@ -55,7 +56,8 @@ model Automation {
   msgTitle       String?
   dmText         String          
   dmImageUrl     String?          
-  dmLinks        Json?   
+  dmLinks        Json? 
+  caption         String?
 
   clickCount  Int?      @default(0)
   createdAt      DateTime          @default(now())
@@ -71,6 +73,14 @@ model Automation {
   @@index([userId, status])
   @@index([status, publishedAt])
   @@index([postMediaId])
+}
+
+model Contacts {
+  id         String   @id @default(cuid())
+  userId     String
+  user       users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  username   String
+  @@index([userId, username], name: "user_contact_unique")
 }
 
 

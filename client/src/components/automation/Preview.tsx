@@ -84,7 +84,7 @@ const PostPreview = ({ user, selectedPost, currentPreview }: any) => {
 
       {/* Square placeholder */}
       {selectedPost?.postThumbnail !== "" ?
-        <img src={selectedPost?.postThumbnail} alt="" className="w-full h-60 " /> :
+        <img src={selectedPost?.postThumbnail} alt="" className="w-full h-70 " /> :
         <div className="px-2">
           <div className="relative w-full overflow-hidden rounded-xl bg-[#262626] text-white">
             <div className="aspect-square w-full rounded-xl border border-dashed border-gray-600 grid place-items-center px-6 text-center">
@@ -109,19 +109,8 @@ const PostPreview = ({ user, selectedPost, currentPreview }: any) => {
 
       {/* Caption / comments */}
       <div className="px-3 pt-3">
-        {
-          // @ts-ignore
-          !selectedPost?.keywords?.length > 0 ? <div className="space-y-1 pb-3">
-            <div>
-              <p className="text-xs">{selectedPost?.caption}</p>
-              <button className="mt-1 text-xs">View all comments</button>
-            </div>
-          </div> :
-            <div className="flex items-center gap-3">
-              <div className="text-xs font-semibold bg-gray-200 p-1 rounded-full"><BiUser size={18} /> </div>
-              <p className="text-[13px] font-medium">{selectedPost?.keywords?.[0]}</p>
-            </div>
-        }
+        <p className="text-xs">{selectedPost?.caption}</p>
+        <button className="mt-1 text-xs">View all comments</button>
       </div>
 
       {(currentPreview == "msgComment" || currentPreview == "msgCommentReply") && <div className="absolute w-full bottom-0 left-0 flex flex-col justify-between pb-3 h-[60%] z-50 bg-[#3B3A3A] rounded-t-2xl">
@@ -136,7 +125,9 @@ const PostPreview = ({ user, selectedPost, currentPreview }: any) => {
 
           <div className="border-t-2 mt-2 w-full flex justify-between border-gray-500/60 p-3 pt-5">
             <div className="flex gap-3">
-              <div className=" w-7 h-7 rounded-full bg-gray-400"></div>
+              <div className=" w-6 h-6 rounded-full bg-gray-400">
+                <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-image-icon-default-avatar-profile-icon-social-media-user-vector-image-209162840.jpg" className="rounded-full" alt="" />
+              </div>
               <div className="flex flex-col text-xs">
                 <span className="font-semibold">User</span>
                 <span className="font-medium">{selectedPost?.keywords[0] || "Leaves a new comment"}</span>
@@ -150,7 +141,9 @@ const PostPreview = ({ user, selectedPost, currentPreview }: any) => {
           {currentPreview == "msgCommentReply" && <div className="flex justify-end px-3">
             <div className="w-[95%] flex justify-end p-3">
               <div className="flex gap-3">
-                <div className=" w-7 h-7 rounded-full bg-gray-400"></div>
+                <div className=" w-6 h-6 rounded-full bg-gray-400">
+                  <img src={user?.avatar} className="rounded-full" alt="" />
+                </div>
                 <div className="flex flex-col text-xs">
                   <span className="font-semibold">{user?.username}</span>
                   <span className="font-medium">{selectedPost?.commentReplyData?.[0]?.reply || "Leaves a new comment"}</span>
@@ -175,7 +168,9 @@ const PostPreview = ({ user, selectedPost, currentPreview }: any) => {
             <span className="w-full">😂</span>
           </div>
           <div className="px-3 my-2 flex gap-5">
-            <div className="w-6 h-6 rounded-full bg-gray-400"></div>
+            <div className="w-6 h-6 rounded-full bg-gray-400">
+              <img src={user?.avatar} alt="" className="rounded-full" />
+            </div>
 
             <div className="border text-xs border-gray-500 py-1 px-2 w-[80%] rounded-xl">
               Add a comment...
@@ -194,7 +189,9 @@ const MessagePreview = ({ user, selectedPost, previewURL }: any) => {
       <div className="flex gap-3 items-center justify-between">
         <div className="flex gap-2 items-center">
           <RiArrowLeftSLine className="text-gray-400 text-xl" />
-          <div className="w-5 h-5 bg-gray-200 rounded-full"></div>
+          <div className="w-5 h-5 bg-gray-200 rounded-full">
+            <img src={user?.avatar} className="rounded-full" alt="" />
+          </div>
           <h1 className="text-white text-sm">{user?.username}</h1>
         </div>
         <div className="flex gap-2 items-center">
@@ -207,7 +204,9 @@ const MessagePreview = ({ user, selectedPost, previewURL }: any) => {
 
       {selectedPost?.openingMsg && <div className="flex gap-2 items-end mt-10 max-w-[200px]">
         <div>
-          <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
+          <div className="w-6 h-6 bg-gray-200 rounded-full">
+            <img src={user?.avatar} className="rounded-full" alt="" />
+          </div>
         </div>
         <div className="w-full rounded-xl overflow-hidden">
           <div className="p-2 bg-[#262626]">
@@ -226,7 +225,9 @@ const MessagePreview = ({ user, selectedPost, previewURL }: any) => {
       {/* follow to dm */}
       {selectedPost?.followForDM && <div className="flex gap-2 items-end mt-10 max-w-[200px]">
         <div>
-          <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
+          <div className="w-6 h-6 bg-gray-200 rounded-full">
+            <img src={user?.avatar} className="rounded-full" alt="" />
+          </div>
         </div>
         <div className="w-full rounded-xl overflow-hidden">
           <div className="p-2 bg-[#262626]">
@@ -246,7 +247,9 @@ const MessagePreview = ({ user, selectedPost, previewURL }: any) => {
       {/* message */}
       <div className="flex gap-2 items-end my-10 max-w-[200px]">
         <div>
-          <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
+          <div className="w-6 h-6 bg-gray-200 rounded-full">
+            <img src={user?.avatar} className="rounded-full" alt="" />
+          </div>
         </div>
         <div className="w-full rounded-xl overflow-hidden">
           <img src={previewURL || selectedPost?.dmImageUrl} alt="" className="max-h-[200px]" />

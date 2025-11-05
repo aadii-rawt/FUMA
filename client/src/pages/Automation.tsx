@@ -110,8 +110,8 @@ const Automation: React.FC = () => {
                         Live
                       </span>
                     ) : (
-                      <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
-                        Draft
+                      <span className="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
+                        Stop
                       </span>
                     )}
                   </td>

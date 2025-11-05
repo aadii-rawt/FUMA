@@ -12,6 +12,9 @@ export const getAutomation = async (req: Request, res: Response) => {
     const data = await prisma.automation.findMany({
       where: {
         userId
+      }, 
+      orderBy : {
+        createdAt : "desc"
       }
     })
     console.log(data);
