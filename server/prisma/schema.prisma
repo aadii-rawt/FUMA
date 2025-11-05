@@ -80,6 +80,7 @@ model Contacts {
   userId     String
   user       users  @relation(fields: [userId], references: [id], onDelete: Cascade)
   username   String
+  createdAt  DateTime @default(now())
   @@index([userId, username], name: "user_contact_unique")
 }
 

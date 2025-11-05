@@ -23,6 +23,7 @@ import BillingHistory from './pages/settings/BillingHistory'
 import Forms from './pages/Forms'
 import Dashboard from './pages/Dashboard'
 import EditAutomtion from './pages/EditAutomation'
+import Contacts from './pages/Contact'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -44,6 +45,7 @@ const App = () => {
         { path: "/app", element: <Dashboard /> },
         { path: "/automation", element: <Automation /> },
         { path: "/automation/:id", element: <EditAutomtion /> },
+        { path: "/contacts", element: <Contacts /> },
         { path: "/forms", element: <Forms /> },
         { path: "/automation/new", element: <NewAutomation  /> }
       ],

@@ -30,7 +30,7 @@ const Automation: React.FC = () => {
     getautomation()
   }, [])
   return (
-    <div className="w-full rounded-xl h-full bg-[#f1f1f1]  border-gray-200 border-[1px] border-gray-500/20">
+    <div className="w-full rounded-xl h-full bg-[#f1f1f1] overflow-y-scroll pb-5  border-[1px] border-gray-500/20">
 
 
       {/* Controls */}
@@ -91,20 +91,38 @@ const Automation: React.FC = () => {
                   className="border-b cursor-pointer border-gray-100 hover:bg-gray-50 transition"
                 >
                   {/* Automation Name */}
-                  <td className="px-6 py-3 text-gray-900 flex items-center gap-3">
-                    <span className="p-1 bg-green-300/20 rounded text-center">
+                  <td className="px-6 py-2 text-gray-900 flex items-center gap-3">
+                    <span className=" overflow-hidden bg-green-300/20 rounded text-center">
 
-                      <PiLinkSimpleLight />
+                      <img src={auto?.postThumbnail} alt="" className="w-10 h-14" />
                     </span>
-                    {auto.name}
+                    <div>
+                      <h1 className="font-medium"> {auto.name}</h1>
+                      <div className="flex items-center gap-2 text-xs mt-1 text-gray-400">
+                        {auto?.keywords?.slice(0, 3).map((tag: string, index: number) => (
+                          <span
+                            key={index}
+                            className="bg-violet-100 text-violet-500 px-2 py-0.5 rounded-full text-[11px] font-medium"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+
+                        {auto?.keywords?.length > 3 && (
+                          <span className="bg-violet-100 text-violet-500 px-2 py-0.5 rounded-full text-[11px] font-medium">
+                            +{auto.keywords.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </td>
 
 
-                  <td className="px-6 py-3 text-gray-400">
-                   {auto.clickCount}
+                  <td className="px-6 py-2 text-gray-400">
+                    {auto.clickCount}
                   </td>
 
-                  <td className="px-6 py-3">
+                  <td className="px-6 py-2">
                     {auto.status === "LIVE" ? (
                       <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
                         Live
@@ -117,7 +135,7 @@ const Automation: React.FC = () => {
                   </td>
 
                   {/* Last Published */}
-                  <td className="px-6 py-3 text-gray-500">
+                  <td className="px-6 py-2 text-gray-500">
                     {new Date(auto.createdAt).toLocaleDateString("en-IN", {
                       year: "numeric",
                       month: "short",

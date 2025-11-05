@@ -1,0 +1,18 @@
+import { prisma } from "../lib/prisma"
+import { Response, response } from "express";
+
+export const getContacts =  async (req : Request, res : Response) => {
+    try {
+        // @ts-ignore
+        const id = req.id
+        const contacts = await prisma.contacts.findMany({
+            where : {
+                userId : id
+            }
+        })
+
+        res.json({contacts})
+    } catch (error) {
+        res.status(500).json({error : "Failed to fetch contacts"}) 
+    }
+}

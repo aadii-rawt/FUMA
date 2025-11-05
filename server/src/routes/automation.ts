@@ -4,7 +4,7 @@ import { automationCount, createAutomation, getAutomation, linkRedirect, stopAut
 
 const automationRoute = Router()
 
-automationRoute.get("/", getAutomation)
+automationRoute.get("/",auth, getAutomation)
 automationRoute.post("/", auth, createAutomation)
 automationRoute.get("/count", auth, automationCount)
 automationRoute.put("/:id", auth, updateAutomation)

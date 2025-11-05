@@ -2,6 +2,7 @@
 import axios from "axios";
 import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
+import { saveContact } from "../utils/utils";
 
 // ---------- Helpers ----------
 function normText(s: string | undefined | null) {
@@ -336,19 +337,4 @@ export const webhook = async (req: Request, res: Response) => {
   }
 
   return res.sendStatus(405);
-};
-
-
-const saveContact = async (username: string, userId: string) => {
-  try {
-    await prisma.contacts.create({
-      data: {
-        username,
-        user: { connect: { id: userId } },
-      }
-    });
-    console.log("✅ Contact saved successfully");
-  } catch (error) {
-    console.error("❌ Error saving contact:", error);
-  }
 };

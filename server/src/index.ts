@@ -10,6 +10,7 @@ import igroute from "./routes/ig.js";
 import automationRoute from "./routes/automation.js";
 import subscriptioinRouter from "./routes/subscription.js";
 import { webhook } from "./routes/webhook.js";
+import contactsRoute from "./routes/contacts.js";
 dotenv.config();
 
 const app = express();
@@ -163,6 +164,7 @@ app.use("/api/v1/instagram", instaRouter);
 app.use("/api/v1/ig", igroute);
 app.use("/api/v1/automation", automationRoute);
 app.use("/api/v1/subscriptions", subscriptioinRouter);
+app.use("/api/v1/contacts", contactsRoute);
 
 app.all("/webhook", webhook);
 

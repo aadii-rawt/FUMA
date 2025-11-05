@@ -14,6 +14,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import Axios from "../utils/axios";
 import { IoSettingsOutline } from "react-icons/io5";
 import { TbArrowBackUp } from "react-icons/tb";
+import { LuContactRound } from "react-icons/lu";
 
 export default function Sidebar() {
   const { setIsPriceModalOpen } = useUser();
@@ -117,6 +118,13 @@ export default function Sidebar() {
             <RiRobot2Line className="text-[18px]" />
           </span>
           <span >Automation</span>
+        </NavLink>
+        <NavLink to="/contacts"
+          className={({ isActive }) => `w-full flex items-center gap-3 px-4 py-2 font-medium ${isActive ? "text-purple-500 rounded-2xl bg-gradient-to-r from-white/70 to-transparent" : "text-gray-400 hover:text-gray-700"}`}>
+          <span className="grid place-items-center rounded-lg w-8 h-8">
+            <LuContactRound  className="text-[18px]" />
+          </span>
+          <span >Contacts</span>
         </NavLink>
 
         <div className={`w-full cursor-pointer  flex items-center gap-3 px-4 py-2 font-medium text-gray-500 hover:text-gray-700`}>
