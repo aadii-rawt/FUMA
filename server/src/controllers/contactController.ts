@@ -1,5 +1,5 @@
 import { prisma } from "../lib/prisma"
-import { Response, response } from "express";
+import { Request, Response } from "express"
 
 export const getContacts =  async (req : Request, res : Response) => {
     try {
