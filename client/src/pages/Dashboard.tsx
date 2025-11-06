@@ -1,12 +1,66 @@
 import React from "react";
-import { FiCheckCircle, FiLink2, FiInstagram, FiZap, FiUsers } from "react-icons/fi";
+import { FiCheckCircle, FiLink2, FiInstagram, FiZap, FiUsers, FiMessageCircle, FiBookOpen } from "react-icons/fi";
+import {
+  FiSettings,
+  FiPlus,
+  FiMessageSquare,
+  FiClipboard,
+} from "react-icons/fi";
+
+const stats = [
+  { id: "automations", icon: <FiPlus size={18} />, label: "Automations", value: 11, limit: 3 },
+  { id: "messages", icon: <FiMessageSquare size={18} />, label: "Messages", value: 321, limit: 1000 },
+  { id: "contacts", icon: <FiUsers size={18} />, label: "Contacts", value: 295, limit: 1000 },
+  { id: "forms", icon: <FiClipboard size={18} />, label: "Forms", value: 0, limit: 3 },
+];
+
 
 export default function Dashboard() {
   return (
-    <section className="space-y-4 border-gray-200 border-[1px] border-gray-500/20 overflow-hidden rounded-xl p-4 h-full">
+    <section className="space-y-4 overflow-y-scroll border-[1px] border-gray-500/20  rounded-xl p-4">
       <h2 className="text-2xl font-bold text-gray-900">Get Started with FUMA</h2>
 
-      <div className="rounded-3xl border border-gray-200 bg-white p-4 sm:p-6">
+      <div className="rounded-3xl border h-full   border-gray-200 bg-white p-4 sm:p-6">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-4">
+                {/* left icon */}
+                <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-purple-50 to-pink-50 text-purple-600">
+                  <FiBookOpen size={20} />
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-3">
+                    <h3 className="text-lg font-semibold text-slate-800">Plans &amp; Billing</h3>
+
+                    <Pill className="bg-slate-100 text-slate-700">Free</Pill>
+                    <Pill className="bg-slate-100 text-slate-700">Monthly</Pill>
+                    <Pill className="bg-emerald-100 text-emerald-700">Active</Pill>
+                  </div>
+
+                  <div className="mt-4 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+                    {stats.map((s) => (
+                      <ProgressStat key={s.id} stat={s} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Manage button */}
+              <div className="flex items-start">
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50"
+                >
+                  <FiSettings />
+                  Manage
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Top grid: Connect IG / Create Automation */}
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Left: Connect Instagram */}
@@ -135,3 +189,45 @@ export default function Dashboard() {
     </section>
   );
 }
+
+
+const ProgressStat: React.FC<{ stat: Stat }> = ({ stat }) => {
+  const percent =
+    stat.limit <= 0 ? 0 : Math.min(100, Math.round((stat.value / stat.limit) * 100));
+
+  // we want to display counts like "321 / 1K" when large - helper:
+  const formatLimit = (n: number) => (n >= 1000 ? `${Math.round(n / 100) / 10}K` : `${n}`);
+  const displayValue = `${stat.value} / ${formatLimit(stat.limit)}`;
+
+  return (
+    <div className="flex-1 min-w-[180px]">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          {/* icon circle */}
+          <div className="w-9 h-9 rounded-md bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center text-purple-600">
+            {stat.icon}
+          </div>
+          <div className="text-sm text-slate-600 font-medium">{stat.label}</div>
+        </div>
+
+        <div className="text-sm text-slate-500">
+          <span className="text-sm font-medium">{displayValue}</span>
+        </div>
+      </div>
+
+      {/* progress track */}
+      <div className="mt-3 h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+        {/* gradient filled bar */}
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-500"
+          style={{ width: `${percent}%` }}
+          aria-hidden
+        />
+      </div>
+    </div>
+  );
+};
+
+const Pill: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => (
+  <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${className}`}>{children}</span>
+);

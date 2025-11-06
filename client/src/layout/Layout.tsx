@@ -13,7 +13,7 @@ export default function Layout() {
   return (
     <div className="flex h-screen max-h-screen overflow-hidden bg-[#EBEBEB] relative">
       <Sidebar />
-      <div className="flex-1 flex flex-col bg-gray-50 rounded-xl m-2">
+      <div className="flex-1 flex flex-col bg-gray-50 rounded-xl m-2 ">
         <Outlet />
       </div>
 
