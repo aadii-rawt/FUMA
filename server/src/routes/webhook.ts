@@ -206,6 +206,8 @@ export const webhook = async (req: Request, res: Response) => {
       const value = change?.value;
 
       const { commentId, username, text, mediaId, igBusinessId } = extractIdsFromWebhook(value);
+      const testging = extractIdsFromWebhook(value);
+      console.log("webhook data :", testging);
       console.log({ commentId, username, text, mediaId, igBusinessId });
 
       // Must have a comment + media id to proceed
