@@ -12,8 +12,6 @@ export const getPost = async (req : Request, res: Response) => {
                 id: req.id
             }
         })
-
-        console.log("user", user);
         if(!user || !user.access_token){
             return res.status(400).json({error: "Instagram not connected"})
         }

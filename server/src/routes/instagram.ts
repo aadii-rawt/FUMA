@@ -77,9 +77,12 @@ instaRouter.get("/callback", async (req: Request, res: Response) => {
         access_token: longLivedToken
       }
     })
-    console.log("user data :", user.data.id);
-
-    console.log("long lived id : ", longLivedToken);
+    console.log("------------------------------------------------------------");
+    console.log("user id :", user.data.id);
+    console.log("------------------------------------------------------------");
+    console.log("complete user :", user.data.id);
+    console.log("------------------------------------------------------------");
+    
     await prisma.users.update({
       where: { id: id },
       //@ts-ignore
