@@ -14,7 +14,7 @@ model users {
   username    String?
   createdAt   DateTime @default(now())
   access_token String?
-  ig_id   Int?
+  ig_id   String?
   plan    String? 
   purchaseAt DateTime @default(now())
   expireAt    DateTime?
