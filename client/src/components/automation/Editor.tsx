@@ -8,6 +8,7 @@ import ReelShimmer from "../shimmer/ReelShimmer";
 import OpeningMessage from "./OpeningMessage";
 import CommentReply from "./CommentReply";
 import FollowForDM from "./FollowForDM";
+import AddProducts from "./AddProducts";
 
 
 const Editor: React.FC = () => {
@@ -83,8 +84,8 @@ const Editor: React.FC = () => {
       <KeywordSetup />
 
       <DMComposer />
-
-
+      
+      <AddProducts />
       <OpeningMessage />
 
       <div className="mb-20  border-t-2 border-gray-200">
