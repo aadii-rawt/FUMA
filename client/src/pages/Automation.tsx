@@ -5,6 +5,7 @@ import useUser from "../context/userContext";
 import Axios from "../utils/axios";
 import { PiLinkSimpleLight } from "react-icons/pi";
 import { AutomationShimmer } from "../components/shimmer/AutomatinShimmer";
+import { formatDate } from "../utils/formatDate";
 
 const Automation: React.FC = () => {
   const [q, setQ] = useState("");
@@ -34,7 +35,7 @@ const Automation: React.FC = () => {
 
 
       {/* Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-5 sm:px-6">
+      <div className="flex sticky top-0 left-0 bg-[#f1f1f1]  flex-wrap items-center justify-between gap-3 px-4 py-5 sm:px-6">
         {/* Search */}
         <div className="relative">
           <LuSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -77,9 +78,9 @@ const Automation: React.FC = () => {
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr className="text-left text-gray-500 font-medium">
                 <th className="px-6 py-3">Automation</th>
-                <th className="px-6 py-3">Runs</th>
-                <th className="px-6 py-3">Status</th>
-                <th className="px-6 py-3">Last Published</th>
+                <th className="px-6 py-3 text-center">Runs</th>
+                <th className="px-6 py-3 text-center">Status</th>
+                <th className="px-6 py-3 text-center">Last Published</th>
               </tr>
             </thead>
 
@@ -118,11 +119,11 @@ const Automation: React.FC = () => {
                   </td>
 
 
-                  <td className="px-6 py-2 text-gray-400">
+                  <td className="px-6 py-2 text-gray-400 text-center">
                     {auto.clickCount}
                   </td>
 
-                  <td className="px-6 py-2">
+                  <td className="px-6 py-2 text-center">
                     {auto.status === "LIVE" ? (
                       <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
                         Live
@@ -135,14 +136,8 @@ const Automation: React.FC = () => {
                   </td>
 
                   {/* Last Published */}
-                  <td className="px-6 py-2 text-gray-500">
-                    {new Date(auto.createdAt).toLocaleDateString("en-IN", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                  <td className="px-6 py-2 text-gray-500 text-center">
+                    {formatDate(auto.createdAt)}
                   </td>
                 </tr>
               ))}

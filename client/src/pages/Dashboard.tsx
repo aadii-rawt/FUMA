@@ -11,7 +11,7 @@ const stats = [
   { id: "automations", icon: <FiPlus size={18} />, label: "Automations", value: 11, limit: 3 },
   { id: "messages", icon: <FiMessageSquare size={18} />, label: "Messages", value: 321, limit: 1000 },
   { id: "contacts", icon: <FiUsers size={18} />, label: "Contacts", value: 295, limit: 1000 },
-  { id: "forms", icon: <FiClipboard size={18} />, label: "Forms", value: 0, limit: 3 },
+  // { id: "forms", icon: <FiClipboard size={18} />, label: "Forms", value: 0, limit: 3 },
 ];
 
 
@@ -20,34 +20,17 @@ export default function Dashboard() {
     <section className="space-y-4 overflow-y-scroll border-[1px] border-gray-500/20  rounded-xl p-4">
       <h2 className="text-2xl font-bold text-gray-900">Get Started with FUMA</h2>
 
-      <div className="rounded-3xl border h-full   border-gray-200 bg-white p-4 sm:p-6">
-        <div className="max-w-5xl mx-auto px-4">
+      <div className="rounded-3xl border border-gray-200 bg-white p-4 sm:p-6">
+        <div className="mb-20">
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-4">
-                {/* left icon */}
-                <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-purple-50 to-pink-50 text-purple-600">
-                  <FiBookOpen size={20} />
-                </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <h3 className="text-lg font-semibold text-slate-800">Plans &amp; Billing</h3>
 
-                <div>
-                  <div className="flex items-center gap-3">
-                    <h3 className="text-lg font-semibold text-slate-800">Plans &amp; Billing</h3>
-
-                    <Pill className="bg-slate-100 text-slate-700">Free</Pill>
-                    <Pill className="bg-slate-100 text-slate-700">Monthly</Pill>
-                    <Pill className="bg-emerald-100 text-emerald-700">Active</Pill>
-                  </div>
-
-                  <div className="mt-4 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-                    {stats.map((s) => (
-                      <ProgressStat key={s.id} stat={s} />
-                    ))}
-                  </div>
-                </div>
+                <Pill className="bg-slate-100 text-slate-700">Free</Pill>
+                <Pill className="bg-slate-100 text-slate-700">Monthly</Pill>
+                <Pill className="bg-emerald-100 text-emerald-700">Active</Pill>
               </div>
-
-              {/* Manage button */}
               <div className="flex items-start">
                 <button
                   type="button"
@@ -58,6 +41,13 @@ export default function Dashboard() {
                 </button>
               </div>
             </div>
+
+            <div className="mt-8 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              {stats.map((s) => (
+                <ProgressStat key={s.id} stat={s} />
+              ))}
+            </div>
+
           </div>
         </div>
 
@@ -219,7 +209,7 @@ const ProgressStat: React.FC<{ stat: Stat }> = ({ stat }) => {
       <div className="mt-3 h-2 w-full rounded-full bg-slate-100 overflow-hidden">
         {/* gradient filled bar */}
         <div
-          className="h-full rounded-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-500"
+          className={`h-full rounded-full ${percent == 100 ? "bg-red-500" : "bg-gradient-to-r from-purple-500 to-pink-500"} transition-all duration-500`}
           style={{ width: `${percent}%` }}
           aria-hidden
         />

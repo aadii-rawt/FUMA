@@ -8,6 +8,9 @@ export const getContacts =  async (req : Request, res : Response) => {
         const contacts = await prisma.contacts.findMany({
             where : {
                 userId : id
+            },
+            orderBy : {
+                createdAt : "desc"
             }
         })
 

@@ -7,6 +7,7 @@ import { AutomationShimmer } from "../components/shimmer/AutomatinShimmer";
 import { LuSearch, LuListFilter, LuPlus } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
 import { PiLinkSimpleLight } from "react-icons/pi";
+import { formatDate } from "../utils/formatDate";
 
 
 const Contacts: React.FC = () => {
@@ -47,11 +48,12 @@ const Contacts: React.FC = () => {
     }, [])
 
     return (
-        <div className="w-full rounded-xl h-full bg-[#f1f1f1]  border-gray-200 border-[1px] border-gray-500/20">
+  <div className="w-full rounded-xl h-full bg-[#f1f1f1] overflow-y-scroll pb-5  border-[1px] border-gray-500/20">
+
 
 
             {/* Controls */}
-            <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-5 sm:px-6">
+            <div className="flex sticky top-0 left-0 bg-[#f1f1f1] rounded-xl  flex-wrap items-center justify-between gap-3 px-4 py-5 sm:px-6">
                 {/* Search */}
 
 
@@ -99,7 +101,7 @@ const Contacts: React.FC = () => {
                         <thead className="bg-gray-50 border-b border-gray-200">
                             <tr className="text-left text-gray-500 font-medium">
                                 <th className="px-6 py-3">Contact</th>
-                                <th className="px-6 py-3">Last Intrection</th>
+                                <th className="px-6 py-3 text-center">Last Intrection</th>
                             </tr>
                         </thead>
 
@@ -121,14 +123,8 @@ const Contacts: React.FC = () => {
 
 
                                     {/* Last Published */}
-                                    <td className="px-6 py-3 text-gray-500">
-                                        {new Date(auto.createdAt).toLocaleDateString("en-IN", {
-                                            year: "numeric",
-                                            month: "short",
-                                            day: "numeric",
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                        })}
+                                    <td className="px-6 py-3 text-gray-500 text-center">
+                                        {formatDate(auto.createdAt)}
                                     </td>
                                 </tr>
                             ))}
