@@ -193,19 +193,19 @@ const Home: React.FC = () => {
 
       {/* ----- gains section (below hero) --------------- */}
       <section className="w-full bg-white">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-5 sm:py-20">
           {/* logos */}
           <div className="flex items-center justify-center gap-10 sm:gap-20">
             {/* Trustpilot */}
             <div className="flex items-center gap-4">
-              <SiTrustpilot className="h-10 w-10 text-emerald-500" />
+              <SiTrustpilot className="h-7 w-7 d:h-10 md:w-10 text-emerald-500" />
               <div className="flex flex-col">
-                <span className="text-2xl font-semibold leading-none text-gray-900">
+                <span className="text-xl md:text-2xl font-semibold leading-none text-gray-900">
                   Trustpilot
                 </span>
                 <div className="mt-1 flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
-                    <FaStar key={i} className="h-5 w-5 text-emerald-500" />
+                    <FaStar key={i} className="md:h-5 md:w-5 w-3 h-3 text-emerald-500" />
                   ))}
                 </div>
               </div>
@@ -216,9 +216,9 @@ const Home: React.FC = () => {
 
             {/* Meta */}
             <div className="flex items-center gap-4">
-              <SiMeta className="h-10 w-10 text-indigo-600" />
+              <SiMeta className="h-7 w-7 md:h-10 md:w-10 text-indigo-600" />
               <div className="flex flex-col">
-                <span className="text-2xl font-semibold leading-none text-gray-900">
+                <span className="text-xl md:text-2xl font-semibold leading-none text-gray-900">
                   Meta
                 </span>
                 <span className="mt-1 text-sm text-gray-500">Tech Provider</span>
@@ -229,7 +229,7 @@ const Home: React.FC = () => {
           {/* pill */}
           <div className="mt-14 flex justify-center">
             <button
-              className="rounded-full bg-white/80 px-6 py-3 text-lg font-medium text-gray-900 shadow-[0_8px_30px_rgba(0,0,0,0.08)] ring-1 ring-gray-200 backdrop-blur hover:ring-gray-300 transition"
+              className="rounded-full bg-white/80 px-4 md:px-6 py-1.5 md:py-3 text-lg font-medium text-gray-900 shadow-[0_8px_30px_rgba(0,0,0,0.08)] ring-1 ring-gray-200 backdrop-blur hover:ring-gray-300 transition"
               aria-label="Gains"
             >
               Gains
@@ -254,7 +254,7 @@ const Home: React.FC = () => {
       <section className="w-full max-w-6xl mx-auto relative overflow-hidden  p-[1.5px] bg-gradient-to-b from-orange-300 to-orange-50 rounded-[32px]">   
         <div className="w-full flex items-end gap-20 bg-white/90 pb-20 backgroup-blur-sm rounded-[32px]">
         
-          <div className="w-[40%] p-10">
+          <div className="w-full md:w-[40%] p-10">
                 <h1 className="text-5xl font-bold">Increase <br /> Engagement <br />by 10X</h1>
                 <p className="text-gray-500 mt-10">Fuel curiosity and boost engagement with automated DMs. Drive your reels to viral with every comment turned into a conversation.</p>
         </div>
