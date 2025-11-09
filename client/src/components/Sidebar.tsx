@@ -73,7 +73,7 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="hidden md:sticky top-0 left-0 w-[280px] h-screen px-3">
+    <aside className="sticky top-0 left-0 w-[280px] h-screen px-3">
       <div className="pointer-events-none absolute inset-y-0 right-0 w-10 " />
 
       {/* Top header */}
