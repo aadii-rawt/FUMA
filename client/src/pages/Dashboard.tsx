@@ -1,23 +1,102 @@
-import React from "react";
-import { FiCheckCircle, FiLink2, FiInstagram, FiZap, FiUsers, FiMessageCircle, FiBookOpen } from "react-icons/fi";
+import React, { useEffect, useState } from "react";
 import {
-  FiSettings,
-  FiPlus,
+  FiCheckCircle,
+  FiLink2,
+  FiInstagram,
+  FiZap,
+  FiUsers,
   FiMessageSquare,
-  FiClipboard,
 } from "react-icons/fi";
+import { FiSettings, FiPlus } from "react-icons/fi";
+import useUser from "../context/userContext";
+import Axios from "../utils/axios";
 
-const stats = [
-  { id: "automations", icon: <FiPlus size={18} />, label: "Automations", value: 11, limit: 3 },
-  { id: "messages", icon: <FiMessageSquare size={18} />, label: "Messages", value: 321, limit: 1000 },
-  { id: "contacts", icon: <FiUsers size={18} />, label: "Contacts", value: 295, limit: 1000 },
-  // { id: "forms", icon: <FiClipboard size={18} />, label: "Forms", value: 0, limit: 3 },
-];
+type UserStats = {
+  automationCount: number;
+  messageCount: number;
+  contactCount: number;
+};
 
+type Stat = {
+  id: string;
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+  limit: number;
+};
 
 export default function Dashboard() {
+  const { user } = useUser();
+  const [userStats, setStats] = useState<UserStats>({
+    automationCount: 0,
+    messageCount: 0,
+    contactCount: 0,
+  });
+  const [loading, setLoading] = useState(false);
+
+  const stats: Stat[] = [
+    {
+      id: "automations",
+      icon: <FiPlus size={18} />,
+      label: "Automations",
+      value: userStats.automationCount,
+      limit: 3,
+    },
+    {
+      id: "messages",
+      icon: <FiMessageSquare size={18} />,
+      label: "Messages",
+      value: userStats.messageCount,
+      limit: 1000,
+    },
+    {
+      id: "contacts",
+      icon: <FiUsers size={18} />,
+      label: "Contacts",
+      value: userStats.contactCount,
+      limit: 1000,
+    },
+  ];
+
+  useEffect(() => {
+    const getAutomationCount = async () => {
+      setLoading(true);
+      try {
+        const res = await Axios.get("/user/stats");
+        console.log("GET /user/stats response:", res?.data);
+
+        // Normalize the payload shape:
+        // Accept either res.data.data or res.data (depends on your backend wrapper)
+        const payload = res?.data?.data ?? res?.data ?? {};
+
+        // Support multiple naming conventions (camelCase, snake_case)
+        const automationCount =
+          Number(payload.automationCount ?? payload.automation_count ?? payload.automation ?? 0) || 0;
+        const messageCount =
+          Number(payload.messageCount ?? payload.message_count ?? payload.messages ?? 0) || 0;
+        const contactCount =
+          Number(payload.contactCount ?? payload.contact_count ?? payload.contacts ?? 0) || 0;
+
+        // debug log
+        console.log({ automationCount, messageCount, contactCount });
+
+        setStats({
+          automationCount,
+          messageCount,
+          contactCount,
+        });
+      } catch (err: any) {
+        console.error("Failed to fetch user stats", err?.response?.data ?? err.message ?? err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getAutomationCount();
+  }, []);
+
   return (
-    <section className="space-y-4 overflow-y-scroll border-[1px] border-gray-500/20  rounded-xl p-4">
+    <section className="space-y-4 overflow-y-scroll border-[1px] border-gray-500/20 rounded-xl p-4">
       <h2 className="text-2xl font-bold text-gray-900">Get Started with FUMA</h2>
 
       <div className="rounded-3xl border border-gray-200 bg-white p-4 sm:p-6">
@@ -27,7 +106,7 @@ export default function Dashboard() {
               <div className="flex items-center gap-3">
                 <h3 className="text-lg font-semibold text-slate-800">Plans &amp; Billing</h3>
 
-                <Pill className="bg-slate-100 text-slate-700">Free</Pill>
+                <Pill className="bg-slate-100 text-slate-700">{user?.plan || "FREE"}</Pill>
                 <Pill className="bg-slate-100 text-slate-700">Monthly</Pill>
                 <Pill className="bg-emerald-100 text-emerald-700">Active</Pill>
               </div>
@@ -47,7 +126,7 @@ export default function Dashboard() {
                 <ProgressStat key={s.id} stat={s} />
               ))}
             </div>
-
+            {loading && <div className="mt-3 text-xs text-gray-500">Loading stats...</div>}
           </div>
         </div>
 
@@ -70,9 +149,7 @@ export default function Dashboard() {
               <div className="rounded-2xl bg-white/40 p-6">
                 <div className="grid place-items-center rounded-2xl bg-gradient-to-br from-fuchsia-100 via-white to-purple-100 py-14">
                   <div className="flex items-center gap-4 text-purple-600">
-                    <span className="grid h-12 w-12 place-items-center rounded-2xl bg-purple-600 text-white">
-                      F
-                    </span>
+                    <span className="grid h-12 w-12 place-items-center rounded-2xl bg-purple-600 text-white">F</span>
                     <FiZap className="text-2xl opacity-70" />
                     <span className="grid h-12 w-12 place-items-center rounded-2xl bg-pink-100 text-pink-600">
                       <FiInstagram className="text-2xl" />
@@ -100,15 +177,9 @@ export default function Dashboard() {
               <div className="rounded-2xl bg-white/40 p-6">
                 <div className="grid place-items-center rounded-2xl bg-white py-14">
                   <div className="flex items-center gap-6 text-indigo-500">
-                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-100">
-                      💬
-                    </span>
-                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-100">
-                      ✈️
-                    </span>
-                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-100">
-                      🏷️
-                    </span>
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-100">💬</span>
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-100">✈️</span>
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-100">🏷️</span>
                   </div>
                 </div>
               </div>
@@ -146,30 +217,17 @@ export default function Dashboard() {
                     <FiUsers />
                   </span>
                   <span className="grid h-10 w-10 place-items-center rounded-full bg-purple-100">
-                    <img
-                      className="h-8 w-8 rounded-full object-cover"
-                      src="https://i.pravatar.cc/80?img=12"
-                      alt=""
-                    />
+                    <img className="h-8 w-8 rounded-full object-cover" src="https://i.pravatar.cc/80?img=12" alt="" />
                   </span>
                   <span className="grid h-10 w-10 place-items-center rounded-full bg-purple-100">
-                    <img
-                      className="h-8 w-8 rounded-full object-cover"
-                      src="https://i.pravatar.cc/80?img=5"
-                      alt=""
-                    />
+                    <img className="h-8 w-8 rounded-full object-cover" src="https://i.pravatar.cc/80?img=5" alt="" />
                   </span>
                   <span className="grid h-10 w-10 place-items-center rounded-full bg-purple-100">
-                    <img
-                      className="h-8 w-8 rounded-full object-cover"
-                      src="https://i.pravatar.cc/80?img=36"
-                      alt=""
-                    />
+                    <img className="h-8 w-8 rounded-full object-cover" src="https://i.pravatar.cc/80?img=36" alt="" />
                   </span>
                 </div>
                 <p className="mt-4 text-sm text-gray-500 text-center max-w-sm">
-                  Invite creators and brands to FUMA and earn a commission for every paid
-                  subscription they keep.
+                  Invite creators and brands to FUMA and earn a commission for every paid subscription they keep.
                 </p>
               </div>
             </div>
@@ -180,20 +238,19 @@ export default function Dashboard() {
   );
 }
 
+/* ---------- small components ---------- */
 
 const ProgressStat: React.FC<{ stat: Stat }> = ({ stat }) => {
-  const percent =
-    stat.limit <= 0 ? 0 : Math.min(100, Math.round((stat.value / stat.limit) * 100));
+  const percent = stat.limit <= 0 ? 0 : Math.min(100, Math.round((stat.value / stat.limit) * 100));
 
-  // we want to display counts like "321 / 1K" when large - helper:
+  // format limit like "1K"
   const formatLimit = (n: number) => (n >= 1000 ? `${Math.round(n / 100) / 10}K` : `${n}`);
-  const displayValue = `${stat.value} / ${formatLimit(stat.limit)}`;
+  const displayValue = `${stat.value ?? 0} / ${formatLimit(stat.limit)}`;
 
   return (
     <div className="flex-1 min-w-[180px]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          {/* icon circle */}
           <div className="w-9 h-9 rounded-md bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center text-purple-600">
             {stat.icon}
           </div>
@@ -205,11 +262,9 @@ const ProgressStat: React.FC<{ stat: Stat }> = ({ stat }) => {
         </div>
       </div>
 
-      {/* progress track */}
       <div className="mt-3 h-2 w-full rounded-full bg-slate-100 overflow-hidden">
-        {/* gradient filled bar */}
         <div
-          className={`h-full rounded-full ${percent == 100 ? "bg-red-500" : "bg-gradient-to-r from-purple-500 to-pink-500"} transition-all duration-500`}
+          className={`h-full rounded-full ${percent === 100 ? "bg-red-500" : "bg-gradient-to-r from-purple-500 to-pink-500"} transition-all duration-500`}
           style={{ width: `${percent}%` }}
           aria-hidden
         />
