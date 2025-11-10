@@ -60,7 +60,7 @@ export const sendCount = async (id) => {
 }
 
 const messagePlanLIMIT = {
-    FREE: 1000,
+    FREE: 5,
     PRO: null,
     ULTIMATE: null,
 }
