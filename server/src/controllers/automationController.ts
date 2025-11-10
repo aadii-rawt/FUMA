@@ -6,24 +6,50 @@ import { Request, Response } from "express"
 
 
 export const getAutomation = async (req: Request, res: Response) => {
-  // @ts-ignore
-  const userId = req.id
   try {
-    const data = await prisma.automation.findMany({
-      where: {
-        userId
-      }, 
-      orderBy : {
-        createdAt : "desc"
-      }
-    })
-    console.log(data);
-    res.json(data)
-  } catch (error) {
-    console.log(error);
+    // @ts-ignore — your middleware sets req.id
+    const userId = req.id;
+    if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
+    // parse pagination params, default to page 1, limit 10
+    const page = Math.max(1, parseInt((req.query.page as string) || "1", 10));
+    const limit = Math.max(1, parseInt((req.query.limit as string) || "10", 10));
+    const skip = (page - 1) * limit;
+
+    // optionally you can accept search q or sort (see comment)
+    const q = (req.query.q as string) || "";
+
+    // build where clause (add search if q provided)
+    const where: any = { userId };
+    if (q.trim()) {
+      where.OR = [
+        { name: { contains: q, mode: "insensitive" } },
+        { keywords: { has: q } }, // assuming keywords is an array; adjust if different
+      ];
+    }
+
+    const [total, data] = await Promise.all([
+      prisma.automation.count({ where }),
+      prisma.automation.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+        take: limit,
+        skip,
+      }),
+    ]);
+
+    res.json({
+      data,
+      total,
+      page,
+      limit,
+    });
+  } catch (error) {
+    console.error("getAutomation error:", error);
+    res.status(500).json({ message: "Something went wrong" });
   }
-}
+};
+
 
 export const createAutomation = async (req: Request, res: Response) => {
   try {
@@ -56,6 +82,7 @@ export const createAutomation = async (req: Request, res: Response) => {
         dmImageUrl: dmImageUrl || null,
       },
     });
+    
 
     return res.json({ message: "automation created", dmImageUrl });
   } catch (error: any) {

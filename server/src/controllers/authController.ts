@@ -61,7 +61,7 @@ export const verifyLoginOTP = async (req: Request, res: Response) => {
     httpOnly: false,
     // secure: isProd,                  
     secure: process.env.NODE_ENV !== "development",
-    maxAge: 1000 * 60 * 60,
+    maxAge: 32 * 24 * 60 * 60,
     sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
 
   })
@@ -122,7 +122,7 @@ export const verifySignupOTP = async (req: Request, res: Response) => {
       httpOnly: false,
       // secure: isProd,                  
       secure: process.env.NODE_ENV !== "development",
-      maxAge: 1000 * 60 * 60,
+      maxAge: 30 * 24 * 60 * 60,
       sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
     })
     res.json({

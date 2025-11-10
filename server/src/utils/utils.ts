@@ -47,3 +47,36 @@ export const saveContact = async (username: string, userId: string) => {
         console.error("❌ Error saving contact:", error);
     }
 };
+
+export const sendCount = async (id) => {
+    try {
+        await prisma.automation.update({
+            where: { id: id },
+            data: { sentCount: { increment: 1 } },
+        });
+    } catch (error) {
+
+    }
+}
+
+const messagePlanLIMIT = {
+    FREE: 1000,
+    PRO: null,
+    ULTIMATE: null,
+}
+export const messageVaidator = async (user) => {
+
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+    const MessageCount = await prisma.contacts.count({
+        where: {
+            userId : user.id,
+            createdAt: { gte: startOfMonth },
+        },
+    });
+    if (MessageCount > messagePlanLIMIT.FREE) {
+        return false
+    }
+    return true
+}

@@ -11,6 +11,7 @@ import automationRoute from "./routes/automation.js";
 import subscriptioinRouter from "./routes/subscription.js";
 import { webhook } from "./routes/webhook.js";
 import contactsRoute from "./routes/contacts.js";
+import userRouter from "./routes/user.js";
 dotenv.config();
 
 const app = express();
@@ -165,11 +166,12 @@ app.use("/api/v1/ig", igroute);
 app.use("/api/v1/automation", automationRoute);
 app.use("/api/v1/subscriptions", subscriptioinRouter);
 app.use("/api/v1/contacts", contactsRoute);
+app.use("/api/v1/user", userRouter);
+
 
 app.all("/webhook", webhook);
 
 
-// ----- Start -----
 if (process.env.NODE_ENV !== "production") {
   const port = Number(process.env.PORT) || 8080;
   app.listen(port, () => console.log("server running on", port));

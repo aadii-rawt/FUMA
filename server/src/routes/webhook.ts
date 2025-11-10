@@ -2,7 +2,7 @@
 import axios from "axios";
 import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
-import { saveContact } from "../utils/utils";
+import { messageVaidator, saveContact, sendCount } from "../utils/utils";
 
 // ---------- Helpers ----------
 function normText(s: string | undefined | null) {
@@ -11,24 +11,18 @@ function normText(s: string | undefined | null) {
 
 function matchesKeywords(text: string, anyKeyword: boolean, keywords: string[]): boolean {
   const t = normText(text);
-  if (anyKeyword) return t.trim().length > 0; // treat "any" as any non-empty comment
+  if (anyKeyword) return t.trim().length > 0;
   if (!keywords || keywords.length === 0) return false;
-
-  // simple ANY match (contains); you can switch to token-based or regex later
   return keywords.some(k => t.includes(k.toLowerCase()));
 }
 
-function buildMessagePayload(automation: any, username?: string) {
-  console.log("automation :", automation);
 
-  // If you want to send cards/buttons/image -> use a template payload.
-  // If you just want text -> use { message: { text: ... } }
+function buildMessagePayload(automation: any, username?: string) {
   const hasLinks = Array.isArray(automation.dmLinks) && automation.dmLinks.length > 0;
 
   if (hasLinks || automation.dmImageUrl) {
     const elements: any[] = [];
 
-    // Optionally include an image "card"
     if (automation.dmImageUrl) {
       elements.push({
         title: automation.msgTitle ?? "Info",
@@ -41,7 +35,6 @@ function buildMessagePayload(automation: any, username?: string) {
         })),
       });
     } else {
-      // A card without image
       elements.push({
         title: automation.msgTitle ?? "Info",
         subtitle: automation.dmText ? `${automation.dmText} || Powered by fuma.dotdazzle.in` : "",
@@ -76,10 +69,10 @@ async function sendPrivateReplyToComment(
   payload: any,
   pageAccessToken: string
 ) {
-  // IMPORTANT: use facebook.com host, not instagram.com
-  const url = `https://graph.instagram.com/v21.0/me/messages`;
+
+  const url = `${process.env.INSTA_API}/me/messages`;
   const headers = {
-    Authorization: `Bearer ${pageAccessToken}`, // user's Page Access Token
+    Authorization: `Bearer ${pageAccessToken}`,
     "Content-Type": "application/json",
   };
 
@@ -88,26 +81,13 @@ async function sendPrivateReplyToComment(
   return data;
 }
 
-function buildOpeningReplyButtonPayload(automation: any) {
-  const text =
-    automation?.openingMsgData?.text ??
-    "Hey there! Thanks for your interest ✨ Tap below and I’ll send you the link in a sec.";
-
-  // Button sends a postback we’ll catch in the webhook
-  return {
-    message: text,
-    ctaTitle: automation?.openingMsgData?.ctaTitle || "Send me the link",
-    postbackPayload: `SEND_LINK:${automation.id}`,
-  };
-}
-
 async function replyToComment(
   commentId: string,
   message: string,
   pageAccessToken: string
 ) {
-  // Public reply to the IG comment
-  const url = `https://graph.instagram.com/v21.0/${commentId}/replies`;
+
+  const url = `${process.env.INSTA_API}/${commentId}/replies`;
   await axios.post(
     url,
     { message },
@@ -115,22 +95,17 @@ async function replyToComment(
   );
 }
 
-
-// Safely pull mediaId and the IG business account ID out of the webhook.
-// Webhook shapes vary; keep fallbacks.
 function extractIdsFromWebhook(value: any) {
   const commentId = value?.id ?? value?.comment_id ?? null;
   const username = value?.from?.username ?? undefined;
   const text = value?.text ?? value?.message ?? "";
 
-  // Try to detect the media id that was commented on:
   const mediaId =
     value?.media?.id ??
     value?.media_id ??
-    value?.parent_id ?? // sometimes appears
+    value?.parent_id ?? 
     null;
 
-  // IG business/user id that owns the media (depends on your subscribed fields and app setup)
   const igBusinessId =
     value?.owner_id ??
     value?.media?.owner?.id ??
@@ -142,7 +117,7 @@ function extractIdsFromWebhook(value: any) {
 
 async function sendDMToUser(recipientId: string, payload: any, pageAccessToken: string) {
   // Message to a user id (used after postback)
-  const url = `https://graph.instagram.com/v21.0/me/messages`;
+  const url = `${process.env.INSTA_API}/me/messages`;
   const headers = {
     Authorization: `Bearer ${pageAccessToken}`,
     "Content-Type": "application/json",
@@ -152,9 +127,7 @@ async function sendDMToUser(recipientId: string, payload: any, pageAccessToken: 
   return data;
 }
 
-// Try to detect a Messenger/IG messaging postback
 function extractPostback(body: any) {
-  // Page/IG messaging webhooks often under entry[].messaging[]
   const entry = body?.entry?.[0];
   const messaging = entry?.messaging?.[0];
   const postbackPayload = messaging?.postback?.payload as string | undefined;
@@ -162,7 +135,7 @@ function extractPostback(body: any) {
   return { postbackPayload, senderId };
 }
 
-// ---------- Main webhook ----------
+// ---------- -------------- webhook ---------- ------------------------
 export const webhook = async (req: Request, res: Response) => {
   if (req.method === "POST") {
     let body: any;
@@ -172,15 +145,14 @@ export const webhook = async (req: Request, res: Response) => {
       else body = req.body;
     } catch (err) {
       console.error("Parse error:", err);
-      return res.status(200).send("ok"); // still 200 to stop retries
+      return res.status(200).send("ok"); 
     }
 
     try {
 
-      // inside export const webhook = async (req, res) => { ... } just after parsing 'body'
+    
       const { postbackPayload, senderId } = extractPostback(body);
       if (postbackPayload && senderId) {
-        // FOLLOW gate and "send link" gate both land here
         if (postbackPayload.startsWith("FOLLOWED:") || postbackPayload.startsWith("SEND_LINK:")) {
           const automationId = postbackPayload.split(":")[1];
           const auto = await prisma.automation.findUnique({
@@ -205,21 +177,17 @@ export const webhook = async (req: Request, res: Response) => {
       const change = entry?.changes?.[0];
       const value = change?.value;
 
-      const { commentId, username, text, mediaId, igBusinessId } = extractIdsFromWebhook(value);
-      const testging = extractIdsFromWebhook(value);
-      console.log("webhook data :", testging);
-      console.log({ commentId, username, text, mediaId, igBusinessId });
+      const { commentId, username, text, mediaId  } = extractIdsFromWebhook(value);
 
-      // Must have a comment + media id to proceed
       if (!commentId || !mediaId) {
         console.warn("No commentId or mediaId in webhook; skipping.");
         return res.status(200).send("ok");
       }
 
-      // 1) Find LIVE automations for this media
+      // ------ finding automation for this  media
       const automations = await prisma.automation.findMany({
         where: { status: "LIVE", postMediaId: mediaId },
-        include: { user: true }, // we need user's page token from users.access_token
+        include: { user: true }, 
       });
 
       if (!automations.length) {
@@ -227,36 +195,35 @@ export const webhook = async (req: Request, res: Response) => {
         return res.status(200).send("ok");
       }
 
-      // 2) For each automation, keyword-match
+      // -------------- checking the matching keyword for automation
       for (const auto of automations) {
         const hit = matchesKeywords(text, auto.anyKeyword, auto.keywords ?? []);
         if (!hit) continue;
 
-        // 3) Get the correct Page Access Token
-        // You said you store the token on users.access_token already.
         const pageAccessToken = auto.user?.access_token;
         if (!pageAccessToken) {
           console.warn(`No page token for user ${auto.userId}; cannot send DM`);
           continue;
         }
 
-        // 4) Build message from automation
-        const payload = buildMessagePayload(auto, username,);
-
-        // 5) Send private reply
         try {
-
-          // A) Public reply to the comment first
+          // ------------ reply of comment if enable
           if (auto.commentReply) {
-            // const replies = auto.openingMsgData ?? [];
             const randomIdx = Math.floor(Math.random() * 3);
-            // const replyText = randomIdx >= 0 ? replies[randomIdx]?.reply ?? "" : ""; 
             const replyText = auto?.commentReplyData?.[randomIdx]?.reply
             await replyToComment(commentId, replyText, pageAccessToken);
           }
 
-
-          // 1) FOLLOW-FOR-DM GATE
+          // message validator for free plan
+          if (auto.user.plan == "FREE") {
+            const messageAvailable = await messageVaidator(auto?.user)
+            if (!messageAvailable) {
+              console.log("Message limit exceed for free plan");
+              return
+            }
+          }
+          
+          // ------- checking if user follow or not
           if (auto.followForDM) {
             const visitTitle = "Visit Profile";
             const confirmTitle = "I'm following ✅";
@@ -286,7 +253,7 @@ export const webhook = async (req: Request, res: Response) => {
             break; // stop after first matching automation
           }
 
-          // 2) OPENING MESSAGE (ONLY if follow gate is not enabled)
+          // sening opening message if enable
           if (auto.openingMsg) {
             const openingPayload = {
               message: {
@@ -312,13 +279,12 @@ export const webhook = async (req: Request, res: Response) => {
             break;
           }
 
-          // 3) DIRECT SEND (no follow gate, no opening message)
+          // ------- sendibg message
           const payload = buildMessagePayload(auto, username);
           await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
-          console.log("✅ Direct link sent");
           const userId = auto?.user?.id
+          await sendCount(auto.id)
           await saveContact(username, userId)
-
           break;
         } catch (err: any) {
           console.error("Reply/DM failed:", err?.response?.data || err);
@@ -328,7 +294,6 @@ export const webhook = async (req: Request, res: Response) => {
       console.error("Failed to handle webhook:", e?.response?.data || e);
     }
 
-    // Always 200 quickly so Meta stops retrying
     return res.status(200).send("ok");
   }
 
