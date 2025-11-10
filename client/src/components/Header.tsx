@@ -20,7 +20,7 @@ const Header: React.FC = () => {
                 </div>
             </div>
 
-            <div className="flex items-center justify-between p-3">
+            <div className="flex md:hidden items-center justify-between p-3">
                 <Link to='/' className="font-bold text-2xl">FUMA</Link>
 
                 <div className="text-2xl cursor-pointer">

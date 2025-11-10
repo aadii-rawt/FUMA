@@ -7,9 +7,9 @@ export function AutomationShimmer({ rows = 10 }: { rows?: number }) {
       <table className="w-full text-sm text-gray-700">
         <thead className="bg-gray-50 border-b border-gray-200">
           <tr className="text-left text-gray-500 font-medium">
-            <th className="px-6 py-3">Automation</th>
-            <th className="px-6 py-3">Status</th>
-            <th className="px-6 py-3">Last Published</th>
+            <th className="px-6 py-3"></th>
+            <th className="px-6 py-3"></th>
+            <th className="px-6 py-3"></th>
           </tr>
         </thead>
 
