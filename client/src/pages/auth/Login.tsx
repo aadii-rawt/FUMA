@@ -1,13 +1,29 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import Axios from "../../utils/axios"
 import LoadingSpinner from "../../components/LoadingSpinner"
+import useUser from "../../context/userContext"
 
 const Login = () => {
     const [email,setEmail] = useState<string>("")
     const [error,setError] = useState<string>("")
     const [loading,setLoading] = useState<boolean>(false)
     const navigate = useNavigate()
+    const {setUser} = useUser()
+
+    useEffect(() => {
+        const fetchMe = async () => {
+            try {
+                const res = await Axios.get("/auth/me", { withCredentials: true });
+                setUser(res.data?.data);
+                navigate("/app")
+            } catch (error){
+               console.log(error);
+               
+            } 
+        };
+        fetchMe();
+    }, []);
     
 
     const handleLogin = async () => {
@@ -30,7 +46,6 @@ const Login = () => {
 
     const handleGoogleSignin = () => {
         return window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`
-
     }
 
     return (
