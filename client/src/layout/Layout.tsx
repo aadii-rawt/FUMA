@@ -18,7 +18,7 @@ export default function Layout() {
       </div>
 
       {isPriceModalOpen && <UpgradeModal />}
-      {showSubscriptionModal && <Subscription onClose={() => setShowSubscriptionModal(false)} />}
+      {showSubscriptionModal && <Subscription />}
       {/* <Subscription /> */}
     </div>
   );

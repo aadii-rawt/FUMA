@@ -7,12 +7,17 @@ import {
   FiUsers,
   FiClipboard,
 } from "react-icons/fi";
+import useUser from "../context/userContext";
 
-type Props = {
-  onClose: () => void;
-};
 
-export default function Subscription({onClose} : Props) {
+export default function Subscription() {
+
+  const { setShowSubscriptionModal,setIsPriceModalOpen } = useUser()
+
+  const onClose = () => {
+    setIsPriceModalOpen(true)
+    setShowSubscriptionModal(false)
+  }
   return (
     <div className="fixed inset-0 z-[100]">
       {/* dim */}
@@ -46,11 +51,11 @@ export default function Subscription({onClose} : Props) {
               Unlock your <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-fuchsia-600">Growth</span>
             </h2>
 
-            <p className="mt-2 text-sm text-yellow-600">
+            {/* <p className="mt-2 text-sm text-yellow-600">
               You’ve exceeded your free tier limits!
               <br />
               Don’t stop now—scale beyond the free tier
-            </p>
+            </p> */}
 
             {/* progress-ish bar */}
             <div className="mx-auto mt-5 h-2 w-full max-w-[420px] rounded-full bg-gray-200">
@@ -60,7 +65,7 @@ export default function Subscription({onClose} : Props) {
             </div>
           </div>
 
-         
+
           {/* features */}
           <div className="mt-6 grid gap-3 px-10 pb-8">
             <Feature icon={<FiZap />} text="Unlimited Automations" />
