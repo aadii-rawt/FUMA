@@ -7,9 +7,11 @@ import Axios from '../utils/axios'
 import useUser from '../context/userContext'
 import { FiEdit } from 'react-icons/fi'
 import { IoMdCheckmarkCircle } from 'react-icons/io'
+import LoadingSpinner from '../components/LoadingSpinner'
 const NewAutomation: React.FC = () => {
 
-    const { selectedPost, setSelectedPost, user } = useUser()
+    const { selectedPost, setSelectedPost, user, setPreviewURL } = useUser()
+    const [loading, setLoading] = useState(false)
     useEffect(() => {
         setSelectedPost({
             name: "New Automation",
@@ -26,34 +28,40 @@ const NewAutomation: React.FC = () => {
             commentReply: false,
             hasProducts: false,
             products: [],
+            followUp: false,
+
         })
     }, [])
 
     const handleAutomation = async () => {
-        // console.log("data :", selectedPost);
+        console.log("data :", selectedPost);
 
-        if (!user) return
-        try {
-            const {products,hasProducts, ...rest} = selectedPost
-            const res = await Axios.post("/automation", { post: rest })
-            console.log(selectedPost);
-            setSelectedPost({
-                name: "New Automation",
-                status: "LIVE",
-                postMediaId: "",
-                postThumbnail: "",
-                anyKeyword: false,
-                keywords: [],
-                dmText: "",
-                msgTitle: "",
-                dmLinks: [],
-                dmImageUrl: "",
-                openingMsg: false,
-                commentReply: false
-            })
-        } catch (error) {
-            console.log(error);
-        }
+        // if (!user) return
+        // try {
+        //     setLoading(true)
+        //     const {products,hasProducts, ...rest} = selectedPost
+        //     const res = await Axios.post("/automation", { post: rest })
+        //     console.log(selectedPost);
+        //     setSelectedPost({
+        //         name: "New Automation",
+        //         status: "LIVE",
+        //         postMediaId: "",
+        //         postThumbnail: "",
+        //         anyKeyword: false,
+        //         keywords: [],
+        //         dmText: "",
+        //         msgTitle: "",
+        //         dmLinks: [],
+        //         dmImageUrl: "",
+        //         openingMsg: false,
+        //         commentReply: false
+        //     })
+        //     setPreviewURL("")
+        // } catch (error) {
+        //     console.log(error);
+        // }finally {
+        //     setLoading(false)
+        // }
 
     }
 
@@ -78,7 +86,7 @@ const NewAutomation: React.FC = () => {
                             <button onClick={() => {
                                 setIsEditing(false)
                                 inputRef.current.blur()
-                            }} className='text-gray-400 cursor-pointer bg-primary rounded-full text-white'><IoMdCheckmarkCircle /></button>
+                            }} className=' cursor-pointer bg-primary rounded-full text-white'><IoMdCheckmarkCircle /></button>
                         </div>
 
                     </div>
@@ -87,10 +95,11 @@ const NewAutomation: React.FC = () => {
                     <button
                         type="button"
                         onClick={handleAutomation}
+                        disabled={loading}
                         className="inline-flex items-center gap-2 rounded-xl bg-teal-500 px-3 py-2 cursor-pointer text-white shadow hover:bg-teal-600"
                     >
                         <RiRadioLine className="text-xl" />
-                        <span className="text-lg font-semibold">Go Live</span>
+                        {loading ? <LoadingSpinner /> : <span className="text-lg font-semibold">Go Live</span>}
                     </button>
                 </div>
             </div>

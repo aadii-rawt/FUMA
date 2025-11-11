@@ -103,7 +103,7 @@ function extractIdsFromWebhook(value: any) {
   const mediaId =
     value?.media?.id ??
     value?.media_id ??
-    value?.parent_id ?? 
+    value?.parent_id ??
     null;
 
   const igBusinessId =
@@ -135,6 +135,13 @@ function extractPostback(body: any) {
   return { postbackPayload, senderId };
 }
 
+
+function sendFollowUoMessage(auto) {
+
+
+
+}
+
 // ---------- -------------- webhook ---------- ------------------------
 export const webhook = async (req: Request, res: Response) => {
   if (req.method === "POST") {
@@ -145,12 +152,12 @@ export const webhook = async (req: Request, res: Response) => {
       else body = req.body;
     } catch (err) {
       console.error("Parse error:", err);
-      return res.status(200).send("ok"); 
+      return res.status(200).send("ok");
     }
 
     try {
 
-    
+
       const { postbackPayload, senderId } = extractPostback(body);
       if (postbackPayload && senderId) {
         if (postbackPayload.startsWith("FOLLOWED:") || postbackPayload.startsWith("SEND_LINK:")) {
@@ -177,7 +184,7 @@ export const webhook = async (req: Request, res: Response) => {
       const change = entry?.changes?.[0];
       const value = change?.value;
 
-      const { commentId, username, text, mediaId  } = extractIdsFromWebhook(value);
+      const { commentId, username, text, mediaId } = extractIdsFromWebhook(value);
 
       if (!commentId || !mediaId) {
         console.warn("No commentId or mediaId in webhook; skipping.");
@@ -187,7 +194,7 @@ export const webhook = async (req: Request, res: Response) => {
       // ------ finding automation for this  media
       const automations = await prisma.automation.findMany({
         where: { status: "LIVE", postMediaId: mediaId },
-        include: { user: true }, 
+        include: { user: true },
       });
 
       if (!automations.length) {
@@ -222,7 +229,7 @@ export const webhook = async (req: Request, res: Response) => {
               return
             }
           }
-          
+
           // ------- checking if user follow or not
           if (auto.followForDM) {
             const visitTitle = "Visit Profile";
@@ -282,9 +289,32 @@ export const webhook = async (req: Request, res: Response) => {
           // ------- sendibg message
           const payload = buildMessagePayload(auto, username);
           await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
-          const userId = auto?.user?.id
+          const user = auto?.user
           await sendCount(auto.id)
-          await saveContact(username, userId)
+          await saveContact(username, user)
+
+          if (auto.followUp) {
+            const openingPayload = {
+              message: {
+                attachment: {
+                  type: "template",
+                  payload: {
+                    template_type: "button",
+                    // @ts-ignore
+                    text: auto.followUpData.text || "Hey there! 👋 Thanks for your comment. Tap below and I’ll send you the link!",
+                    // @ts-ignore
+                    buttons: (auto.followUpData.dmLinks ?? []).slice(0, 3).map((l: any) => ({
+                      type: "web_url",
+                      url: l.url || "",
+                      title: l.text?.slice(0, 20) || "Open",
+                    })),
+                  },
+                },
+              },
+            };
+            await sendPrivateReplyToComment(commentId, openingPayload, pageAccessToken);
+
+          }
           break;
         } catch (err: any) {
           console.error("Reply/DM failed:", err?.response?.data || err);

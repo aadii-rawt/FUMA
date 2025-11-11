@@ -8,28 +8,28 @@ datasource db {
 }
 
 model users {
-  id    String  @id @default(cuid())
-  email   String @unique
-  avatar    String?
-  username    String?
-  createdAt   DateTime @default(now())
-  access_token String?
-  ig_id   String?
-  plan    String? 
-  purchaseAt DateTime @default(now())
-  expireAt    DateTime?
-  automations       Automation[]
-  subscriptioin     Subscription[]
-  contacts         Contacts[]
+  id            String         @id @default(cuid())
+  email         String         @unique
+  avatar        String?
+  username      String?
+  createdAt     DateTime       @default(now())
+  access_token  String?
+  ig_id         String?
+  plan          String?
+  purchaseAt    DateTime       @default(now())
+  expireAt      DateTime?
+  automations   Automation[]
+  subscriptioin Subscription[]
+  contacts      Contacts[]
 }
 
 model Otp {
-  id         String   @id @default(cuid())
-  email      String   @db.VarChar(255)
-  otp    String
-  expiresAt  DateTime
-  attempts   Int      @default(0)
-  createdAt  DateTime @default(now())
+  id        String   @id @default(cuid())
+  email     String   @db.VarChar(255)
+  otp       String
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
 
   @@index([email])
 }
@@ -41,35 +41,38 @@ enum AutomationStatus {
   ARCHIVED
 }
 
+
 model Automation {
-  id             String   @id @default(cuid())
-  userId         String
-  user           users  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name           String
-  description    String?
-  status         AutomationStatus  @default(DRAFT)
-  publishedAt    DateTime?
-  postMediaId    String           
-  postThumbnail  String? 
-  anyKeyword     Boolean           @default(false) 
-  keywords       String[]          @default([])  
-  msgTitle       String?
-  dmText         String          
-  dmImageUrl     String?          
-  dmLinks        Json? 
-  caption         String?
+  id            String           @id @default(cuid())
+  userId        String
+  user          users            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  description   String?
+  status        AutomationStatus @default(DRAFT)
+  publishedAt   DateTime?
+  postMediaId   String
+  postThumbnail String?
+  anyKeyword    Boolean          @default(false)
+  keywords      String[]         @default([])
+  msgTitle      String?
+  dmText        String
+  dmImageUrl    String?
+  dmLinks       Json?
+  caption       String?
 
-  sentCount   Int? @default(0)
-  clickCount  Int?      @default(0)
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
-  openingMsg     Boolean @default(false)
-  openingMsgData    Json?
-  commentReply    Boolean @default(false)
-  commentReplyData    Json?
-  followForDM     Boolean @default(false)
-  followForDMData   Json?
+  sentCount        Int?     @default(0)
+  clickCount       Int?     @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  openingMsg       Boolean  @default(false)
+  openingMsgData   Json?
+  commentReply     Boolean  @default(false)
+  commentReplyData Json?
+  followForDM      Boolean  @default(false)
+  followForDMData  Json?
 
+  followUp     Boolean?      @default(false)
+  followUpData Json?
 
   @@index([userId, status])
   @@index([status, publishedAt])
@@ -77,11 +80,12 @@ model Automation {
 }
 
 model Contacts {
-  id         String   @id @default(cuid())
-  userId     String
-  user       users  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  username   String
-  createdAt  DateTime @default(now())
+  id        String   @id @default(cuid())
+  userId    String
+  user      users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  username  String
+  createdAt DateTime @default(now())
+
   @@index([userId, username], name: "user_contact_unique")
 }
 
@@ -97,7 +101,6 @@ enum SubscriptionStatus {
   EXPIRED
 }
 
-
 enum PaymentMethod {
   UPI
   CARD
@@ -105,39 +108,39 @@ enum PaymentMethod {
 }
 
 model Subscription {
-  id                   String              @id @default(cuid())
-  userId               String
-  user                 users               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(cuid())
+  userId String
+  user   users  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  planKey              String
-  planTitle            String              
-  interval             PlanInterval    @default(MONTHLY)
+  planKey   String
+  planTitle String
+  interval  PlanInterval @default(MONTHLY)
 
-  currentPeriodStart   DateTime
-  currentPeriodEnd     DateTime
-  cancelAtPeriodEnd    Boolean             @default(false)
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  cancelAtPeriodEnd  Boolean  @default(false)
 
-  amountSubtotal       Int             
-  discountAmount       Int                 @default(0)
-  taxAmount            Int                 @default(0)
-  amountTotal          Int                
-          
-  paymentId    String
-  status               SubscriptionStatus  @default(ACTIVE)
+  amountSubtotal Int
+  discountAmount Int @default(0)
+  taxAmount      Int @default(0)
+  amountTotal    Int
+
+  paymentId String
+  status    SubscriptionStatus @default(ACTIVE)
 
   // paymentMethod        PaymentMethod       @default(UNKNOWN)
   // upiVpa               String?             
   // cardLast4            String?             
   // cardNetwork          String?  
 
-  promotionCode        String?
-  billingName          String?
-  billingPhone         String?
-  billingCountry       String?
-  billingCity          String?
+  promotionCode  String?
+  billingName    String?
+  billingPhone   String?
+  billingCountry String?
+  billingCity    String?
 
-  createdAt            DateTime            @default(now())
-  updatedAt            DateTime            @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId, status])
   @@index([currentPeriodEnd])

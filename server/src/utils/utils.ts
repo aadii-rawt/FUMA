@@ -23,23 +23,31 @@ export const verifyOTP: (otp: any, hashOTP: any) => any = async (otp, hashOTP) =
 }
 
 
-export const saveContact = async (username: string, userId: string) => {
+export const saveContact = async (username: string, user: any) => {
     try {
 
-        const exist = await prisma.contacts.findFirst({
-            where: {
-                username,
-                userId
+        // const exist = await prisma.contacts.findFirst({
+        //     where: {
+        //         username,
+        //         userId
+        //     }
+        // });
+        // if (exist) {
+        //     console.log("⚠️ Contact already exists");
+        //     return;
+        // }
+
+        if (user.plan == "FREE") {
+            const isContactValid = await contactValidator(user.id)
+            if (isContactValid) {
+                console.log("contact saved exceed for free plan ");
+                return
             }
-        });
-        if (exist) {
-            console.log("⚠️ Contact already exists");
-            return;
         }
         await prisma.contacts.create({
             data: {
                 username,
-                user: { connect: { id: userId } },
+                user: { connect: { id: user.id } },
             }
         });
         console.log("✅ Contact saved successfully");
@@ -59,11 +67,12 @@ export const sendCount = async (id) => {
     }
 }
 
-const messagePlanLIMIT = {
-    FREE: 5,
+const messagePlanLimit = {
+    FREE: 1000,
     PRO: null,
     ULTIMATE: null,
 }
+
 export const messageVaidator = async (user) => {
 
     const startOfMonth = new Date();
@@ -71,11 +80,33 @@ export const messageVaidator = async (user) => {
     startOfMonth.setHours(0, 0, 0, 0);
     const MessageCount = await prisma.contacts.count({
         where: {
-            userId : user.id,
+            userId: user.id,
             createdAt: { gte: startOfMonth },
         },
     });
-    if (MessageCount > messagePlanLIMIT.FREE) {
+    if (MessageCount > messagePlanLimit.FREE) {
+        return false
+    }
+    return true
+}
+
+const contactPlanLimit = {
+    FREE: 1000,
+    PRO: null,
+    ULTIMATE: null,
+}
+
+const contactValidator = async (userid) => {
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+    const contactCount = await prisma.contacts.count({
+        where: {
+            userId: userid,
+            createdAt: { gte: startOfMonth },
+        },
+    });
+    if (contactCount > contactPlanLimit.FREE) {
         return false
     }
     return true

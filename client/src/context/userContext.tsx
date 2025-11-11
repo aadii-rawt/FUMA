@@ -21,6 +21,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         followForDM : false,
         hasProducts: false,
         products : [],
+        followUp : false,
     });
     const [isPriceModalOpen, setIsPriceModalOpen] = useState(false)
     const [user, setUser] = useState(null)

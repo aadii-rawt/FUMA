@@ -9,6 +9,7 @@ import OpeningMessage from "./OpeningMessage";
 import CommentReply from "./CommentReply";
 import FollowForDM from "./FollowForDM";
 import AddProducts from "./AddProducts";
+import FollowUp from "./FollowUp";
 
 
 const Editor: React.FC = () => {
@@ -98,6 +99,7 @@ const Editor: React.FC = () => {
         <div className="space-y-5">
           <CommentReply />
           <FollowForDM />
+          <FollowUp />
         </div>
       </div>
     </div>

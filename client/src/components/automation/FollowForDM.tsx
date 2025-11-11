@@ -1,13 +1,18 @@
 import React, { useCallback } from 'react'
 import { BiEdit } from 'react-icons/bi'
 import useUser from '../../context/userContext'
+import { FaCrown } from 'react-icons/fa'
 
 const Defaultmsg = `Oh no! It seems you're not following me 👀It would really mean a lot if you visit my profile and hit the follow button😁. Once you have done that, click on the 'I'm following' button below and you will get the link ✨.`
 const FollowForDM = () => {
 
-    const { selectedPost, setSelectedPost ,setCurrentPreview} = useUser()
+    const { selectedPost, setSelectedPost ,setCurrentPreview,user,setShowSubscriptionModal} = useUser()
 
     const handleToggle = useCallback(() => {
+        if (user.plan == "FREE") {
+            setShowSubscriptionModal(true)
+            return
+        }
         if (selectedPost.followForDM) {
             setSelectedPost((prev) => {
                 const { followForDMData, ...rest } = prev
@@ -35,6 +40,11 @@ const FollowForDM = () => {
                 </div>
 
                 {/* Toggle */}
+                <div className='flex items-center gap-3'>
+                    <div className='px-5 py-1 text-amber-700 text-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 rounded-2xl'>
+                        <FaCrown />
+                    </div>
+
                 <button
                     type="button"
                     onClick={handleToggle}
@@ -52,6 +62,7 @@ const FollowForDM = () => {
                         ].join(" ")}
                     />
                 </button>
+                </div>
             </div>
 
             {selectedPost?.followForDM && <> <div className='rounded-xl p-3 border mt-4 border-gray-200 focus-within:border-violet-500 focus-within:border-2'>
