@@ -10,7 +10,7 @@ import { IoMdCheckmarkCircle } from 'react-icons/io'
 import LoadingSpinner from '../components/LoadingSpinner'
 const NewAutomation: React.FC = () => {
 
-    const { selectedPost, setSelectedPost, user, setPreviewURL } = useUser()
+    const { selectedPost, setSelectedPost, user, setPreviewURL ,setCurrentPreview} = useUser()
     const [loading, setLoading] = useState(false)
     useEffect(() => {
         setSelectedPost({
@@ -57,6 +57,7 @@ const NewAutomation: React.FC = () => {
                 commentReply: false
             })
             setPreviewURL("")
+            setCurrentPreview("post")
         } catch (error) {
             console.log(error);
         }finally {

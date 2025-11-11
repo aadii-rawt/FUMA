@@ -75,7 +75,7 @@ const Editor: React.FC = () => {
         <button
           onClick={() => setAllPostModalOpen(true)}
           type="button"
-          className="mt-3 w-full rounded-xl border border-gray-200 py-3 text-center text-lg font-medium text-indigo-700 transition hover:bg-indigo-50"
+          className="mt-3 w-full cursor-pointer rounded-xl border border-gray-200 py-3 text-center text-lg font-medium text-indigo-700 transition hover:bg-indigo-50"
         >
           Show More
         </button>

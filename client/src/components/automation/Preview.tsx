@@ -265,6 +265,26 @@ const MessagePreview = ({ user, selectedPost, previewURL }: any) => {
         </div>
       </div>
 
+      {selectedPost?.followUp && <div className="flex gap-2 items-end mt-10 max-w-[200px]">
+        <div>
+          <div className="w-6 h-6 bg-gray-200 rounded-full">
+            <img src={user?.avatar} className="rounded-full" alt="" />
+          </div>
+        </div>
+        <div className="w-full rounded-xl overflow-hidden">
+          <div className="p-2 bg-[#262626]">
+            <h1 className="text-xs font-medium text-white break-words whitespace-pre-wrap">
+              {selectedPost?.followUpData?.text ?? ""}
+            </h1>
+            {selectedPost?.followUpData?.dmLinks.map((f) => (
+              <div className="flex items-center justify-center font-medium rounded-lg mt-2 bg-[#363636] text-white text-xs py-1">
+                {f?.text}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      }
       <div className="absolute bottom-4 left-0 px-4 w-full ">
         <div className="bg-[#262626]  bottom-0 p-2 rounded-2xl flex items-center justify-between">
           <p className="text-gray-500 text-xs">Message...</p>

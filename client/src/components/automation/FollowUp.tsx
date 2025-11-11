@@ -5,7 +5,8 @@ import { FaCrown } from "react-icons/fa";
 import { BiEdit } from "react-icons/bi";
 
 type LinkItem = { id: string; text: string; url: string };
-const Defaultmsg = `Oh no! It seems you're not following me 👀It would really mean a lot if you visit my profile and hit the follow button😁. Once you have done that, click on the 'I'm following' button below and you will get the link ✨.`
+const Defaultmsg = `Still here? You must like the madness 😏
+More crazy reels on the way — don’t follow if you hate good vibes.`
 
 const FollowUp: React.FC = () => {
   const { selectedPost, user, setSelectedPost, setShowSubscriptionModal, imageUrl, setImageUrl, previewURL, setPreviewURL, setCurrentPreview } = useUser();
@@ -45,9 +46,9 @@ const FollowUp: React.FC = () => {
   const saveLink = () => {
     if (!draftTitle.trim() || !draftUrl.trim()) return;
     if (editingId) {
-      setSelectedPost((prev) => ({ ...prev, followUpData : {...prev.followUpData, dmLinks: prev.followUpData.dmLinks.map(l => (l.id === editingId ? { ...l, text: draftTitle.trim(), url: draftUrl.trim() } : l)) }}))
+      setSelectedPost((prev) => ({ ...prev, followUpData: { ...prev.followUpData, dmLinks: prev.followUpData.dmLinks.map(l => (l.id === editingId ? { ...l, text: draftTitle.trim(), url: draftUrl.trim() } : l)) } }))
     } else {
-      setSelectedPost((prev) => ({ ...prev,followUpData : {...prev.followUpData, dmLinks: [...prev.followUpData.dmLinks, { id: Math.random().toString(36).slice(2), text: draftTitle.trim(), url: draftUrl.trim() }] }}))
+      setSelectedPost((prev) => ({ ...prev, followUpData: { ...prev.followUpData, dmLinks: [...prev.followUpData.dmLinks, { id: Math.random().toString(36).slice(2), text: draftTitle.trim(), url: draftUrl.trim() }] } }))
     }
     setOpenModal(false);
     setDraftTitle("");
@@ -97,10 +98,11 @@ const FollowUp: React.FC = () => {
 
     setSelectedPost((prev) => ({
       ...prev, followUp: true, followUpData: {
-        text: Defaultmsg, 
-        dmLinks : [{
-          text : "Visit Profile",
-          link : `https://www.instagram.com/${user.username}`
+        text: Defaultmsg,
+        dmLinks: [{
+          id: Math.random().toString(36).slice(2),
+          text: "Visit Profile",
+          url: `https://www.instagram.com/${user.username}`
         }]
       }
     }))
@@ -164,10 +166,10 @@ const FollowUp: React.FC = () => {
                 <div key={l.id} className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 text-[15px]">
                   <span className="truncate">{l.text}</span>
                   <div className="ml-3 flex items-center gap-2">
-                    <button className="rounded-md p-2 text-slate-600 hover:bg-gray-100" onClick={() => startEdit(l)} aria-label="Edit">
+                    <button className="rounded-md cursor-pointer p-2 text-slate-600 hover:bg-gray-100" onClick={() => startEdit(l)} aria-label="Edit">
                       <FiEdit2 />
                     </button>
-                    <button className="rounded-md p-2 text-slate-600 hover:bg-gray-100" onClick={() => removeLink(l.id)} aria-label="Delete">
+                    <button className="rounded-md cursor-pointer p-2 text-slate-600 hover:bg-gray-100" onClick={() => removeLink(l.id)} aria-label="Delete">
                       <FiTrash2 />
                     </button>
                   </div>
