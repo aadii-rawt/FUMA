@@ -10,6 +10,7 @@ import {
 import { FiSettings, FiPlus } from "react-icons/fi";
 import useUser from "../context/userContext";
 import Axios from "../utils/axios";
+import Stats from "../components/Stats";
 
 type UserStats = {
   automationCount: number;
@@ -26,7 +27,7 @@ type Stat = {
 };
 
 export default function Dashboard() {
-  const { user } = useUser();
+  const { user, setIsPriceModalOpen } = useUser();
   const [userStats, setStats] = useState<UserStats>({
     automationCount: 0,
     messageCount: 0,
@@ -100,7 +101,7 @@ export default function Dashboard() {
       <h2 className="text-2xl font-bold text-gray-900">Get Started with FUMA</h2>
 
       <div className="rounded-3xl border border-gray-200 bg-white p-4 sm:p-6">
-        <div className="mb-20">
+        {user.plan == "FREE" ? <div className="mb-20">
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -113,7 +114,8 @@ export default function Dashboard() {
               <div className="flex items-start">
                 <button
                   type="button"
-                  className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50"
+                  onClick={() => setIsPriceModalOpen(true)}
+                  className="inline-flex items-center cursor-pointer gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50"
                 >
                   <FiSettings />
                   Manage
@@ -129,7 +131,13 @@ export default function Dashboard() {
             {loading && <div className="mt-3 text-xs text-gray-500">Loading stats...</div>}
           </div>
         </div>
-
+          :
+          <Stats metrics={[
+            { label: "Automation", value: userStats.automationCount },
+            { label: "Messages", value: userStats.messageCount },
+            { label: "Contacts", value: userStats.contactCount },
+          ]} />
+        }
         {/* Top grid: Connect IG / Create Automation */}
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Left: Connect Instagram */}
