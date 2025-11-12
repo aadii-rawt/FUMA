@@ -4,9 +4,19 @@ import { Link } from "react-router-dom";
 import useUser from "../../context/userContext";
 import Axios from "../../utils/axios";
 
+const planPrice = {
+  FREE : 0,
+  PRO : 199,
+  ULTIMATE : 299
+}
+
 export default function Billing() {
 
-  const [automationCount, setAutomationCount] = useState("")
+  const [stats,setStats] = useState({
+    automationCount : "0",
+    messageCount : "0",
+    contactCount : "0"    
+  })
   const { user } = useUser()
 
   useEffect(() => {
@@ -14,13 +24,12 @@ export default function Billing() {
       if (!user) return
 
       try {
-          const res = await Axios.get("/automation/count")
-          console.log(res);      
+          const res = await Axios.get("/user/stats")
+          setStats(res.data)     
       } catch (error) {
 
       }
     }
-
     getAutomationCount()
   }, [])
 
@@ -45,7 +54,7 @@ export default function Billing() {
 
             <div className="text-right">
               <div className="text-2xl font-bold text-gray-900">
-                ₹0<span className="text-base font-medium text-gray-500">/mo</span>
+                ₹{planPrice[user?.plan] || 0}<span className="text-base font-medium text-gray-500">/mo</span>
               </div>
             </div>
           </div>
@@ -61,7 +70,7 @@ export default function Billing() {
                 <FiPlusSquare className="text-lg" />
               </span>
               <div>
-                <div className="text-sm font-semibold text-gray-800">11 / 3</div>
+                <div className="text-sm font-semibold text-gray-800">{stats?.automationCount} {user.plan == "FREE" && "/ 3" }</div>
                 <div className="text-xs text-gray-500">Automations</div>
               </div>
             </div>
@@ -72,7 +81,7 @@ export default function Billing() {
                 <FiMessageCircle className="text-lg" />
               </span>
               <div>
-                <div className="text-sm font-semibold text-gray-800">319 / 1K</div>
+                <div className="text-sm font-semibold text-gray-800">{stats.messageCount} {user.plan == "FREE" && "/ 1K"}</div>
                 <div className="text-xs text-gray-500">DMs</div>
               </div>
             </div>
@@ -83,7 +92,7 @@ export default function Billing() {
                 <FiUser className="text-lg" />
               </span>
               <div>
-                <div className="text-sm font-semibold text-gray-800">295 / 1K</div>
+                <div className="text-sm font-semibold text-gray-800">{stats.contactCount} {user.plan == "FREE" && "/ 1K" }</div>
                 <div className="text-xs text-gray-500">Contacts</div>
               </div>
             </div>

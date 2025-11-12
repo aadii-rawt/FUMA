@@ -2,10 +2,12 @@ import {Link, Outlet} from 'react-router-dom'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { PiSparkle } from 'react-icons/pi'
+import ScrollToTop from '../components/ScrollToTop'
 
 const LandingPageLayout : React.FC = () => {
     return (
         <div className='relative max-w-[1400px] mx-auto'>
+          <ScrollToTop />
             <Header />
             <Outlet />
 

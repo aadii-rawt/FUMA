@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Editor from '../components/automation/Editor'
 import Preview from '../components/automation/Preview'
-import { LuPencilLine } from 'react-icons/lu'
 import { RiRadioLine } from 'react-icons/ri'
 import Axios from '../utils/axios'
 import useUser from '../context/userContext'
@@ -99,7 +98,7 @@ const NewAutomation: React.FC = () => {
                         disabled={loading}
                         className="inline-flex items-center gap-2 rounded-xl bg-teal-500 px-3 py-2 cursor-pointer text-white shadow hover:bg-teal-600"
                     >
-                        <RiRadioLine className="text-xl" />
+                       {!loading && <RiRadioLine className="text-xl" />}
                         {loading ? <LoadingSpinner /> : <span className="text-lg font-semibold">Go Live</span>}
                     </button>
                 </div>

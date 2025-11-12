@@ -8,6 +8,7 @@ const featuresFree = [
   { label: "3 Automations", icons : <PiLinkSimpleLight/>, ok: true },
   { label: "1000 DMs", icons : <LuMessageCircleHeart />, ok: true },
   { label: "Follow before DM", icons : <SlUserFollow />, ok: false },
+  { label: "Follow Up to re-engage", icons : <SlUserFollow />, ok: false },
   { label: "Data Collection", icons : <TbDatabasePlus />, ok: false },
 ];
 
@@ -15,6 +16,7 @@ const featuresPro = [
   { label: "Unlimited Automations", icons : <PiLinkSimpleLight/>, ok: true },
   { label: "Unlimited DMs", icons : <LuMessageCircleHeart />, ok: true },
   { label: "Follow before DM", icons : <SlUserFollow />, ok: true },
+  { label: "Follow Up to re-engage", icons : <SlUserFollow />, ok: false },
   { label: "Data Collection", icons : <TbDatabasePlus />, ok: false },
 ];
 
@@ -22,6 +24,7 @@ const featuresUltimate = [
   { label: "Unlimited Automations", icons : <PiLinkSimpleLight/>, ok: true },
   { label: "Unlimited DMs", icons : <LuMessageCircleHeart />, ok: true },
   { label: "Follow before DM", icons : <SlUserFollow />, ok: true },
+  { label: "Follow Up to re-engage", icons : <SlUserFollow />, ok: true },
   { label: "Data Collection", icons : <TbDatabasePlus />, ok: true },
 ];
 

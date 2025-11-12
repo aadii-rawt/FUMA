@@ -78,9 +78,7 @@ export default function Dashboard() {
         const contactCount =
           Number(payload.contactCount ?? payload.contact_count ?? payload.contacts ?? 0) || 0;
 
-        // debug log
-        console.log({ automationCount, messageCount, contactCount });
-
+      
         setStats({
           automationCount,
           messageCount,
