@@ -65,8 +65,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (expireDate && now >= expireDate) {
             planExpire()
         }
-
-
     }, [user]);
 
     useEffect(() => {
@@ -74,7 +72,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         const maybeShowModal = async () => {
             try {
-                // if (user.plan !== "FREE") return;
+                if (user.plan !== "FREE") return;
 
                 const alreadyShown = sessionStorage.getItem("subsModalShown") === "1";
                 if (alreadyShown) return;

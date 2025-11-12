@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FiCreditCard, FiLoader, FiMapPin } from "react-icons/fi";
 import Axios from "../../utils/axios";
+import useUser from "../../context/userContext";
 
 type Method = "card" | "upi";
 
@@ -18,6 +19,7 @@ declare global {
 export default function Payment({ selectedPlan, onBack }: Props) {
   const [method, setMethod] = useState<Method>("upi");
   const [loading, setLoading] = useState(false);
+  const { showSubscriptionModal } = useUser();
 
   // Minimal form fields (optional but nice for prefill & invoice)
   const [name, setName] = useState("");
@@ -46,78 +48,87 @@ export default function Payment({ selectedPlan, onBack }: Props) {
   const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID as string;
 
   const openRazorpay = async (amountINR: number) => {
-    if (!window.Razorpay) {
-      alert("Payment gateway not loaded yet. Please try again in a moment.");
-      return;
-    }
-    if (!keyId) {
-      console.error("Missing VITE_RAZORPAY_KEY_ID");
-      alert("Razorpay key not configured");
-      return;
-    }
-
-    const options = {
-      key: keyId,
-      amount: Math.round(amountINR * 100), // paise
-      currency: "INR",
-      name: "FUMA",
-      description: `${selectedPlan.title} plan`,
-      // If you create orders in backend: add order_id here
-      prefill: {
-        name,
-        contact: phone,
-      },
-      theme: { color: "#7c3aed" },
-      handler: async function (response: any) {
-        // Razorpay success => store in DB
-        try {
-          const payload = {
-            razorpay: {
-              payment_id: response.razorpay_payment_id,
-              order_id: response.razorpay_order_id, // may be undefined if you didn’t create server order
-              signature: response.razorpay_signature,
-            },
-            planKey: selectedPlan.title.toUpperCase().replace(/\s+/g, "_"),
-            planTitle: selectedPlan.title,
-            interval: "MONTHLY", // adjust if you also sell yearly here
-            currency: "INR",
-            amountSubtotal: Math.round(selectedPlan.price * 100), // paise
-            taxAmount: Math.round(igst * 100),                    // paise
-            discountAmount: 0,
-            amountTotal: Math.round(total * 100),                 // paise
-            billingName: name,
-            billingPhone: phone,
-            billingCountry: country,
-            billingCity: city,
-          };
-
-          await Axios.post("/subscriptions/confirm", payload);
-          setMethod("upi")
-          setName("")
-          setCity("")
-          setCountry("")
-          setPhone("")
-          alert("Payment successful!");
-        } catch (e) {
-          console.error(e);
-          alert("Payment failed.");
-        } finally {
-          setLoading(false);
-        }
-      },
-      modal: {
-        ondismiss: function () {
-          setLoading(false);
+    try {
+      
+      if (!window.Razorpay) {
+        alert("Payment gateway not loaded yet. Please try again in a moment.");
+        return;
+      }
+      if (!keyId) {
+        console.error("Missing VITE_RAZORPAY_KEY_ID");
+        alert("Razorpay key not configured");
+        return;
+      }
+  
+      const options = {
+        key: keyId,
+        amount: Math.round(amountINR * 100), // paise
+        currency: "INR",
+        name: "FUMA",
+        description: `${selectedPlan.title} plan`,
+        // If you create orders in backend: add order_id here
+        prefill: {
+          name,
+          contact: phone,
         },
-      },
-    };
-
-    const rzp = new window.Razorpay(options);
-    rzp.on("payment.failed", function () {
-      setLoading(false);
-      alert("Payment failed. Please try again.");
-    });
-    rzp.open();
+        theme: { color: "#7c3aed" },
+        handler: async function (response: any) {
+          // Razorpay success => store in DB
+          try {
+            const payload = {
+              razorpay: {
+                payment_id: response.razorpay_payment_id,
+                order_id: response.razorpay_order_id, // may be undefined if you didn’t create server order
+                signature: response.razorpay_signature,
+              },
+              planKey: selectedPlan.title.toUpperCase().replace(/\s+/g, "_"),
+              planTitle: selectedPlan.title,
+              interval: "MONTHLY", // adjust if you also sell yearly here
+              currency: "INR",
+              amountSubtotal: Math.round(selectedPlan.price * 100), // paise
+              taxAmount: Math.round(igst * 100),                    // paise
+              discountAmount: 0,
+              amountTotal: Math.round(total * 100),                 // paise
+              billingName: name,
+              billingPhone: phone,
+              billingCountry: country,
+              billingCity: city,
+            };
+  
+            await Axios.post("/subscriptions/confirm", payload);
+            setMethod("upi")
+            setName("")
+            setCity("")
+            setCountry("")
+            setPhone("")
+            
+          } catch (e) {
+            console.error(e);
+            alert("Payment failed.");
+            showSubscriptionModal(false)
+          } finally {
+            setLoading(false);
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            setLoading(false);
+          },
+        },
+      };
+  
+      const rzp = new window.Razorpay(options);
+      rzp.on("payment.failed", function () {
+        setLoading(false);
+        alert("Payment failed. Please try again.");
+      });
+      rzp.open();
+    } catch (error) {
+      console.log(error);
+      
+    }finally {
+      setLoading(false)
+    }
   };
 
   const pay = () => {

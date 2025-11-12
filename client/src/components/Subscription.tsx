@@ -8,6 +8,7 @@ import {
   FiClipboard,
 } from "react-icons/fi";
 import useUser from "../context/userContext";
+import { RiLightbulbFlashLine, RiUserFollowLine } from "react-icons/ri";
 
 
 export default function Subscription() {
@@ -15,7 +16,10 @@ export default function Subscription() {
   const { setShowSubscriptionModal,setIsPriceModalOpen } = useUser()
 
   const onClose = () => {
-    setIsPriceModalOpen(true)
+    setShowSubscriptionModal(false)
+  }
+  const onUpdate =  () => {
+     setIsPriceModalOpen(true)
     setShowSubscriptionModal(false)
   }
   return (
@@ -70,14 +74,15 @@ export default function Subscription() {
           <div className="mt-6 grid gap-3 px-10 pb-8">
             <Feature icon={<FiZap />} text="Unlimited Automations" />
             <Feature icon={<FiMessageCircle />} text="Unlimited DMS" />
-            <Feature icon={<FiUsers />} text="Unlimited Contacts" />
             <Feature icon={<FiClipboard />} text="Unlimited Leads" />
+            <Feature icon={<RiUserFollowLine />} text="Follow before DM" />
+            <Feature icon={<RiLightbulbFlashLine />} text="Follow Up to re-engage" />
           </div>
 
           {/* cta */}
           <div className="px-10 pb-10">
             <button
-              onClick={onClose}
+              onClick={onUpdate}
               className="mx-auto border-none outline-none flex h-12 w-full max-w-[420px] cursor-pointer items-center justify-center rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-600 text-base font-semibold text-white shadow-lg hover:opacity-95"
             >
               Upgrade Now
