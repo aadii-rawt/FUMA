@@ -55,13 +55,13 @@ export const verifyLoginOTP = async (req: Request, res: Response) => {
   // @ts-ignore
   if (!user) return res.status(401).json({ error: "Someting went wrong" })
   const JWT_SECRET = Buffer.from(process.env.JWT_SECRET || "")
-  const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1h" })
+  const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "30d" })
 
   res.cookie("token", token, {
     httpOnly: false,
     // secure: isProd,                  
     secure: process.env.NODE_ENV !== "development",
-    maxAge: 32 * 24 * 60 * 60,
+    maxAge:  30 * 24 * 60 * 60 * 1000,
     sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
 
   })
@@ -117,12 +117,12 @@ export const verifySignupOTP = async (req: Request, res: Response) => {
       data: { email: email }
     })
     const JWT_SECRET = Buffer.from(process.env.JWT_SECRET || "")
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1h" })
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "30d" })
     res.cookie("token", token, {
       httpOnly: false,
       // secure: isProd,                  
       secure: process.env.NODE_ENV !== "development",
-      maxAge: 30 * 24 * 60 * 60,
+      maxAge:  30 * 24 * 60 * 60 * 1000,
       sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
     })
     res.json({
@@ -130,7 +130,6 @@ export const verifySignupOTP = async (req: Request, res: Response) => {
     })
   } catch (error) {
     console.log(error);
-
     res.json({
       message: error
     })
