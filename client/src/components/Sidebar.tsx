@@ -23,7 +23,7 @@ export default function Sidebar() {
   const headerBtnRef = useRef<HTMLButtonElement>(null);
   const menuContainerRef = useRef<HTMLDivElement>(null);
   const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
-  const { user } = useUser()
+  const { user ,setShowSubscriptionModal} = useUser()
 
   const navigate = useNavigate()
 
@@ -72,6 +72,13 @@ export default function Sidebar() {
     }
   }
 
+  const handleContact = () => {
+    if (user.plan != "ULTIMATE") {
+      setShowSubscriptionModal(true)
+      return
+    }
+    navigate("/contacts")
+  }
   return (
     <aside className="sticky top-0 left-0 w-[280px] h-screen px-3">
       <div className="pointer-events-none absolute inset-y-0 right-0 w-10 " />
@@ -119,13 +126,15 @@ export default function Sidebar() {
           </span>
           <span >Automation</span>
         </NavLink>
-        <NavLink to="/contacts"
+        <button className="" onClick={handleContact}>
+        <NavLink to="/contacts"  onClick={(e) => e.preventDefault()}
           className={({ isActive }) => `w-full flex items-center gap-3 px-4 py-2 font-medium ${isActive ? "text-purple-500 rounded-2xl bg-gradient-to-r from-white/70 to-transparent" : "text-gray-400 hover:text-gray-700"}`}>
           <span className="grid place-items-center rounded-lg w-8 h-8">
             <LuContactRound  className="text-[18px]" />
           </span>
           <span >Contacts</span>
         </NavLink>
+        </button>
 
         <div className={`w-full cursor-pointer  flex items-center gap-3 px-4 py-2 font-medium text-gray-500 hover:text-gray-700`}>
           <div className="flex items-center gap-3">

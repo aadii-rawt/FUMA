@@ -1,33 +1,20 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import { FiTrash2, FiEdit2, FiX, FiImage, FiPlusCircle } from "react-icons/fi";
+import React, { useCallback, useState } from "react";
+import { FiTrash2, FiEdit2, FiX, FiPlusCircle } from "react-icons/fi";
 import useUser from "../../context/userContext";
 import { FaCrown } from "react-icons/fa";
-import { BiEdit } from "react-icons/bi";
+
 
 type LinkItem = { id: string; text: string; url: string };
 const Defaultmsg = `Still here? You must like the madness 😏
 More crazy reels on the way — don’t follow if you hate good vibes.`
 
 const FollowUp: React.FC = () => {
-  const { selectedPost, user, setSelectedPost, setShowSubscriptionModal, imageUrl, setImageUrl, previewURL, setPreviewURL, setCurrentPreview } = useUser();
+  const { selectedPost, user, setSelectedPost, setShowSubscriptionModal, setCurrentPreview } = useUser();
 
   const [openModal, setOpenModal] = useState(false);
   const [draftTitle, setDraftTitle] = useState("");
   const [draftUrl, setDraftUrl] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
-
-  const objectUrlRef = useRef<string | null>(null);
-  const fileRef = useRef<HTMLInputElement | null>(null);
-  const MAX = 80;
-
-  const onPick = useCallback(() => fileRef.current?.click(), []);
-
-
-  const removeImage = () => {
-    if (imageUrl?.startsWith("blob:")) URL.revokeObjectURL(imageUrl);
-    setImageUrl(null);
-    // setImageDataUrl(null); // keep context in sync
-  };
 
   const startAdd = () => {
     setEditingId(null);
@@ -56,32 +43,10 @@ const FollowUp: React.FC = () => {
     setEditingId(null);
   };
 
-  const toDataURL = (file: File): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string); // data:image/...;base64,XXXX
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (!file.type.startsWith("image/")) return; // optional: show error
-    if (file.size > 10 * 1024 * 1024) return;   // optional: show error
-
-    if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
-    const objectUrl = URL.createObjectURL(file);
-    objectUrlRef.current = objectUrl;
-    setPreviewURL(objectUrl);
-
-    const dataUri = await toDataURL(file); // data:image/...;base64,XXXX
-    setSelectedPost(prev => ({ ...prev, dmImageUrl: dataUri }));
-  };
+ 
 
   const handleToggle = useCallback(() => {
-    if (user.plan == "FREE") {
+    if (user.plan != "ULTIMATE") {
       setShowSubscriptionModal(true)
       return
     }
@@ -110,8 +75,6 @@ const FollowUp: React.FC = () => {
 
 
   const removeLink = (id: string) => setSelectedPost((prev) => ({ ...prev, dmLinks: prev.dmLinks.filter(l => l.id !== id) }));
-
-  const counter = useMemo(() => `${selectedPost.dmText.length} / ${MAX}`, [selectedPost.dmText.length]);
 
   return (
     <div onClick={() => setCurrentPreview("msg")} className="w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
