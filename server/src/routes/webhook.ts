@@ -231,7 +231,10 @@ export const webhook = async (req: Request, res: Response) => {
           }
 
           // ------- checking if user follow or not
+          
           if (auto.followForDM) {
+            if(auto.user.plan == "FREE") return // feature not available for free user
+
             const visitTitle = "Visit Profile";
             const confirmTitle = "I'm following ✅";
             const followText = "Oh no! It seems you're not following me yet. Tap 'Visit Profile', follow, then press 'I'm following ✅' to get the link ✨.";
@@ -291,9 +294,12 @@ export const webhook = async (req: Request, res: Response) => {
           await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
           const user = auto?.user
           await sendCount(auto.id)
-          await saveContact(username, user)
+          if (user.plan == "ULTIMATE") {
+            await saveContact(username, user)
+          }
 
           if (auto.followUp) {
+            if (user.plan != "ULTIMATE") return // feature not available for free and pro user
             const openingPayload = {
               message: {
                 attachment: {
@@ -315,7 +321,7 @@ export const webhook = async (req: Request, res: Response) => {
             await sendPrivateReplyToComment(commentId, openingPayload, pageAccessToken);
 
           }
-          
+
           break;
         } catch (err: any) {
           console.error("Reply/DM failed:", err?.response?.data || err);

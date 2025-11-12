@@ -9,7 +9,9 @@ export const getSubscriptionDetails = async (req: Request, res: Response) => {
         if (!id) return res.status(401).json({ error: "Unauthorized" })
 
         const data = await prisma.subscription.findMany({
-            where: { userId: id }
+            where: { userId: id },
+            orderBy : {createdAt : "desc"}
+
         })
         console.log("data :", data);
 
