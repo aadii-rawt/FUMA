@@ -8,187 +8,186 @@ import { Link } from "react-router-dom";
 
 const Home: React.FC = () => {
 
-  
   return (
     <div className="w-full">
       {/* ----- hero --------------- */}
       <div className="">
-            <section className="relative py-12 bg-white sm:py-16 lg:py-20">
-              <div className="absolute inset-0">
-                <img className="object-cover w-full h-full" src="/pricing-bg.png" alt="" />
-              </div>
+        <section className="relative py-12 bg-white sm:py-16 lg:py-20">
+          <div className="absolute inset-0">
+            <img className="object-cover w-full h-full" src="/pricing-bg.png" alt="" />
+          </div>
 
-              <div className="relative mt-20 px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-                <div className="max-w-xl mx-auto text-center">
-                  <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-6xl">
-                    Effortless DMs <br /> big results
-                  </h1>
-                  <p className="max-w-md mx-auto mt-6 text-base font-normal leading-7 text-gray-500">
-                   Empower your creator business with AutoDM integrations — from Amazon to Nykaa, automate your affiliate income without lifting a finger.
-                  </p>
+          <div className="relative mt-20 px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+            <div className="max-w-xl mx-auto text-center">
+              <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-6xl">
+                Effortless DMs <br /> big results
+              </h1>
+              <p className="max-w-md mx-auto mt-6 text-base font-normal leading-7 text-gray-500">
+                Empower your creator business with AutoDM integrations — from Amazon to Nykaa, automate your affiliate income without lifting a finger.
+              </p>
 
-                  <form action="#" method="POST"
-                    className="max-w-md mx-auto mt-8 space-y-4 sm:space-x-4 sm:flex sm:space-y-0 sm:items-end">
-                    <div className="flex-1">
-                      <label  className="sr-only">
-                        Email address
-                      </label>
-                      <div>
-                        <input type="email" name="" id=""
-                          className="block w-full px-4 py-3 sm:py-3.5 text-base font-medium text-gray-900 placeholder-gray-500 border border-gray-300 rounded-lg  sm:text-sm focus:ring-gray-900 focus:border-gray-900"
-                          placeholder="Email address" />
-                      </div>
-                    </div>
-
-                    <div className="relative group">
-                      <div
-                        className="absolute transitiona-all duration-1000 opacity-70 inset-0 bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200">
-                      </div>
-
-                      <Link to="/auth/signup"
-                        className="inline-flex relative items-center justify-center w-full sm:w-auto px-8 py-3 sm:text-sm text-base sm:py-3.5 font-semibold text-white transition-all duration-200 bg-primary border border-transparent rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
-                        Join Now
-                      </Link>
-                    </div>
-                  </form>
-
-                  <ul className="flex items-center justify-center mt-6 space-x-6 sm:space-x-8">
-                    <li className="flex items-center">
-                      <svg className="w-5 h-5 mr-2 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                      <span className="text-xs font-medium text-gray-900 sm:text-sm">
-                       Automation
-                      </span>
-                    </li>
-
-                    <li className="flex items-center">
-                      <svg className="w-5 h-5 mr-2 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                      <span className="text-xs font-medium text-gray-900 sm:text-sm">
-                        Growth
-                      </span>
-                    </li>
-                  </ul>
+              <form action="#" method="POST"
+                className="max-w-md mx-auto mt-8 space-y-4 sm:space-x-4 sm:flex sm:space-y-0 sm:items-end">
+                <div className="flex-1">
+                  <label className="sr-only">
+                    Email address
+                  </label>
+                  <div>
+                    <input type="email" name="" id=""
+                      className="block w-full px-4 py-3 sm:py-3.5 text-base font-medium text-gray-900 placeholder-gray-500 border border-gray-300 rounded-lg  sm:text-sm focus:ring-gray-900 focus:border-gray-900"
+                      placeholder="Email address" />
+                  </div>
                 </div>
-              </div>
 
-              <div className="marquee mt-12 sm:mt-16 lg:mt-20 pb-8">
-                <div className="marquee__inner">
-                  {/* === Group A === */}
-                  <div className="marquee__group py-2">
-                    {/* CARD 1 */}
-                    <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-                      <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
-                        <div className="px-4 py-5 sm:p-5">
-                          <div className="flex items-start lg:items-center">
-                            <img
-                              className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cover"
-                              src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66da9ced61739d7327618e55_95.png"
-                              alt="Meesho"
-                            />
-                            <div className="flex-1 ml-4 lg:ml-6">
-                              <p className="text-xs font-medium text-gray-900 lg:text-sm">Meesho</p>
-                              <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
-                                Brands you can connect with instantly
-                              </p>
-                            </div>
-                          </div>
+                <div className="relative group">
+                  <div
+                    className="absolute transitiona-all duration-1000 opacity-70 inset-0 bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200">
+                  </div>
+
+                  <Link to="/auth/signup"
+                    className="inline-flex relative items-center justify-center w-full sm:w-auto px-8 py-3 sm:text-sm text-base sm:py-3.5 font-semibold text-white transition-all duration-200 bg-primary border border-transparent rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
+                    Join Now
+                  </Link>
+                </div>
+              </form>
+
+              <ul className="flex items-center justify-center mt-6 space-x-6 sm:space-x-8">
+                <li className="flex items-center">
+                  <svg className="w-5 h-5 mr-2 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-xs font-medium text-gray-900 sm:text-sm">
+                    Automation
+                  </span>
+                </li>
+
+                <li className="flex items-center">
+                  <svg className="w-5 h-5 mr-2 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-xs font-medium text-gray-900 sm:text-sm">
+                    Growth
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="marquee mt-12 sm:mt-16 lg:mt-20 pb-8">
+            <div className="marquee__inner">
+              {/* === Group A === */}
+              <div className="marquee__group py-2">
+                {/* CARD 1 */}
+                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                  <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
+                    <div className="px-4 py-5 sm:p-5">
+                      <div className="flex items-start lg:items-center">
+                        <img
+                          className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cover"
+                          src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66da9ced61739d7327618e55_95.png"
+                          alt="Meesho"
+                        />
+                        <div className="flex-1 ml-4 lg:ml-6">
+                          <p className="text-xs font-medium text-gray-900 lg:text-sm">Meesho</p>
+                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
+                            Brands you can connect with instantly
+                          </p>
                         </div>
                       </div>
                     </div>
+                  </div>
+                </div>
 
-                    {/* CARD 2 */}
-                    <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-                      <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
-                        <div className="px-4 py-5 sm:p-5">
-                          <div className="flex items-start lg:items-center">
-                            <img
-                              className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cover"
-                              src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66c074d12514da9000bf6437_66c0701a1ef0c15101c97d4e_77.png"
-                              alt="Nykaa"
-                            />
-                            <div className="flex-1 ml-4 lg:ml-6">
-                              <p className="text-xs font-medium text-gray-900 lg:text-sm">Nykaa</p>
-                              <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
-                                Automate DMs for your favorite stores
-                              </p>
-                            </div>
-                          </div>
+                {/* CARD 2 */}
+                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                  <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
+                    <div className="px-4 py-5 sm:p-5">
+                      <div className="flex items-start lg:items-center">
+                        <img
+                          className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cover"
+                          src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66c074d12514da9000bf6437_66c0701a1ef0c15101c97d4e_77.png"
+                          alt="Nykaa"
+                        />
+                        <div className="flex-1 ml-4 lg:ml-6">
+                          <p className="text-xs font-medium text-gray-900 lg:text-sm">Nykaa</p>
+                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
+                            Automate DMs for your favorite stores
+                          </p>
                         </div>
                       </div>
                     </div>
+                  </div>
+                </div>
 
-                    {/* CARD 3 */}
-                    <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-                      <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
-                        <div className="px-4 py-5 sm:p-5">
-                          <div className="flex items-start lg:items-center">
-                            <img
-                              className="lg:h-24 w-14 h-18 lg:w-24 rounded-xl object-cover"
-                              src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66c07611cdd922093c5c24f4_98.webp"
-                              alt="Flipkart"
-                            />
-                            <div className="flex-1 ml-4 lg:ml-6">
-                              <p className="text-xs font-medium text-gray-900 lg:text-sm">Flipkart</p>
-                              <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
-                                Turn comments into conversions with AutoDM
-                              </p>
-                            </div>
-                          </div>
+                {/* CARD 3 */}
+                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                  <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
+                    <div className="px-4 py-5 sm:p-5">
+                      <div className="flex items-start lg:items-center">
+                        <img
+                          className="lg:h-24 w-14 h-18 lg:w-24 rounded-xl object-cover"
+                          src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66c07611cdd922093c5c24f4_98.webp"
+                          alt="Flipkart"
+                        />
+                        <div className="flex-1 ml-4 lg:ml-6">
+                          <p className="text-xs font-medium text-gray-900 lg:text-sm">Flipkart</p>
+                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
+                            Turn comments into conversions with AutoDM
+                          </p>
                         </div>
                       </div>
                     </div>
+                  </div>
+                </div>
 
-                    {/* CARD 4 */}
-                    <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-                      <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
-                        <div className="px-4 py-5 sm:p-5">
-                          <div className="flex items-start lg:items-center">
-                            <img
-                              className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cover"
-                              src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66dc1ddef8cc06b6c602b90a_101.webp"
-                              alt="Myntra"
-                            />
-                            <div className="flex-1 ml-4 lg:ml-6">
-                              <p className="text-xs font-medium text-gray-900 lg:text-sm">Myntra</p>
-                              <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
-                                Seamless AutoDM integration with top brands
-                              </p>
-                            </div>
-                          </div>
+                {/* CARD 4 */}
+                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                  <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
+                    <div className="px-4 py-5 sm:p-5">
+                      <div className="flex items-start lg:items-center">
+                        <img
+                          className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cover"
+                          src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66dc1ddef8cc06b6c602b90a_101.webp"
+                          alt="Myntra"
+                        />
+                        <div className="flex-1 ml-4 lg:ml-6">
+                          <p className="text-xs font-medium text-gray-900 lg:text-sm">Myntra</p>
+                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
+                            Seamless AutoDM integration with top brands
+                          </p>
                         </div>
                       </div>
                     </div>
+                  </div>
+                </div>
 
-                    {/* CARD 5 */}
-                    <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
-                      <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
-                        <div className="px-4 py-5 sm:p-5">
-                          <div className="flex items-start lg:items-center">
-                            <img
-                              className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cover"
-                              src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66c076b23bd404abda6c76b7_64.webp"
-                              alt="Ajio"
-                            />
-                            <div className="flex-1 ml-4 lg:ml-6">
-                              <p className="text-xs font-medium text-gray-900 lg:text-sm">Ajio</p>
-                              <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
-                                Your all-in-one AutoDM solution for creators
-                              </p>
-                            </div>
-                          </div>
+                {/* CARD 5 */}
+                <div className="relative snap-center scroll-ml-6 shrink-0 first:pl-6 last:pr-6">
+                  <div className="card overflow-hidden w-[300px] lg:w-[420px] bg-white border border-gray-200 rounded-2xl">
+                    <div className="px-4 py-5 sm:p-5">
+                      <div className="flex items-start lg:items-center">
+                        <img
+                          className="lg:h-24 w-14 h-14 lg:w-24 rounded-xl object-cover"
+                          src="https://cdn.prod.website-files.com/6665566fd32a68cdf8236075/66c076b23bd404abda6c76b7_64.webp"
+                          alt="Ajio"
+                        />
+                        <div className="flex-1 ml-4 lg:ml-6">
+                          <p className="text-xs font-medium text-gray-900 lg:text-sm">Ajio</p>
+                          <p className="mt-2 text-sm font-bold text-gray-900 lg:text-lg">
+                            Your all-in-one AutoDM solution for creators
+                          </p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
 
-            </section>
+        </section>
       </div>
 
       {/* ----- gains section (below hero) --------------- */}
@@ -237,7 +236,7 @@ const Home: React.FC = () => {
           </div>
 
           {/* headline */}
-          <h1 className="mt-10 text-center text-4xl sm:text-6xl lg:text-6xl font-extrabold leading-[1.1] text-slate-900 tracking-tight">
+          <h1 className="mt-10 text-4xl font-bold leading-tight text-gray-900 sm:leading-tight sm:text-5xl lg:text-5xl lg:leading-tight font-pj text-center">
             Supercharge your{" "}
             <span className="bg-gradient-to-r from-fuchsia-500 via-pink-500 to-rose-500 bg-clip-text text-transparent">
               growth
@@ -251,15 +250,15 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <section className="w-full max-w-6xl mx-auto relative overflow-hidden  p-[1.5px] bg-gradient-to-b from-orange-300 to-orange-50 rounded-[32px]">   
+      <section className="w-full max-w-6xl mx-auto relative overflow-hidden  p-[1.5px] bg-gradient-to-b from-orange-300 to-orange-50 rounded-[32px]">
         <div className="w-full flex items-end gap-20 bg-white/90 pb-20 backgroup-blur-sm rounded-[32px]">
-        
+
           <div className="w-full md:w-[40%] p-10">
-                <h1 className="text-5xl font-bold">Increase <br /> Engagement <br />by 10X</h1>
-                <p className="text-gray-500 mt-10">Fuel curiosity and boost engagement with automated DMs. Drive your reels to viral with every comment turned into a conversation.</p>
-        </div>
-        <p>after FUMA</p>
+            <h1 className="text-5xl font-bold">Increase <br /> Engagement <br />by 10X</h1>
+            <p className="text-gray-500 mt-10">Fuel curiosity and boost engagement with automated DMs. Drive your reels to viral with every comment turned into a conversation.</p>
           </div>
+          <p>after FUMA</p>
+        </div>
         <img src="increase.svg" alt="" className="w-full absolute bottom-0 left-0" />
       </section>
 
@@ -294,7 +293,7 @@ const Home: React.FC = () => {
             </div>
 
             {/* Card 2 */}
-          <div className="rounded-[32px] h-full p-[1.5px] bg-white shadow p-1 bg-gradient-to-b from-orange-300 to-orange-50">
+            <div className="rounded-[32px] h-full p-[1.5px] bg-white shadow p-1 bg-gradient-to-b from-orange-300 to-orange-50">
               <div className="rounded-[30px] bg-white/95 backdrop-blur-sm h-full">
                 <div className="relative p-4 sm:p-6">
                   <div className="max-w-xl">
@@ -328,28 +327,28 @@ const Home: React.FC = () => {
 
       <div className="overflow-x-hidden ">
         <section className="pt-12  sm:pt-16">
-              <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                  <div className="max-w-2xl mx-auto text-center">
-                      <p className="mt-5 text-4xl font-bold leading-tight text-gray-900 sm:leading-tight sm:text-5xl lg:text-5xl lg:leading-tight font-pj">
-                         How FUMA Automates Your Viral 
-                          <span className="relative inline-flex sm:inline">
-                              <span className="bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] blur-lg filter opacity-30 w-full h-full absolute inset-0"></span>
-                              <span className="relative"> Journey </span>
-                          </span>
-                      </p>
-                  </div>
-              </div>
+          <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="max-w-2xl mx-auto text-center">
+              <p className="mt-5 text-4xl font-bold leading-tight text-gray-900 sm:leading-tight sm:text-5xl lg:text-5xl lg:leading-tight font-pj">
+                How FUMA Automates Your Viral
+                <span className="relative inline-flex sm:inline">
+                  <span className="bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] blur-lg filter opacity-30 w-full h-full absolute inset-0"></span>
+                  <span className="relative"> Journey </span>
+                </span>
+              </p>
+            </div>
+          </div>
 
-              <div className="pb-12">
-                  <div className="relative">
-                      {/* <div className="absolute inset-0 h-2/3 "></div> */}
-                      <div className="relative mx-auto">
-                          <div className="lg:max-w-3xl lg:mx-auto">
-                              {/* <img className="transform scale-110" src="/hwoto.png" alt="" /> */}
-                          </div>
-                      </div>
-                  </div>
+          <div className="pb-12">
+            <div className="relative">
+              {/* <div className="absolute inset-0 h-2/3 "></div> */}
+              <div className="relative mx-auto">
+                <div className="lg:max-w-3xl lg:mx-auto">
+                  {/* <img className="transform scale-110" src="/hwoto.png" alt="" /> */}
+                </div>
               </div>
+            </div>
+          </div>
         </section>
 
         <ViralSteps />
@@ -357,7 +356,7 @@ const Home: React.FC = () => {
 
       <section className="mt-20">
 
-     <FAQ />
+        <FAQ />
       </section>
 
     </div>

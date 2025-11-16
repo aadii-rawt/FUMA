@@ -144,6 +144,8 @@ function sendFollowUoMessage(auto) {
 
 // ---------- -------------- webhook ---------- ------------------------
 export const webhook = async (req: Request, res: Response) => {
+  console.log("webhook called");
+  
   if (req.method === "POST") {
     let body: any;
     try {

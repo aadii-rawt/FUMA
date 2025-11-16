@@ -123,6 +123,7 @@ export default function Payment({ selectedPlan, onBack }: Props) {
         alert("Payment failed. Please try again.");
       });
       rzp.open();
+      
     } catch (error) {
       console.log(error);
       
