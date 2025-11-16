@@ -30,6 +30,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const [previewURL, setPreviewURL] = useState<string | null>(null);
     const [showSubscriptionModal, setShowSubscriptionModal] = useState(false)
+    const [notification,setNotification] = useState(null)
 
     useEffect(() => {
         const fetchMe = async () => {
@@ -96,7 +97,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
             selectedPost, user, setUser, setSelectedPost, loading, setLoading, isPriceModalOpen, setIsPriceModalOpen,
             previewURL, setPreviewURL,
             showSubscriptionModal, setShowSubscriptionModal,
-            currentPreview, setCurrentPreview
+            currentPreview, setCurrentPreview,
+            notification,setNotification
         }}>
             {children}
         </UserContext.Provider>

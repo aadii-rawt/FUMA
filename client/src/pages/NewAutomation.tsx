@@ -9,7 +9,7 @@ import { IoMdCheckmarkCircle } from 'react-icons/io'
 import LoadingSpinner from '../components/LoadingSpinner'
 const NewAutomation: React.FC = () => {
 
-    const { selectedPost, setSelectedPost, user, setPreviewURL ,setCurrentPreview} = useUser()
+    const { selectedPost, setSelectedPost, user, setPreviewURL, setCurrentPreview, setNotification } = useUser()
     const [loading, setLoading] = useState(false)
     useEffect(() => {
         setSelectedPost({
@@ -32,13 +32,26 @@ const NewAutomation: React.FC = () => {
         })
     }, [])
 
+    const automationValidation = (auto) => {
+
+        if (!auto.postMediaId) return { type: "error", message: "Error", desc: "Please select your post or reel" }
+        if (auto?.keywords?.length == 0 && !auto.anyKeyword) return { type: "error", message: "Error", desc: "Please add any keyword" }
+        if (auto.dmText == "" && auto.msgTitle == "") return { type: "error", message: "Error", desc: "Please enter message" }
+        if (auto.dmLinks.length == 0) return { type: "error", message: "Error", desc: "Please add atleast one Link" }
+
+    }
+
     const handleAutomation = async () => {
-        // console.log("data :", selectedPost);
 
         if (!user) return
+
+        const valid = automationValidation(selectedPost) // automation validation
+
+
+        if (valid?.type == "error") return setNotification(valid)
         try {
             setLoading(true)
-            const {products,hasProducts, ...rest} = selectedPost
+            const { products, hasProducts, ...rest } = selectedPost
             const res = await Axios.post("/automation", { post: rest })
             console.log(selectedPost);
             setSelectedPost({
@@ -55,11 +68,17 @@ const NewAutomation: React.FC = () => {
                 openingMsg: false,
                 commentReply: false
             })
+            setNotification((prev) => ({
+                type: "success",
+                message: "Done successfully",
+                desc: "Automation created",
+            }))
             setPreviewURL("")
             setCurrentPreview("post")
+
         } catch (error) {
             console.log(error);
-        }finally {
+        } finally {
             setLoading(false)
         }
 
@@ -98,7 +117,7 @@ const NewAutomation: React.FC = () => {
                         disabled={loading}
                         className="inline-flex items-center gap-2 rounded-xl bg-teal-500 px-3 py-2 cursor-pointer text-white shadow hover:bg-teal-600"
                     >
-                       {!loading && <RiRadioLine className="text-xl" />}
+                        {!loading && <RiRadioLine className="text-xl" />}
                         {loading ? <LoadingSpinner /> : <span className="text-lg font-semibold">Go Live</span>}
                     </button>
                 </div>

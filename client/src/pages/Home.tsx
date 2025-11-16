@@ -189,7 +189,6 @@ const Home: React.FC = () => {
 
         </section>
       </div>
-
       {/* ----- gains section (below hero) --------------- */}
       <section className="w-full bg-white">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-5 sm:py-20">

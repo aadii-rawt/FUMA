@@ -7,8 +7,8 @@ export function Authenticate({children}) {
   if (loading) return <Loading />
 
   
-  if (!user) return <Navigate to="/auth/login" replace state={{ from: location }} />;
-  if(user && !user.access_token) return <Navigate to="/auth/connect/instagram" replace state={{ from: location }} />;
+  // if (!user) return <Navigate to="/auth/login" replace state={{ from: location }} />;
+  // if(user && !user.access_token) return <Navigate to="/auth/connect/instagram" replace state={{ from: location }} />;
 
   return children;
 }

@@ -75,7 +75,7 @@ const PostPreview = ({ user, selectedPost, currentPreview }: any) => {
       <div className="flex items-center justify-between px-3 py-2">
         <div className="flex items-center gap-2">
           <div className="grid h-6 w-6 place-items-center overflow-hidden rounded-full bg-yellow-500 text-[10px] font-semibold">
-            <img src={user?.avatar || ""} alt="" />
+            <img src={user?.avatar} alt="user avatar" />
           </div>
           <span className="text-sm font-medium">{user?.username}</span>
         </div>

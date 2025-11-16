@@ -6,10 +6,10 @@ import UpgradeModal from "../components/upgrade/UpgradeModal";
 import useUser from "../context/userContext";
 import Subscription from "../components/Subscription";
 import ScrollToTop from "../components/ScrollToTop";
-
+import Notification from "../components/Notification";
 export default function Layout() {
   const { isPriceModalOpen } = useUser()
-  const { showSubscriptionModal } = useUser();
+  const { showSubscriptionModal,notification } = useUser();
 
   return (
     <div className="flex h-screen max-h-screen overflow-hidden bg-[#EBEBEB] relative">
@@ -21,7 +21,7 @@ export default function Layout() {
 
       {isPriceModalOpen && <UpgradeModal />}
       {showSubscriptionModal && <Subscription />}
-      {/* <Subscription /> */}
+    {notification &&  <Notification /> }
     </div>
   );
 }

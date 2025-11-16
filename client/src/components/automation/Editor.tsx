@@ -86,7 +86,7 @@ const Editor: React.FC = () => {
 
       <DMComposer />
       
-      <AddProducts />
+      {/* <AddProductspre /> */}
       <OpeningMessage />
 
       <div className="mb-20  border-t-2 border-gray-200">

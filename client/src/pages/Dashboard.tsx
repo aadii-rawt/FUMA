@@ -99,7 +99,7 @@ export default function Dashboard() {
       <h2 className="text-2xl font-bold text-gray-900">Get Started with FUMA</h2>
 
       <div className="rounded-3xl border border-gray-200 bg-white p-4 sm:p-6">
-        {user.plan == "FREE" ? <div className="mb-20">
+        {user?.plan == "FREE" ? <div className="mb-20">
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
