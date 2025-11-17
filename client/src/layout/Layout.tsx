@@ -7,6 +7,8 @@ import useUser from "../context/userContext";
 import Subscription from "../components/Subscription";
 import ScrollToTop from "../components/ScrollToTop";
 import Notification from "../components/Notification";
+import MobileHeader from "../components/MobileHeader";
+import Tabs from "../components/Tabs";
 export default function Layout() {
   const { isPriceModalOpen } = useUser()
   const { showSubscriptionModal,notification } = useUser();
@@ -15,8 +17,12 @@ export default function Layout() {
     <div className="flex h-screen max-h-screen overflow-hidden bg-[#EBEBEB] relative">
       <ScrollToTop />
       <Sidebar />
-      <div className="flex-1 flex flex-col bg-gray-50 rounded-xl m-2 ">
+      <div className="flex-1 flex flex-col bg-gray-50 rounded-xl m-0 md:m-2 ">
+        {/* <MobileHeader /> */}
+        
         <Outlet />
+
+        <Tabs />
       </div>
 
       {isPriceModalOpen && <UpgradeModal />}

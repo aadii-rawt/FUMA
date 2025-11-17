@@ -136,8 +136,8 @@ const Contacts: React.FC = () => {
             <table className="w-full text-sm text-gray-700">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr className="text-left text-gray-500 font-medium">
-                  <th className="px-6 py-3">Contact</th>
-                  <th className="px-6 py-3 text-center">Last Interaction</th>
+                  <th className="px-2 md:px-6 py-3">Contact</th>
+                  <th className="px-2 md:px-6 py-3 text-center">Last Interaction</th>
                 </tr>
               </thead>
 
@@ -151,17 +151,16 @@ const Contacts: React.FC = () => {
                       // navigate(`/contacts/${c.id}`, { state: { contact: c } });
                     }}
                   >
-                    <td className="px-6 py-3 text-gray-900 flex items-center gap-3">
+                    <td className=" px-2 md:px-6 py-3 text-gray-900 flex items-center gap-3">
                       <span className="w-7 h-7 flex items-center justify-center text-lg font-semibold bg-violet-300/20 text-violet-600 rounded text-center">
                         <h1>{c.username?.[0]?.toUpperCase() || "?"}</h1>
                       </span>
                       <div>
                         <div className="font-medium">{c.username}</div>
-                        <div className="text-xs text-gray-400">{c.email}</div>
                       </div>
                     </td>
 
-                    <td className="px-6 py-3 text-gray-500 text-center">{formatDate(c.createdAt)}</td>
+                    <td className="px-2 md:px-6 py-3 text-gray-500 text-center">{formatDate(c.createdAt)}</td>
                   </tr>
                 ))}
               </tbody>

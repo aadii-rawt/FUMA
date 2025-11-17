@@ -80,7 +80,7 @@ export default function Sidebar() {
     navigate("/contacts")
   }
   return (
-    <aside className="sticky top-0 left-0 w-[280px] h-screen px-3">
+    <aside className="hidden md:block sticky top-0 left-0 w-[280px] h-screen px-3">
       <div className="pointer-events-none absolute inset-y-0 right-0 w-10 " />
 
       {/* Top header */}

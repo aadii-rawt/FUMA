@@ -56,7 +56,7 @@ const Notification = () => {
             </div>
             <div>
               <p className="text-black">{notification?.message}</p>
-              <p className="text-gray-500">{notification?.desc}</p>
+              <p className="text-gray-700">{notification?.desc}</p>
             </div>
           </div>
           <button onClick={() => setNotification(null)}

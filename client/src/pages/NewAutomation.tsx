@@ -43,7 +43,7 @@ const NewAutomation: React.FC = () => {
 
     const handleAutomation = async () => {
 
-        if (!user) return
+        // if (!user) return
 
         const valid = automationValidation(selectedPost) // automation validation
 
