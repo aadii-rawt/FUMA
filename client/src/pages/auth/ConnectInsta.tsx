@@ -7,7 +7,7 @@ import { Navigate } from "react-router-dom";
 
 const ConnectInsta: React.FC = () => {
   const {user} = useUser();
-    // if (!user) return <Navigate to='/auth/login' />
+    if (!user) return <Navigate to='/auth/login' />
   
 
   const handleConnect = async () => {
@@ -27,8 +27,6 @@ const ConnectInsta: React.FC = () => {
           Make sure you have a Facebook Page connected to your Instagram account.
         </p>
         
-
-
         <div className="mt-12 flex items-center gap-2">
           <h1 className="font-semibold text-xl">FUMA</h1>
           <BiTransferAlt className="text-neutral-600" size={20} />

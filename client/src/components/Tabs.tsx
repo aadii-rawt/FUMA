@@ -22,7 +22,7 @@ export default function Tabs() {
           const Icon = t.icon;
           const isActive = active === t.id;
           return (
-            <NavLink 
+            <NavLink  key={t.id}
               to={t.url}
               className="relative flex flex-col items-center gap-1 focus:outline-none"
             >

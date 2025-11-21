@@ -37,7 +37,7 @@ const Editor: React.FC = () => {
   }, [])
 
   const handleSelectPost = (post) => {
-    setSelectedPost((prev) => ({ ...prev, postMediaId: post.id, postThumbnail: post.thumbnail_url, caption: post.caption }))
+    setSelectedPost((prev) => ({ ...prev, postMediaId: post.id, postThumbnail: post.media_product_type == "REELS" ? post.thumbnail_url : post.media_url, caption: post.caption }))
     console.log(selectedPost);
   }
 
@@ -63,7 +63,7 @@ const Editor: React.FC = () => {
           {loading ? <ReelShimmer /> : posts?.map((post: any, i) => (
             <div key={i} onClick={() => handleSelectPost(post)} className={`${post.id == selectedPost?.postMediaId && "border-2 border-indigo-500"} relative cursor-pointer h-50 w-40 overflow-hidden rounded-xl  p-0`}>
               <img
-                src={post?.thumbnail_url}
+                src={post.media_product_type == "REELS" ? post.thumbnail_url : post.media_url}
                 alt="Selected post"
                 className="h-full w-full object-cover"
               />

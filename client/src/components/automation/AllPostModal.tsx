@@ -45,7 +45,7 @@ const AllPostModal: React.FC<Props> = ({ open, onClose, setSelectedPost }) => {
   }, [])
 
   const confirmSelection = () => {
-    setSelectedPost((prev) => ({...prev, postMediaId : select?.id, postThumbnail : select.thumbnail_url }))
+    setSelectedPost((prev) => ({...prev, postMediaId : select?.id, postThumbnail : select.media_product_type == "REELS" ? select.thumbnail_url : select.media_url }))
     onClose()
   }
 
@@ -82,7 +82,7 @@ const AllPostModal: React.FC<Props> = ({ open, onClose, setSelectedPost }) => {
           {posts?.map((post: any, i) => (
             <div key={i} onClick={() => setSelect(post)} className={`${post.id == select?.id && "border-2 border-indigo-500"} relative cursor-pointer h-54 w-40 overflow-hidden rounded-xl  p-0`}>
               <img
-                src={post?.thumbnail_url} className="w-full h-full" />
+                src={post.media_product_type == "REELS" ? post.thumbnail_url : post.media_url} className="w-full h-full" />
             </div>
           ))}
         </div>
