@@ -6,18 +6,12 @@ import useUser from "../../context/userContext";
 import { Navigate } from "react-router-dom";
 
 const ConnectInsta: React.FC = () => {
-  const [error, setErrror] = useState(false)
   const {user} = useUser();
-    if (!user) return <Navigate to='/auth/login' />
+    // if (!user) return <Navigate to='/auth/login' />
   
 
   const handleConnect = async () => {
-    try {
       window.location.href = `${import.meta.env.VITE_API_BASE_URL}/instagram/connect`
-
-    } catch (error) {
-      setErrror(true)
-    }
   }
 
   return (
@@ -29,10 +23,10 @@ const ConnectInsta: React.FC = () => {
         <p className="mt-3 text-sm text-neutral-500">
           Use your Instagram account to connect to  FUMA.
         </p>
-        {error && <p className="text-xs my-1 p-2 py-1 flex  rounded-lg bg-orange-100 text-orange-600">
+         <p className="text-xs my-3 p-2 py-1 flex  rounded-lg bg-orange-100 text-orange-600">
           Make sure you have a Facebook Page connected to your Instagram account.
         </p>
-        }
+        
 
 
         <div className="mt-12 flex items-center gap-2">
@@ -63,9 +57,6 @@ const ConnectInsta: React.FC = () => {
               <div className="text-[12px] text-neutral-500 -mt-1">Tech Provider</div>
             </div>
           </div>
-          <p className="mt-2 text-neutral-500 text-sm">
-            FUMA has been certified by Meta as an official Tech Provider.
-          </p>
         </div>
       </div>
     </div>
