@@ -63,7 +63,7 @@ const App = () => {
     },
     {
       path : "/setting/billing/history",
-      element : <BillingHistory />
+      element :<Authenticate><BillingHistory /></Authenticate> 
     },
 
     {
@@ -73,7 +73,7 @@ const App = () => {
         { path : "/auth/login", element : <Login />},
         { path : "/auth/signup", element : <Signup />},
         { path : "/auth/verify", element : <VerifyOTP />},
-        { path : "/auth/connect/instagram", element : <ConnectInsta />}
+        { path : "/auth/connect/instagram", element :<ConnectInsta />}
       ],
         errorElement : <NotFound />
     }

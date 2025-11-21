@@ -20,7 +20,9 @@ type AutomationType = {
 
 const Automation: React.FC = () => {
   const [q, setQ] = useState("");
-  const [sort, setSort] = useState<"Last Published" | "A–Z" | "Newest">("Last Published");
+  const [sort, setSort] = useState<"Last Published" | "A–Z" | "Newest">(
+    "Last Published"
+  );
   const [automations, setAutomations] = useState<AutomationType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { user } = useUser();
@@ -43,11 +45,9 @@ const Automation: React.FC = () => {
           params: {
             page,
             limit,
-            q: q || undefined, // include q only if not empty
-            // optionally: sort param
+            q: q || undefined,
           },
         });
-        // expected shape: { data, total, page, limit }
         setAutomations(res.data.data || []);
         setTotal(res.data.total || 0);
       } catch (error) {
@@ -85,8 +85,11 @@ const Automation: React.FC = () => {
             e.stopPropagation();
             setPage(p);
           }}
-          className={`px-3 py-0.5 cursor-pointer text-sm rounded-md border border-gray-400 ${p === page ? "bg-violet-600 text-white border-violet-600" : "bg-white"
-            }`}
+          className={`px-3 py-0.5 cursor-pointer text-sm rounded-md border border-gray-400 ${
+            p === page
+              ? "bg-violet-600 text-white border-violet-600"
+              : "bg-white"
+          }`}
         >
           {p}
         </button>
@@ -96,23 +99,25 @@ const Automation: React.FC = () => {
   };
 
   return (
-    <div className="w-full rounded-xl h-full bg-[#f1f1f1] overflow-y-scroll pb-5  border-[1px] border-gray-500/20">
+    <div className="w-full rounded-xl h-full bg-[#f1f1f1] overflow-y-auto pb-5 border-[1px] border-gray-500/20">
       {/* Controls */}
-      <div className="flex sticky top-0 left-0 bg-[#f1f1f1]  flex-wrap items-center justify-between gap-3 px-4 py-5 sm:px-6">
-        {/* Search */}
-        <div className="relative">
-          <LuSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-            value={q}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder="Search automations"
-            className="w-[260px] rounded-xl border border-gray-200 bg-white py-2 pl-9 pr-3 text-sm placeholder:text-gray-400 focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-100"
-          />
+      <div className="flex sticky top-0 left-0 bg-[#f1f1f1]  flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6 z-10">
+        {/* Search (responsive) */}
+        <div className="flex-1 min-w-0">
+          <div className="relative max-w-full">
+            <LuSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              value={q}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              placeholder="Search automations"
+              className="w-full sm:w-[320px] rounded-xl border border-gray-200 bg-white py-2 pl-9 pr-3 text-sm placeholder:text-gray-400 focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-100"
+            />
+          </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-shrink-0">
           {/* Sort pill */}
-          <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-slate-700">
+          <div className="hidden sm:flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-slate-700">
             <LuListFilter className="text-[18px]" />
             <span className="opacity-70">Sorted by</span>
             <select
@@ -126,20 +131,36 @@ const Automation: React.FC = () => {
             </select>
           </div>
 
+          {/* On very small screens, show a compact sort menu */}
+          <div className="sm:hidden">
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as any)}
+              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none"
+            >
+              <option>Last Published</option>
+              <option>Newest</option>
+              <option>A–Z</option>
+            </select>
+          </div>
+
           {/* New Automation */}
-          <Link to="/automation/new" className="inline-flex items-center gap-2 rounded-xl bg-[#6E32FF] px-4 py-2 text-sm font-semibold text-white shadow hover:opacity-95">
+          <Link
+            to="/automation/new"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#6E32FF] px-4 py-2 text-sm font-semibold text-white shadow hover:opacity-95"
+          >
             <LuPlus className="text-[18px]" />
-            New Automation
+            <span className="hidden sm:inline">New Automation</span>
           </Link>
         </div>
       </div>
 
-      {/* Empty state card */}
       {loading ? (
         <AutomationShimmer />
       ) : automations.length > 0 ? (
         <>
-          <div className="mx-4 overflow-hidden rounded-xl border border-gray-200 bg-white">
+          {/* Desktop table (md+) - keep unchanged visually */}
+          <div className="mx-4 overflow-hidden rounded-xl border border-gray-200 bg-white hidden md:block">
             <table className="w-full text-sm text-gray-700">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr className="text-left text-gray-500 font-medium">
@@ -153,17 +174,23 @@ const Automation: React.FC = () => {
               <tbody>
                 {automations.map((auto, idx) => (
                   <tr
-                    onClick={() => navigate(`/automation/${auto.id}`, { state: { post: auto } })}
+                    onClick={() =>
+                      navigate(`/automation/${auto.id}`, { state: { post: auto } })
+                    }
                     key={auto.id ?? idx}
                     className="border-b cursor-pointer border-gray-100 hover:bg-gray-50 transition"
                   >
                     <td className="px-6 py-2 text-gray-900 flex items-center gap-3">
-                      <span className=" overflow-hidden bg-green-300/20 rounded text-center">
-                        <img src={auto?.postThumbnail} alt="" className="w-10 h-14" />
+                      <span className="overflow-hidden bg-green-300/20 rounded text-center">
+                        <img
+                          src={auto?.postThumbnail}
+                          alt={auto.name}
+                          className="w-10 h-14 object-cover"
+                        />
                       </span>
                       <div>
                         <h1 className="font-medium"> {auto.name}</h1>
-                        <div className="flex items-center gap-2 text-xs mt-1 text-gray-400">
+                        <div className="flex items-center gap-2 text-xs mt-1 text-gray-400 flex-wrap">
                           {auto?.keywords?.slice(0, 3).map((tag: string, index: number) => (
                             <span
                               key={index}
@@ -186,38 +213,153 @@ const Automation: React.FC = () => {
 
                     <td className="px-6 py-2 text-center">
                       {auto.status === "LIVE" ? (
-                        <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">Live</span>
+                        <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+                          Live
+                        </span>
                       ) : (
-                        <span className="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">Stop</span>
+                        <span className="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
+                          Stop
+                        </span>
                       )}
                     </td>
 
-                    <td className="px-6 py-2 text-gray-500 text-center">{formatDate(auto.createdAt)}</td>
+                    <td className="px-6 py-2 text-gray-500 text-center">
+                      {formatDate(auto.createdAt)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
 
+          {/* Mobile list (sm & md down) */}
+          <div className="mx-3 mt-4 space-y-3 md:hidden">
+            {automations.map((auto, idx) => (
+              <button
+                key={auto.id ?? idx}
+                onClick={() => navigate(`/automation/${auto.id}`, { state: { post: auto } })}
+                className="w-full flex items-center justify-between gap-3 rounded-xl bg-white px-4 py-3 border border-gray-200 shadow-sm hover:shadow-md transition"
+              >
+                <div className="flex items-start gap-3 min-w-0">
+                  <div className="w-16 h-20 flex-shrink-0 overflow-hidden rounded-md bg-gray-50">
+                    <img
+                      src={auto.postThumbnail}
+                      alt={auto.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  <div className="min-w-0">
+                    <div className="font-medium text-sm truncate">{auto.name}</div>
+
+                    <div className="flex items-center gap-2 mt-2 flex-wrap">
+                      {auto?.keywords?.slice(0, 3).map((tag: string, i: number) => (
+                        <span
+                          key={i}
+                          className="bg-violet-100 text-violet-500 px-2 py-0.5 rounded-full text-[11px] font-medium"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                      {auto?.keywords?.length! > 3 && (
+                        <span className="bg-violet-100 text-violet-500 px-2 py-0.5 rounded-full text-[11px] font-medium">
+                          +{auto.keywords!.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-end gap-2">
+                  <div className="text-xs text-gray-400">{auto.clickCount ?? 0} runs</div>
+
+                  {auto.status === "LIVE" ? (
+                    <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+                      Live
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
+                      Stop
+                    </span>
+                  )}
+
+                  <div className="text-xs text-gray-400">{formatDate(auto.createdAt)}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Responsive fallback: small horizontal-scroll table for sm..md */}
+          <div className="mx-4 mt-4 hidden sm:block md:hidden overflow-x-auto">
+            <div className="min-w-[640px] rounded-xl border border-gray-200 bg-white">
+              <table className="w-full text-sm text-gray-700">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr className="text-left text-gray-500 font-medium">
+                    <th className="px-4 py-3">Automation</th>
+                    <th className="px-4 py-3">Runs</th>
+                    <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3 text-center">Last Published</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {automations.map((auto, idx) => (
+                    <tr
+                      onClick={() => navigate(`/automation/${auto.id}`, { state: { post: auto } })}
+                      key={auto.id ?? idx}
+                      className="border-b cursor-pointer border-gray-100 hover:bg-gray-50 transition"
+                    >
+                      <td className="px-4 py-3 text-gray-900 flex items-center gap-3">
+                        <div className="w-12 h-16 overflow-hidden rounded-md bg-gray-50">
+                          <img src={auto.postThumbnail} alt={auto.name} className="w-full h-full object-cover" />
+                        </div>
+                        <div>
+                          <div className="font-medium">{auto.name}</div>
+                        </div>
+                      </td>
+
+                      <td className="px-4 py-3 text-gray-500">{auto.clickCount ?? 0}</td>
+
+                      <td className="px-4 py-3">
+                        {auto.status === "LIVE" ? (
+                          <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+                            Live
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
+                            Stop
+                          </span>
+                        )}
+                      </td>
+
+                      <td className="px-4 py-3 text-gray-500 text-center">{formatDate(auto.createdAt)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           {/* Pagination */}
-          <div className="flex items-center justify-between px-4 py-4">
+          <div className="flex flex-col md:flex-row items-center justify-between px-4 py-4 gap-3">
             <div className="text-sm text-gray-400">
-              Showing {(page - 1) * limit + 1} -{" "}
-              {Math.min(page * limit, total)} of {total}
+              Showing {(page - 1) * limit + 1} - {Math.min(page * limit, total)} of {total}
             </div>
 
             <div className="flex items-center gap-2">
-              {page != 1 && <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setPage((p) => Math.max(1, p - 1));
-                }}
-                disabled={page === 1}
-                className="px-3 py-1 cursor-pointer rounded-md border border-gray-400 bg-white disabled:opacity-50"
-              >
-                <GrFormPrevious />
-              </button>
-              }
+              {page !== 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPage((p) => Math.max(1, p - 1));
+                  }}
+                  disabled={page === 1}
+                  className="px-3 py-1 cursor-pointer rounded-md border border-gray-400 bg-white disabled:opacity-50"
+                >
+                  <GrFormPrevious />
+                </button>
+              )}
+
               <div className="flex gap-1 text-sm">{renderPageButtons()}</div>
 
               <button

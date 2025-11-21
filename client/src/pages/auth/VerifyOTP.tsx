@@ -15,6 +15,16 @@ const VerifyOTP: React.FC = () => {
   const [loading,setLoading] = useState<boolean>(false)
   const navigate = useNavigate()
   const {setUser} = useUser()
+  const [resendTimer,setResendTimer] = useState<number>(30)
+
+  useEffect(() => {
+     const timer = setTimeout(() => {
+      if (resendTimer > 0) {
+        setResendTimer(resendTimer -1)
+      }
+    },1000)
+    return () => clearTimeout(timer)
+  }, [resendTimer])
 
   useEffect(() => {
     inputsRef.current[0]?.focus();
@@ -111,6 +121,15 @@ const VerifyOTP: React.FC = () => {
       }
   };
 
+  const handleResend = async () => {
+    try {
+      setResendTimer(30)
+      await Axios.post("/auth/otp/resend", { email });
+    } catch (error) {
+      console.log("Resend OTP error:", error);
+    } 
+  }
+
   return (
     <div className="w-1/2 p-6">
       <h1 className="text-3xl font-semibold">Check your inbox</h1>
@@ -148,10 +167,10 @@ const VerifyOTP: React.FC = () => {
         </div>
 
         <p className="text-xs text-gray-400 mt-3">
-          <button type="button" className="text-violet-700 underline cursor-pointer">
+          <button onClick={handleResend} disabled={resendTimer > 0} className={`text-violet-700 underline ${resendTimer > 0 ? "cursor-not-allowed text-gray-400" : "cursor-pointer"}`}>
             Resend Email
           </button>{" "}
-          in 30s
+          {resendTimer > 0 && `in ${resendTimer}s`}
         </p>
 
         <div className="mt-4 w-full">

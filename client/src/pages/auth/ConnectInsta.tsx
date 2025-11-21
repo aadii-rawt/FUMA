@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaInstagram } from "react-icons/fa";
 import { TbBrandMeta } from "react-icons/tb";
 import { BiTransferAlt } from "react-icons/bi";
+import useUser from "../../context/userContext";
+import { Navigate } from "react-router-dom";
 
 const ConnectInsta: React.FC = () => {
+  const [error, setErrror] = useState(false)
+  const {user} = useUser();
+    if (!user) return <Navigate to='/auth/login' />
+  
 
   const handleConnect = async () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/instagram/connect`
+    try {
+      window.location.href = `${import.meta.env.VITE_API_BASE_URL}/instagram/connect`
+
+    } catch (error) {
+      setErrror(true)
+    }
   }
 
   return (
@@ -18,9 +29,10 @@ const ConnectInsta: React.FC = () => {
         <p className="mt-3 text-sm text-neutral-500">
           Use your Instagram account to connect to  FUMA.
         </p>
-        <p className="text-xs my-1 p-2 py-1 flex  rounded-lg bg-orange-100 text-orange-600">
+        {error && <p className="text-xs my-1 p-2 py-1 flex  rounded-lg bg-orange-100 text-orange-600">
           Make sure you have a Facebook Page connected to your Instagram account.
         </p>
+        }
 
 
         <div className="mt-12 flex items-center gap-2">
