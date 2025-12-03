@@ -45,10 +45,9 @@ const AllPostModal: React.FC<Props> = ({ open, onClose, setSelectedPost }) => {
   }, [])
 
   const confirmSelection = () => {
-    setSelectedPost((prev) => ({...prev, postMediaId : select?.id, postThumbnail : select.media_product_type == "REELS" ? select.thumbnail_url : select.media_url }))
+    setSelectedPost((prev)    => ({...prev, postMediaId : select?.id, postThumbnail : select?.media_product_type == "REELS" ? select?.thumbnail_url : select?.media_url }))
     onClose()
   }
-
 
   if (!open) return null;
 
@@ -58,7 +57,6 @@ const AllPostModal: React.FC<Props> = ({ open, onClose, setSelectedPost }) => {
       aria-modal="true"
       role="dialog"
       onMouseDown={(e) => {
-        // close if clicking dark backdrop
         if (e.target === e.currentTarget) onClose();
       }}
     >
@@ -67,8 +65,6 @@ const AllPostModal: React.FC<Props> = ({ open, onClose, setSelectedPost }) => {
 
         <div className="flex items-start justify-between border-b border-gray-200 px-3 py-4">
           <div>
-            {/* <h3 className="text-xl font-semibold text-gray-900">{title ?? "Select Post or Reel"}</h3>
-            <p className="text-sm text-gray-500">{subtitle ?? "Choose from your posts and reels"}</p> */}
           </div>
           <button
             aria-label="Close"

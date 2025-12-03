@@ -32,7 +32,7 @@ const AuthLayout = () => {
 
             <footer className="flex gap-5">
                 <p className="text-sm text-gray-400">©2025 <a target="_blank" className="hover:text-violet-700 underline" href="https://dotdazzle.in">Dotdazzle</a> Product</p>
-                <button onClick={handleLogout} className="text-sm text-gray-400 cursor-pointer underline">Signout</button>
+               {user && <button onClick={handleLogout} className="text-sm text-gray-400 cursor-pointer underline">Signout</button>}
             </footer>
 
         </div>

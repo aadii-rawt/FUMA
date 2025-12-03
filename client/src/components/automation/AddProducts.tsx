@@ -38,7 +38,6 @@ const AddProducts = () => {
   const removeImage = () => {
     if (imageUrl?.startsWith("blob:")) URL.revokeObjectURL(imageUrl);
     setImageUrl(null);
-    // setImageDataUrl(null); // keep context in sync
   };
 
   const startAdd = () => {
@@ -165,7 +164,6 @@ const AddProducts = () => {
                 <FiX className="text-xl" />
               </button>
             </div>
-
             <div className="px-6 py-5 space-y-3">
               <input
                 value={draftTitle}
