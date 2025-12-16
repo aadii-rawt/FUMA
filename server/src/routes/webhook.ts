@@ -135,17 +135,10 @@ function extractPostback(body: any) {
   return { postbackPayload, senderId };
 }
 
-
-function sendFollowUoMessage(auto) {
-
-
-
-}
-
 // ---------- -------------- webhook ---------- ------------------------
 export const webhook = async (req: Request, res: Response) => {
   console.log("webhook called");
-  
+
   if (req.method === "POST") {
     let body: any;
     try {
@@ -233,9 +226,9 @@ export const webhook = async (req: Request, res: Response) => {
           }
 
           // ------- checking if user follow or not
-          
+
           if (auto.followForDM) {
-            if(auto.user.plan == "FREE") return // feature not available for free user
+            if (auto.user.plan == "FREE") return // feature not available for free user
 
             const visitTitle = "Visit Profile";
             const confirmTitle = "I'm following ✅";
@@ -296,9 +289,7 @@ export const webhook = async (req: Request, res: Response) => {
           await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
           const user = auto?.user
           await sendCount(auto.id)
-          if (user.plan == "ULTIMATE") {
-            await saveContact(username, user)
-          }
+
 
           if (auto.followUp) {
             if (user.plan != "ULTIMATE") return // feature not available for free and pro user
@@ -321,7 +312,10 @@ export const webhook = async (req: Request, res: Response) => {
               },
             };
             await sendPrivateReplyToComment(commentId, openingPayload, pageAccessToken);
+          }
 
+          if (user.plan == "ULTIMATE") {
+            await saveContact(username, user)
           }
 
           break;

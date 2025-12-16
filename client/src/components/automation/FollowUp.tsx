@@ -5,8 +5,8 @@ import { FaCrown } from "react-icons/fa";
 
 
 type LinkItem = { id: string; text: string; url: string };
-const Defaultmsg = `Still here? You must like the madness 😏
-More crazy reels on the way — don’t follow if you hate good vibes.`
+const Defaultmsg = `Like this reel? 👀
+Follow for more such reels coming your way 🔥`
 
 const FollowUp: React.FC = () => {
   const { selectedPost, user, setSelectedPost, setShowSubscriptionModal, setCurrentPreview } = useUser();

@@ -3,6 +3,7 @@ import { error } from "console"
 import { cloudinary } from "../lib/cloudinary"
 import { prisma } from "../lib/prisma"
 import { Request, Response } from "express"
+import uploadThumbnail from "../utils/uploadThumbnail";
 
 
 export const getAutomation = async (req: Request, res: Response) => {
@@ -70,15 +71,17 @@ export const createAutomation = async (req: Request, res: Response) => {
         resource_type: "image",
       });
       dmImageUrl = result.secure_url;
-      console.log("Cloudinary URL:", dmImageUrl);
     }
 
-    // ⚠️ Avoid re-saving the original base64. Build the data explicitly:
+    // upload thumbnail on cloudinary
+    const postThumbnail = await uploadThumbnail(post.postThumbnail)
+
 
     await prisma.automation.create({
       data: {
         userId,
         ...post,
+        postThumbnail,
         dmImageUrl: dmImageUrl || null,
       },
     });

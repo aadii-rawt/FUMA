@@ -6,7 +6,7 @@ export const loginEmailTemplate : (otp : string) => void = (otp) => {
         <title>Login Verification FUMA</title>
       </head>
       <body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: Arial, sans-serif;">
-        <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+        <div style="display: flex; align-items: center; justify-content: center; padding: 20px;">
           <div style="background-color: #ffffff; min-height : 300px; max-width: 600px; width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); padding: 40px;">
            
             <p style='font-size: 16px; text-align :center;'>Log-in Code</p>
@@ -38,7 +38,7 @@ export const signupEmailTemplate : (otp : string) => void = (otp) => {
         <title>Login Verification FUMA</title>
       </head>
       <body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: Arial, sans-serif;">
-        <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+        <div style="display: flex; align-items: center; justify-content: center; padding: 20px;">
           <div style="background-color: #ffffff;min-height : 300px; max-width: 600px; width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); padding: 40px;">
            
             <p style='font-size: 16px; text-align :center;'>Sign-up Code</p>
