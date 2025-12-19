@@ -24,7 +24,7 @@ export default function Stats({
   onDateClick,
 }: Props) {
   return (
-    <div className="mb-20">
+    <div className="mb-5">
       <div className="relative bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200">
 
         <div className="flex items-center justify-between px-6 py-5">

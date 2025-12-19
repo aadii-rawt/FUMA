@@ -2,7 +2,10 @@
 import axios from "axios";
 import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
-import { messageVaidator, saveContact, sendCount } from "../utils/utils";
+import { sendCount } from "../utils/utils";
+import { saveContact } from "../utils/webhook";
+import { DMList } from "../utils/webhook";
+import { messageVaidator } from "../middleware/messageValidator";
 
 // ---------- Helpers ----------
 function normText(s: string | undefined | null) {
@@ -216,7 +219,7 @@ export const webhook = async (req: Request, res: Response) => {
             await replyToComment(commentId, replyText, pageAccessToken);
           }
 
-          // message validator for free plan
+          // message validator for free pla
           if (auto.user.plan == "FREE") {
             const messageAvailable = await messageVaidator(auto?.user)
             if (!messageAvailable) {
@@ -289,7 +292,7 @@ export const webhook = async (req: Request, res: Response) => {
           await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
           const user = auto?.user
           await sendCount(auto.id)
-
+          await DMList(user,username,auto.id)
 
           if (auto.followUp) {
             if (user.plan != "ULTIMATE") return // feature not available for free and pro user
@@ -326,7 +329,6 @@ export const webhook = async (req: Request, res: Response) => {
     } catch (e: any) {
       console.error("Failed to handle webhook:", e?.response?.data || e);
     }
-
     return res.status(200).send("ok");
   }
 

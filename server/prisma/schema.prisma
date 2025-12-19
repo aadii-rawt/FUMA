@@ -21,6 +21,7 @@ model users {
   automations   Automation[]
   subscriptioin Subscription[]
   contacts      Contacts[]
+  DMList    dmList[]
 }
 
 model Otp {
@@ -40,7 +41,6 @@ enum AutomationStatus {
   PAUSED
   ARCHIVED
 }
-
 
 model Automation {
   id            String           @id @default(cuid())
@@ -74,9 +74,22 @@ model Automation {
   followUp     Boolean?      @default(false)
   followUpData Json?
 
+  DMList  dmList[]
   @@index([userId, status])
   @@index([status, publishedAt])
   @@index([postMediaId])
+
+}
+
+model dmList {
+  id    String @id @default(cuid())
+  userId    String
+  user  users @relation(fields: [userId],references: [id])
+  username    String
+  automationId  String
+  automation  Automation @relation(fields: [automationId],references: [id]) 
+  msgSendAt   DateTime @default(now())
+  createdAt   DateTime @default(now())
 }
 
 model Contacts {

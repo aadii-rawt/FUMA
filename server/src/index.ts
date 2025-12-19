@@ -11,7 +11,8 @@ import automationRoute from "./routes/automation.js";
 import subscriptioinRouter from "./routes/subscription.js";
 import { webhook } from "./routes/webhook.js";
 import contactsRoute from "./routes/contacts.js";
-import userRouter from "./routes/user.js";
+import { connectRedis } from "./lib/redis.js";
+import statsRouter from "./routes/stats.js";
 dotenv.config();
 
 const app = express();
@@ -166,15 +167,28 @@ app.use("/api/v1/ig", igroute);
 app.use("/api/v1/automation", automationRoute);
 app.use("/api/v1/subscriptions", subscriptioinRouter);
 app.use("/api/v1/contacts", contactsRoute);
-app.use("/api/v1/user", userRouter);
+app.use("/api/v1/stats", statsRouter);
 
 
 app.all("/webhook", webhook);
 
+async function startServer() {
+  try {
+    // a wait connectRedis();
+
+    const port = Number(process.env.PORT) || 8080;
+
+    app.listen(port, () => {
+      console.log("Server running on", port);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+}
 
 if (process.env.NODE_ENV !== "production") {
-  const port = Number(process.env.PORT) || 8080;
-  app.listen(port, () => console.log("server running on", port));
+  startServer();
 }
 
 export default app;
