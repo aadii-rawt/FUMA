@@ -11,7 +11,6 @@ import automationRoute from "./routes/automation.js";
 import subscriptioinRouter from "./routes/subscription.js";
 import { webhook } from "./routes/webhook.js";
 import contactsRoute from "./routes/contacts.js";
-import { connectRedis } from "./lib/redis.js";
 import statsRouter from "./routes/stats.js";
 dotenv.config();
 

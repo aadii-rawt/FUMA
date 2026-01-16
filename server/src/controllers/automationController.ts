@@ -4,6 +4,8 @@ import { cloudinary } from "../lib/cloudinary"
 import { prisma } from "../lib/prisma"
 import { Request, Response } from "express"
 import uploadThumbnail from "../utils/uploadThumbnail";
+import redis from "../lib/redis";
+import { channel } from "diagnostics_channel";
 
 
 export const getAutomation = async (req: Request, res: Response) => {
@@ -85,7 +87,7 @@ export const createAutomation = async (req: Request, res: Response) => {
         dmImageUrl: dmImageUrl || null,
       },
     });
-    
+
 
     return res.json({ message: "automation created", dmImageUrl });
   } catch (error: any) {
@@ -164,31 +166,35 @@ export const stopAutomation = async (req: Request, res: Response) => {
 
 }
 
-export const automationCount = async (req : Request,res : Response) => {
+export const automationCount = async (req: Request, res: Response) => {
   // @ts-ignore
   const userId = req.id
-  
-  if(!userId) return res.status(401).json({error : "Unauthorized"}) 
+
+  if (!userId) return res.status(401).json({ error: "Unauthorized" })
 
   const startOfMonth = new Date();
-    startOfMonth.setDate(1);
-    startOfMonth.setHours(0, 0, 0, 0);
-    const automationsThisMonth = await prisma.automation.count({
-        where: {
-            userId,
-            createdAt: { gte: startOfMonth },
-        },
-    });
-    res.json({data : automationsThisMonth})
-    
+  startOfMonth.setDate(1);
+  startOfMonth.setHours(0, 0, 0, 0);
+
+  const cache = await redis.get(`automationCount:${userId}`)
+  const automationsThisMonth = cache ? JSON.parse(cache) : await prisma.automation.count({
+    where: {
+      userId,
+      createdAt: { gte: startOfMonth },
+    },
+  });
+  
+  await redis.set(`automationCount${userId}`, JSON.stringify(automationsThisMonth))
+  res.json({ data: automationsThisMonth })
+
 }
 
-export const linkRedirect = async (req : Request, res : Response) => {
+export const linkRedirect = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const redirectUrl = req.query.to as string;
     console.log("to : ", req.query);
-    
+
 
     if (!redirectUrl || !id)
       return res.status(400).send("Invalid link");

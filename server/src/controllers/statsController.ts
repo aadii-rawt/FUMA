@@ -1,38 +1,47 @@
 import { Request, Response } from "express"
 import { prisma } from "../lib/prisma";
+import redis from "../lib/redis";
 
 export const userStats = async (req: Request, res: Response) => {
-    // @ts-ignore
-    const id = req.id
+  // @ts-ignore
+  const id = req.id
 
-    try {
-        const startOfMonth = new Date();
-        startOfMonth.setDate(1);
-        startOfMonth.setHours(0, 0, 0, 0);
+  try {
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
 
-        const messageCount = await prisma.dmList.count({
-            where: { userId: id, msgSendAt: { gte: startOfMonth } },
-        });
-
-        const automationCount = await prisma.automation.count({
-            where: {
-                userId: id,
-                createdAt: { gte: startOfMonth },
-            },
-        });
-
-        const contactCount = await prisma.contacts.count({
-            where: {
-                userId: id,
-                createdAt: { gte: startOfMonth }
-            }
-        })
-        
-        return res.json({ messageCount, automationCount, contactCount });
-    } catch (err) {
-        console.error("Failed to get total sent:", err);
-        return res.status(500).json({ error: "Internal server error" });
+    const cache = await redis.get(`stats:${id}`)
+    if (cache) {
+      return res.json(JSON.parse(cache));
     }
+
+    const messageCount = await prisma.dmList.count({
+      where: { userId: id, msgSendAt: { gte: startOfMonth } },
+    });
+
+    const automationCount = await prisma.automation.count({
+      where: {
+        userId: id,
+        createdAt: { gte: startOfMonth },
+      },
+    });
+
+    const contactCount = await prisma.contacts.count({
+      where: {
+        userId: id,
+        createdAt: { gte: startOfMonth }
+      }
+    })
+
+    await redis.set(`stats:${id}`, JSON.stringify({ messageCount, automationCount, contactCount }),)
+    await redis.expire(`stats:${id}`,60)
+
+    return res.json({ messageCount, automationCount, contactCount });
+  } catch (err) {
+    console.error("Failed to get total sent:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 }
 
 const RANGE_TO_DAYS: Record<string, number> = {

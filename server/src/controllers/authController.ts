@@ -8,6 +8,8 @@ import { sendEmail } from "../utils/sendOTP";
 import passport from "passport";
 import { Strategy as GoogleStrategy, Profile } from "passport-google-oauth20";
 import { loginEmailTemplate, signupEmailTemplate } from "../utils/emailTemplates";
+import redis from "../lib/redis";
+import { json } from "stream/consumers";
 // login send opt to email 
 export const login = async (req: Request, res: Response) => {
   const email = (req.body.email || "").trim().toLowerCase()
@@ -52,6 +54,7 @@ export const verifyLoginOTP = async (req: Request, res: Response) => {
   const user = await prisma.users.findFirst({
     where: { email: email }
   })
+  
   // @ts-ignore
   if (!user) return res.status(401).json({ error: "Someting went wrong" })
   const JWT_SECRET = Buffer.from(process.env.JWT_SECRET || "")
@@ -61,7 +64,7 @@ export const verifyLoginOTP = async (req: Request, res: Response) => {
     httpOnly: false,
     // secure: isProd,                  
     secure: process.env.NODE_ENV !== "development",
-    maxAge:  30 * 24 * 60 * 60 * 1000,
+    maxAge: 30 * 24 * 60 * 60 * 1000,
     sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
 
   })
@@ -122,7 +125,7 @@ export const verifySignupOTP = async (req: Request, res: Response) => {
       httpOnly: false,
       // secure: isProd,                  
       secure: process.env.NODE_ENV !== "development",
-      maxAge:  30 * 24 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
       sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
     })
     res.json({
@@ -184,9 +187,18 @@ export const getDetails = async (req: Request, res: Response) => {
     if (!id) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    const data = await prisma.users.findFirst({
+
+    const cache = await redis.get(`$user:${id}`);
+    if(cache){
+      console.log("already store");
+      
+      return res.json(JSON.parse(cache))
+    }
+    const data = cache ? JSON.parse(cache) : await prisma.users.findFirst({
       where: { id }
     })
+    await redis.set(`user:${id}`, JSON.stringify(data))
+    await redis.expire(`user:${id}`,60)
     res.json({ data })
   } catch (err) {
     console.error("Get details error:", err);
@@ -268,23 +280,23 @@ export const googleAuthCallback = (req: any, res: any, next: any) => {
 };
 
 
-export const logout = async (req : Request, res: Response) => {
+export const logout = async (req: Request, res: Response) => {
   // @ts-ignore
   const id = req.id
 
-  if (!id) return res.status(401).json({error : "Unauthorized"}) 
-    try {
-        res.clearCookie("token", {
-          httpOnly: false,
-          // secure: isProd,                  
-          secure: process.env.NODE_ENV !== "development",
-          maxAge: 1000 * 60 * 60,
-          sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
-        })
-      
-        res.status(200).json({msg : "logut", success : true})
-    } catch (error) {
-      res.status(500).json({msg : "Something went worng"})
-    }
-    
+  if (!id) return res.status(401).json({ error: "Unauthorized" })
+  try {
+    res.clearCookie("token", {
+      httpOnly: false,
+      // secure: isProd,                  
+      secure: process.env.NODE_ENV !== "development",
+      maxAge: 1000 * 60 * 60,
+      sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+    })
+
+    res.status(200).json({ msg: "logut", success: true })
+  } catch (error) {
+    res.status(500).json({ msg: "Something went worng" })
+  }
+
 }
