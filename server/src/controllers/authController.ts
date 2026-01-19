@@ -62,8 +62,7 @@ export const verifyLoginOTP = async (req: Request, res: Response) => {
 
   res.cookie("token", token, {
     httpOnly: false,
-    // secure: isProd,                  
-    secure: process.env.NODE_ENV !== "development",
+   secure:  process.env.NODE_ENV === "production",
     maxAge: 30 * 24 * 60 * 60 * 1000,
     sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
 
@@ -123,10 +122,9 @@ export const verifySignupOTP = async (req: Request, res: Response) => {
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "30d" })
     res.cookie("token", token, {
       httpOnly: false,
-      // secure: isProd,                  
-      secure: process.env.NODE_ENV !== "development",
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+     secure:  process.env.NODE_ENV === "production",
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
     })
     res.json({
       data: user
@@ -289,9 +287,9 @@ export const logout = async (req: Request, res: Response) => {
     res.clearCookie("token", {
       httpOnly: false,
       // secure: isProd,                  
-      secure: process.env.NODE_ENV !== "development",
-      maxAge: 1000 * 60 * 60,
-      sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+    secure:  process.env.NODE_ENV === "production",
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
     })
 
     res.status(200).json({ msg: "logut", success: true })
