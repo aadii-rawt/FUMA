@@ -67,13 +67,13 @@ function buildMessagePayload(automation: any, username?: string) {
 
     // promotional text 
     elements.push({
-        title: automation.msgTitle ?? "Info",
-        subtitle: automation.dmText ? `${automation.dmText} || Powered by fuma.dotdazzle.in` : "",
-        image_url: automation.dmImageUrl,
+        title: "Are you a Creator?",
+        subtitle: 'Powered by fuma.dotdazzle.in',
+        image_url: "https://res.cloudinary.com/de7vaylb1/image/upload/v1768838219/FUMA/ebcvuwh8ruwodlwfxca4.png",
         buttons: (automation.dmLinks ?? []).slice(0, 3).map((l: any) => ({
           type: "web_url",
-          url: `${process.env.BACKEND_URL}/api/v1/automation/track/${automation.id}?to=${l.url}`,
-          title: l.title?.slice(0, 20) || "Open",
+          url: `https://fuma.dotdazzle.in`,
+          title: "Signup & Earn",
         })),
     })
 

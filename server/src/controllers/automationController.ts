@@ -90,7 +90,7 @@ export const createAutomation = async (req: Request, res: Response) => {
     });
 
 
-    return res.json({ message: "automation created", dmImageUrl });
+    return res.json({ message: "automation created" });
   } catch (error: any) {
     console.error(error);
     return res.status(500).json({ error: "Failed to create automation" });
