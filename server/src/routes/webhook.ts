@@ -49,6 +49,34 @@ function buildMessagePayload(automation: any, username?: string) {
       });
     }
 
+    if (automation.hasProducts) {
+       automation.products.map((product) => {
+        elements.push({
+          title: product.productTitle.slice(0,50)+ "...",
+          image_url: product.image,
+          buttons: [{
+            type: "web_url",
+            url: product.url,
+            title: product.title?.slice(0, 20) || "Open",
+          }],
+        })
+      })
+      console.log("element : ", elements);
+      
+    }
+
+    // promotional text 
+    elements.push({
+        title: automation.msgTitle ?? "Info",
+        subtitle: automation.dmText ? `${automation.dmText} || Powered by fuma.dotdazzle.in` : "",
+        image_url: automation.dmImageUrl,
+        buttons: (automation.dmLinks ?? []).slice(0, 3).map((l: any) => ({
+          type: "web_url",
+          url: `${process.env.BACKEND_URL}/api/v1/automation/track/${automation.id}?to=${l.url}`,
+          title: l.title?.slice(0, 20) || "Open",
+        })),
+    })
+
     return {
       message: {
         attachment: {
@@ -154,7 +182,6 @@ export const webhook = async (req: Request, res: Response) => {
     }
 
     try {
-
 
       const { postbackPayload, senderId } = extractPostback(body);
       if (postbackPayload && senderId) {
@@ -292,7 +319,7 @@ export const webhook = async (req: Request, res: Response) => {
           await sendPrivateReplyToComment(commentId, payload, pageAccessToken);
           const user = auto?.user
           await sendCount(auto.id)
-          await DMList(user,username,auto.id)
+          await DMList(user, username, auto.id)
 
           if (auto.followUp) {
             if (user.plan != "ULTIMATE") return // feature not available for free and pro user

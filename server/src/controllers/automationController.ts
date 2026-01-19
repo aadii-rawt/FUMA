@@ -5,7 +5,8 @@ import { prisma } from "../lib/prisma"
 import { Request, Response } from "express"
 import uploadThumbnail from "../utils/uploadThumbnail";
 import redis from "../lib/redis";
-import { channel } from "diagnostics_channel";
+import * as cheerio from "cheerio";
+import axios from "axios";
 
 
 export const getAutomation = async (req: Request, res: Response) => {
@@ -183,7 +184,7 @@ export const automationCount = async (req: Request, res: Response) => {
       createdAt: { gte: startOfMonth },
     },
   });
-  
+
   await redis.set(`automationCount${userId}`, JSON.stringify(automationsThisMonth))
   res.json({ data: automationsThisMonth })
 
@@ -210,5 +211,24 @@ export const linkRedirect = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Tracking error:", error);
     return res.status(500).send("Server error");
+  }
+}
+
+
+export const getMetaData = async (req: Request, res: Response) => {
+  const {url} = req.query;
+  
+  try {
+  const meta = await axios.get(`${process.env.LINK_PREVIEW_API}/?q=${url}`, {
+      headers : {
+        "X-Linkpreview-Api-Key" : process.env.LINK_PREVIEW_API_KEY
+      }
+    })
+    
+    res.json({success : true, data : meta.data})
+  } catch (error) {
+    console.log(error);
+    
+    res.status(500).json({ success: false, message: "Failed to valid link. Please try again." })
   }
 }

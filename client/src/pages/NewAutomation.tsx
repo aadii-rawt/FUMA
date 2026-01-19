@@ -43,16 +43,17 @@ const NewAutomation: React.FC = () => {
 
     const handleAutomation = async () => {
 
+        console.log(selectedPost);
+        
         if (!user) return
 
         const valid = automationValidation(selectedPost) // automation validation
 
-
         if (valid?.type == "error") return setNotification(valid)
         try {
             setLoading(true)
-            const { products, hasProducts, ...rest } = selectedPost
-            const res = await Axios.post("/automation", { post: rest })
+            // const { products, hasProducts, ...rest } = selectedPost
+            const res = await Axios.post("/automation", { post: selectedPost })
             console.log(selectedPost);
             setSelectedPost({
                 name: "New Automation",

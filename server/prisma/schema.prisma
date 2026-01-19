@@ -55,7 +55,7 @@ model Automation {
   anyKeyword    Boolean          @default(false)
   keywords      String[]         @default([])
   msgTitle      String?
-  dmText        String
+  dmText        String?
   dmImageUrl    String?
   dmLinks       Json?
   caption       String?
@@ -70,6 +70,8 @@ model Automation {
   commentReplyData Json?
   followForDM      Boolean  @default(false)
   followForDMData  Json?
+  hasProducts Boolean @default(false)
+  products Json?
 
   followUp     Boolean?      @default(false)
   followUpData Json?
@@ -91,6 +93,12 @@ model dmList {
   msgSendAt   DateTime @default(now())
   createdAt   DateTime @default(now())
 }
+// model Products{
+//   id String @id @default(cuid())
+//   productImage String?
+//   productLink String
+//   productTitle String
+// }
 
 model Contacts {
   id        String   @id @default(cuid())

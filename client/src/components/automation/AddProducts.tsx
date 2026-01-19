@@ -2,12 +2,15 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { BiEdit } from 'react-icons/bi'
 import useUser from '../../context/userContext'
 import { FiEdit2, FiPlusCircle, FiTrash2, FiX } from 'react-icons/fi'
+import Axios from '../../utils/axios'
+import LoadingSpinner from '../LoadingSpinner'
 
 const Defaultmsg = `Oh no! It seems you're not following me 👀It would really mean a lot if you visit my profile and hit the follow button😁. Once you have done that, click on the 'I'm following' button below and you will get the link ✨.`
 const AddProducts = () => {
 
   const { selectedPost, setSelectedPost, imageUrl, setImageUrl, previewURL, setPreviewURL, setCurrentPreview } = useUser();
 
+  const [loading, setLoading] = useState(false)
   const handleToggle = useCallback(() => {
     if (selectedPost.hasProducts) {
       setSelectedPost((prev) => {
@@ -54,19 +57,64 @@ const AddProducts = () => {
     setOpenModal(true);
   };
 
-  const saveLink = () => {
-    if (!draftTitle.trim() || !draftUrl.trim()) return;
+  const saveLink = async () => {
+  if (!draftTitle.trim() || !draftUrl.trim()) return;
+
+  setLoading(true);
+
+  const res = await Axios.get("automation/metadata", {
+    params: { url: draftUrl.trim() },
+  });
+
+  const metadata = res.data.data; 
+
+  setSelectedPost(prev => {
+    if (!prev) return prev;
+
+    const prevProducts = Array.isArray(prev.products)
+      ? prev.products
+      : [];
+
+    let products;
+
     if (editingId) {
-      setSelectedPost((prev) => ({ ...prev, products: prev.products.map(l => (l.id === editingId ? { ...l, title: draftTitle.trim(), url: draftUrl.trim() } : l)) }))
+      products = prevProducts.map(p =>
+        p.id === editingId
+          ? {
+              ...p,
+              title: draftTitle.trim(),
+              url: draftUrl.trim(),
+              image: metadata?.image ?? p.image,
+              productTitle: metadata?.title ?? p.productTitle,
+            }
+          : p
+      );
     } else {
-      setSelectedPost((prev) => ({ ...prev, products: [...prev.products, { id: Math.random().toString(36).slice(2), title: draftTitle.trim(), url: draftUrl.trim() }] }))
+      products = [
+        ...prevProducts,
+        {
+          id: crypto.randomUUID(),
+          title: draftTitle.trim(),
+          url: draftUrl.trim(),
+          image: metadata?.image,
+          productTitle: metadata?.title,
+        },
+      ];
     }
 
-    setOpenModal(false);
-    setDraftTitle("");
-    setDraftUrl("");
-    setEditingId(null);
-  };
+    const updated = { ...prev, products };
+    return updated;
+  });
+
+  setLoading(false);
+  setOpenModal(false);
+  setDraftTitle("");
+  setDraftUrl("");
+  setEditingId(null);
+  console.log(selectedPost);
+  
+};
+
 
   const toDataURL = (file: File): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -180,7 +228,7 @@ const AddProducts = () => {
             </div>
             <div className="border-t border-gray-200 px-6 py-4">
               <button onClick={saveLink} className="w-full rounded-xl bg-[#6E32FF] py-3 cursor-pointer text-lg font-semibold text-white hover:opacity-95">
-                {editingId ? "Update Product" : "Add Product"}
+                {loading ? <LoadingSpinner /> : editingId ? "Update Product" : "Add Product"}
               </button>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { auth } from "../middleware/auth";
-import { automationCount, createAutomation, getAutomation, linkRedirect, stopAutomation, updateAutomation } from "../controllers/automationController";
+import { automationCount, createAutomation, getAutomation, getMetaData, linkRedirect, stopAutomation, updateAutomation } from "../controllers/automationController";
 
 const automationRoute = Router()
 
@@ -9,6 +9,7 @@ automationRoute.post("/", auth, createAutomation)
 automationRoute.get("/count", auth, automationCount)
 automationRoute.put("/:id", auth, updateAutomation)
 automationRoute.get("/track/:id", linkRedirect)
+automationRoute.get("/metadata", auth, getMetaData)
 
 
 export default automationRoute
