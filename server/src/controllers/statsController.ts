@@ -35,7 +35,7 @@ export const userStats = async (req: Request, res: Response) => {
     })
 
     await redis.set(`stats:${id}`, JSON.stringify({ messageCount, automationCount, contactCount }),)
-    await redis.expire(`stats:${id}`,60)
+    await redis.expire(`stats:${id}`, 60)
 
     return res.json({ messageCount, automationCount, contactCount });
   } catch (err) {
@@ -63,7 +63,13 @@ const getStartDate = (range: string) => {
 
 export const getMessageStats = async (req: Request, res: Response) => {
   try {
+
+    // @ts-ignore
+    const id = req.id
     const range = (req.query.range as string) || "7d";
+    const cacheKey = `user:${id}:messages:${range}`
+
+
     const startDate = getStartDate(range);
 
     /**
@@ -71,6 +77,7 @@ export const getMessageStats = async (req: Request, res: Response) => {
      */
     const messages = await prisma.dmList.findMany({
       where: {
+        userId : id,
         msgSendAt: {
           gte: startDate,
         },
@@ -108,11 +115,21 @@ export const getMessageStats = async (req: Request, res: Response) => {
       });
     }
 
-    return res.status(200).json({
+    const responsePayload = {
       range,
       total: messages.length,
       data: result,
-    });
+    };
+
+
+     await redis.set(
+      cacheKey,
+      JSON.stringify({responsePayload}),
+      "EX",
+      300 // seconds
+    );
+
+    return res.status(200).json(responsePayload);
   } catch (error) {
     console.error("Message stats error:", error);
     return res.status(500).json({

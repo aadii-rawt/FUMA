@@ -61,7 +61,7 @@ const AddProducts = () => {
   if (!draftTitle.trim() || !draftUrl.trim()) return;
 
   setLoading(true);
-
+try {
   const res = await Axios.get("automation/metadata", {
     params: { url: draftUrl.trim() },
   });
@@ -106,6 +106,12 @@ const AddProducts = () => {
     return updated;
   });
 
+} catch (error) {
+  
+}finally{
+  setLoading(false)
+}
+  
   setLoading(false);
   setOpenModal(false);
   setDraftTitle("");
