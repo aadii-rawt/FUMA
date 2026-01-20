@@ -49,7 +49,7 @@ const NewAutomation: React.FC = () => {
 
         const valid = automationValidation(selectedPost) // automation validation
 
-        if (valid?.type == "error") return setNotification(valid)
+        // if (valid?.type == "error") return setNotification(valid)
         try {
             setLoading(true)
             // const { products, hasProducts, ...rest } = selectedPost
