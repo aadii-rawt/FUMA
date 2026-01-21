@@ -34,8 +34,7 @@ export const userStats = async (req: Request, res: Response) => {
       }
     })
 
-    await redis.set(`stats:${id}`, JSON.stringify({ messageCount, automationCount, contactCount }),)
-    await redis.expire(`stats:${id}`, 60)
+    await redis.set(`stats:${id}`, JSON.stringify({ messageCount, automationCount, contactCount }), "EX" , 60 )
 
     return res.json({ messageCount, automationCount, contactCount });
   } catch (err) {

@@ -186,17 +186,12 @@ export const getDetails = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    // const cache = await redis.get(`$user:${id}`);
-    // if(cache){
-    //   console.log("already store");
-      
-    //   return res.json(JSON.parse(cache))
-    // }
-    const data = await prisma.users.findFirst({
+    const cache = await redis.get(`user:${id}`);
+    
+    const data = cache ? JSON.parse(cache) : await prisma.users.findFirst({
       where: { id }
     })
-    // await redis.set(`user:${id}`, JSON.stringify(data))
-    // await redis.expire(`user:${id}`,60)
+    await redis.set(`user:${id}`, JSON.stringify(data))
     res.json({ data })
   } catch (err) {
     console.error("Get details error:", err);
