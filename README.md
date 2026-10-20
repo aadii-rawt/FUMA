@@ -1,14 +1,14 @@
-# 🚀 FUMA — Instagram Auto-DM & Automation Platform (Meta Graph API)
+# FUMA — Instagram Auto-DM & Automation Platform (Meta Graph API)
 
 FUMA is a modern automation platform enabling Instagram Business accounts to automate DMs, comment replies, and engagement workflows via the **Meta Graph API**.
 
-> 🧠 Built with:
+> Built with:
 > - **React + TypeScript + Vite** (Client)
 > - **Node.js + Express + TypeScript + Prisma + PostgreSQL** (Server)
 
 ---
 
-## 🧰 Prerequisites
+## Prerequisites
 
 - Node.js ≥ 18.x  
 - PostgreSQL ≥ 13  
@@ -18,11 +18,11 @@ FUMA is a modern automation platform enabling Instagram Business accounts to aut
 
 ---
 
-## 🔑 Step 1: Get Meta (Facebook) API Credentials
+## Step 1: Get Meta (Facebook) API Credentials
 
 This section explains how to create and configure your **Meta App** for Instagram Graph API access.
 
-### 🪪 A. Prepare Your Accounts
+### A. Prepare Your Accounts
 
 1. Create a **Facebook Page** (if not already).
 2. Switch your Instagram account to a **Professional (Business)** account.
@@ -31,7 +31,7 @@ This section explains how to create and configure your **Meta App** for Instagra
 
 ---
 
-### 🧩 B. Create a Meta App
+### B. Create a Meta App
 
 1. Visit [Meta for Developers](https://developers.facebook.com/).
 2. Click **My Apps → Create App**.
@@ -46,7 +46,7 @@ This section explains how to create and configure your **Meta App** for Instagra
 
 ---
 
-### ⚙️ C. Add Products & Configure OAuth
+### C. Add Products & Configure OAuth
 
 1. In your Meta App, go to **Add Products** → Add:
    - **Instagram Graph API**
@@ -67,7 +67,7 @@ This section explains how to create and configure your **Meta App** for Instagra
 
 ---
 
-### 🔒 D. Request Required Permissions
+### D. Request Required Permissions
 
 For DMs, comments, and publishing, request these permissions:
 
@@ -77,7 +77,7 @@ For DMs, comments, and publishing, request these permissions:
 
 ---
 
-### 🔁 E. Generate Access Tokens
+### E. Generate Access Tokens
 
 1. Use **Facebook Login** to get a short-lived user token.
 2. Exchange it for a **long-lived user token** via your backend.
@@ -110,7 +110,7 @@ For DMs, comments, and publishing, request these permissions:
 
 ## ⚙️ Step 2: Environment Variables
 
-### 🔹 Server (`server/.env`)
+### Server (`server/.env`)
 ```env
 NODE_ENV=development
 PORT=4000
